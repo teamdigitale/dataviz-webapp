@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@xstate/react": "^4.1.1",
     "axios": "^1.6.8",
     "bootstrap-italia": "^2.8.5",
     "design-react-kit": "^5.0.4",
@@ -25,7 +24,6 @@
     "typeface-lora": "^1.1.13",
     "typeface-roboto-mono": "^1.1.13",
     "typeface-titillium-web": "^1.1.13",
-    "xstate": "^5.13.0",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
