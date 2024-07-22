@@ -289,3 +289,6 @@ export function generateGradient(color, resourceLimits) {
   }
   return colors;
 }
+
+
+

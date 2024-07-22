@@ -44,8 +44,10 @@ function TransformSource({ setData, rawData }) {
 
   useEffect(() => {
     if (rawData) {
+      console.log('rawData', rawData);
       const headers = Object.keys(rawData[0]);
       setKeys(headers);
+      
       let rows = rawData.slice(0, 5).map((r) => {
         return Object.values(r);
       });
