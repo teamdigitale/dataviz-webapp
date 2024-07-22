@@ -12,3 +12,10 @@ export type FieldDataType = {
   chart: string;
   data: MatrixType;
 };
+
+
+export type Step = {
+  name: string;
+  id: string;
+  index: number;
+};

@@ -1,10 +1,10 @@
-import { useState, useTransition } from "react";
-import Papa from "papaparse";
-import DataTable from "./DataTable";
-import { Button, Select } from "design-react-kit";
+import { useState, useTransition } from 'react';
+import Papa from 'papaparse';
+import DataTable from './DataTable';
+import { Button, Select } from 'design-react-kit';
 
-import { log, transposeData, moveDataColumn } from "../lib/utils";
-import { MatrixType } from "../types";
+import { log, transposeData, moveDataColumn } from '../lib/utils';
+import { MatrixType } from '../types';
 
 type selectOptionType = {
   value: string;
@@ -14,7 +14,7 @@ type selectOptionType = {
 function cleanupValue(v: string | number) {
   if (!v) return 0;
   try {
-    const value = parseFloat("" + v);
+    const value = parseFloat('' + v);
     return value;
   } catch (error) {
     return 0;
@@ -45,14 +45,14 @@ function UploadCSV({ setData }) {
       skipEmptyLines: true,
       complete: (results) => {
         const { data } = results;
-        log("RESULTS DATA", data);
+        log('RESULTS DATA', data);
         const c = getFirstOfMAtrix(data);
         const category = { value: c, label: c };
-        log("CATEGORY", category);
+        log('CATEGORY', category);
         const cols = getCols(data[0]);
-        log("COLS", cols);
+        log('COLS', cols);
         const series = cols.filter((i) => !isSameObject(i, category));
-        log("SERIES", series);
+        log('SERIES', series);
 
         startTransition(() => {
           setRawData(data);
@@ -104,7 +104,6 @@ function UploadCSV({ setData }) {
   }
 
   function handleChangeSerie(options: string[]) {
-    console.log("newValues", options);
     const series = getCols(rawData[0]).filter((i: any) =>
       options.map((o) => o).includes(i.value)
     );
@@ -113,7 +112,7 @@ function UploadCSV({ setData }) {
 
   return (
     <div>
-      <label style={{ width: "200px" }}>Carica CSV:</label>
+      <label style={{ width: '200px' }}>Carica CSV:</label>
       <input
         className="input"
         type="file"
@@ -153,8 +152,12 @@ function UploadCSV({ setData }) {
                 // label="series"
                 // hint="Seleziona una o più serie"
                 multiple={true}
-                value={series.map((s) => s.value).join(",")}
-                onChange={(e) => handleChangeSerie(e.target.value.split(","))}
+                value={series.map((s) => s.value)}
+                onChange={(e) =>
+                  handleChangeSerie(
+                    [...e.target.selectedOptions].map((o) => o.value)
+                  )
+                }
               >
                 {getCols(rawData[0])
                   .filter((i) => !isSameObject(i, category))
