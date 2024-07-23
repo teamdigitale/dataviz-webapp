@@ -107,6 +107,15 @@ function Home() {
                 <div>
                   <h4>Load remote data</h4>
                   <LoadSource setRawData={setRawData} />
+                  {rawData && (
+                    <div>
+                      <DataTable
+                        data={rawData}
+                        reset={reset}
+                        transpose={transpose}
+                      />
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -125,13 +134,6 @@ function Home() {
                   chart={chart}
                   numSeries={(data as any)?.length - 1 || 0}
                 />
-              </div>
-            )}
-
-            {state === 'TRANSFORM' && rawData && (
-              <div>
-                <DataTable data={rawData} reset={reset} transpose={transpose} />
-                {/* <TransformSource setData={setData} rawData={rawData} /> */}
               </div>
             )}
 
