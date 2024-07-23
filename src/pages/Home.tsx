@@ -1,4 +1,12 @@
-import { Button, Col, Container, Row } from 'design-react-kit';
+import {
+  Button,
+  Col,
+  Container,
+  Nav,
+  NavItem,
+  NavLink,
+  Row,
+} from 'design-react-kit';
 import { useState } from 'react';
 import { getAvailablePalettes, getPalette, transposeData } from '../lib/utils';
 import DataTable from '../components/DataTable';
@@ -12,11 +20,8 @@ import CSVUpload from '../components/CSVUpload';
 import SelectChart from '../components/SelectChart';
 import ChartOptions from '../components/ChartOptions';
 
-import type { Step } from '../types';
-import Stepper from '../components/Stepper';
-
 function Home() {
-  const [state, send] = useState('UPLOAD');
+  const [state, send] = useState('INPUT.UPLOAD');
   const config = useStoreState((state) => state.config);
   const setConfig = useStoreState((state) => state.setConfig);
   const chart = useStoreState((state) => state.chart);
@@ -25,24 +30,6 @@ function Home() {
   const setData = useStoreState((state) => state.setData);
   const rawData = useStoreState((state) => state.rawData);
   const setRawData = useStoreState((state) => state.setRawData);
-
-  const steps: Step[] = [
-    { name: 'Step 1', id: 'step1', index: 0 },
-    { name: 'Step 2', id: 'step2', index: 1 },
-    { name: 'Step 3', id: 'step3', index: 2 },
-  ];
-  const [step, setStep] = useState<Step>(steps[0]);
-
-  function handleChangeStep(step: Step) {
-    setStep(step);
-    if (step.id === 'step1') {
-      send('UPLOAD');
-    } else if (step.id === 'step2') {
-      send('CHOOSE');
-    } else if (step.id === 'step3') {
-      send('SETTINGS');
-    }
-  }
 
   function reset() {
     setData(null);
@@ -69,70 +56,97 @@ function Home() {
     send('CHOOSE' as any);
   }
   function matches(state, value) {
-    return value === state;
+    return state.indexOf(value) > -1;
   }
 
   return (
-    <Container>
-      <Stepper
-        steps={steps}
-        currentStep={step}
-        handleChangeStep={handleChangeStep}
-      >
-        <div>{step.name}</div>
-      </Stepper>
-      <div className="overflow-scroll" style={{ height: '100%', padding: 20 }}>
-        {matches(state, 'GENERATE') && (
-          <div>
-            <GenerateRandomData setData={setData} />
-          </div>
-        )}
-
-        {matches(state, 'UPLOAD') && (
-          <div>
-            <CSVUpload setData={(d: any) => setData(d)} />
-          </div>
-        )}
-
-        {matches(state, 'TRANSFORM') && (
-          <div>
-            <LoadSource setRawData={setRawData} />
-          </div>
-        )}
-        {state === 'TRANSFORM' && rawData && (
-          <div>
-            <TransformSource setData={setData} rawData={rawData} />
-          </div>
-        )}
-
-        {matches(state, 'CHOOSE') && (
-          <div>
-            <SelectChart setChart={setChart} chart={chart} />
-          </div>
-        )}
-        {matches(state, 'SETTINGS') && (
-          <div>
-            <ChartOptions
-              config={config}
-              setConfig={setConfig}
-              chart={chart}
-              numSeries={(data as any)?.length - 1 || 0}
-            />
-          </div>
-        )}
-
-        {data && data[0] && (
-          <div>
-            <div className="m-5 shadow-lg">
-              <center>
-                <RenderChart chart={chart} data={data} config={config} />
-              </center>
+    <div>
+      <Row>
+        <Col sm="2">
+          <Container>
+            <Button onClick={() => send('INPUT.UPLOAD')}>1 - INPUT DATA</Button>
+            {matches(state, 'INPUT') && (
+              <div style={{ marginLeft: '2rem' }}>
+                <Button onClick={() => send('INPUT.UPLOAD')}>
+                  Upload File
+                </Button>
+                <Button onClick={() => send('INPUT.GENERATE')}>
+                  Generate Data
+                </Button>
+                <Button onClick={() => send('INPUT.TRANSFORM')}>
+                  Load from Url
+                </Button>
+              </div>
+            )}
+            <div>
+              <Button onClick={() => send('CHOOSE')}>2 - CHOOSE CHART</Button>
             </div>
-            <DataTable data={data} reset={reset} transpose={transpose} />
+            <div>
+              <Button onClick={() => send('SETTINGS')}>
+                3 - CHART OPTIONS
+              </Button>
+            </div>
+          </Container>
+        </Col>
+        <Col sm="10">
+          <div style={{ background: 'light-gray', margin: '10px auto' }}>
+            <div>
+              {matches(state, 'UPLOAD') && (
+                <div>
+                  <h4>Upload your data</h4>
+                  <CSVUpload setData={(d: any) => setData(d)} />
+                </div>
+              )}
+              {matches(state, 'GENERATE') && (
+                <div>
+                  <h4>Generate data</h4>
+                  <GenerateRandomData setData={setData} />
+                </div>
+              )}
+              {matches(state, 'TRANSFORM') && (
+                <div>
+                  <h4>Load remote data</h4>
+                  <LoadSource setRawData={setRawData} />
+                </div>
+              )}
+            </div>
+
+            {matches(state, 'CHOOSE') && (
+              <div>
+                <SelectChart setChart={setChart} chart={chart} />
+              </div>
+            )}
+
+            {matches(state, 'SETTINGS') && (
+              <div>
+                <ChartOptions
+                  config={config}
+                  setConfig={setConfig}
+                  chart={chart}
+                  numSeries={(data as any)?.length - 1 || 0}
+                />
+              </div>
+            )}
+
+            {state === 'TRANSFORM' && rawData && (
+              <div>
+                <DataTable data={rawData} reset={reset} transpose={transpose} />
+                {/* <TransformSource setData={setData} rawData={rawData} /> */}
+              </div>
+            )}
+
+            {data && data[0] && (
+              <div style={{ maxWidth: 1200 }}>
+                <div className="shadow-lg p-5">
+                  <RenderChart chart={chart} data={data} config={config} />
+                </div>
+                <DataTable data={data} reset={reset} transpose={transpose} />
+              </div>
+            )}
           </div>
-        )}
-      </div>
-    </Container>
+        </Col>
+      </Row>
+    </div>
   );
 }
 
