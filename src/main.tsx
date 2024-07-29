@@ -1,25 +1,30 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 
-// import "./index.css";
-import "bootstrap-italia/dist/css/bootstrap-italia.min.css";
-import "typeface-titillium-web";
-import "typeface-roboto-mono";
-import "typeface-lora";
+import 'bootstrap-italia/dist/css/bootstrap-italia.min.css';
+import 'typeface-titillium-web';
+import 'typeface-roboto-mono';
+import 'typeface-lora';
+import './style/index.css';
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Layout from "./components/Layout";
-import HomePage from "./pages/Home";
-import AboutPage from "./pages/About";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Layout from './components/Layout';
+import HomePage from './pages/Home';
+import AboutPage from './pages/About';
+import DataPage from './pages/DataPage';
 
 function App() {
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: '/',
       element: <HomePage />,
     },
     {
-      path: "/about",
+      path: '/manage-data',
+      element: <DataPage />,
+    },
+    {
+      path: '/about',
       element: <AboutPage />,
     },
   ]);
@@ -33,6 +38,6 @@ function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <App />
 );

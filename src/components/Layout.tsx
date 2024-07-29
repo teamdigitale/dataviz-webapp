@@ -14,11 +14,11 @@ import {
   MegamenuItem,
   Row,
   Container,
-} from "design-react-kit";
+} from 'design-react-kit';
 
 function Layout({ children }: any) {
   return (
-    <div>
+    <div className="w-screen h-screen layout">
       <Header theme="" type="navbar" className="mb-3">
         <HeaderContent expand="lg" megamenu>
           <HeaderToggler
@@ -35,6 +35,11 @@ function Layout({ children }: any) {
                 <NavItem>
                   <NavLink href="/">
                     <span>Home</span>
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="/manage-data">
+                    <span>Manage Data</span>
                   </NavLink>
                 </NavItem>
                 <NavItem>
@@ -141,7 +146,7 @@ function Layout({ children }: any) {
           </Collapse>
         </HeaderContent>
       </Header>
-      <div>{children}</div>
+      <div className="main">{children}</div>
       <footer className="it-footer mt-5">
         <div className="it-footer-main">
           <Container>
@@ -150,11 +155,11 @@ function Layout({ children }: any) {
                 <Col sm={12}>
                   <div className="it-brand-wrapper">
                     <a className="" href="#">
-                      <Icon icon="it-pa" />
+                      <Icon icon="it-chart-line" />
                       <div className="it-brand-text">
-                        <h2>Nome del Comune</h2>
+                        <h2>Dataviz</h2>
                         <h3 className="d-none d-md-block">
-                          Uno dei tanti Comuni d Italia
+                          Data visualization for pa
                         </h3>
                       </div>
                     </a>
@@ -162,99 +167,7 @@ function Layout({ children }: any) {
                 </Col>
               </Row>
             </section>
-            <section className="py-4 border-white border-top">
-              <Row>
-                <Col className="pb-2" lg={4} md={4}>
-                  <h4>
-                    <a href="#" title="Vai alla pagina: Contatti">
-                      Contatti
-                    </a>
-                  </h4>
-                  <p>
-                    <strong>Nome del Comune</strong>
-                    <br />
-                    Via Roma 0 - 00000 Lorem Ipsum Codice fiscale / P. IVA:
-                    000000000
-                  </p>
-                  <LinkList className="footer-list clearfix">
-                    <LinkListItem
-                      href="#"
-                      title="Vai alla pagina: Posta Elettronica Certificata"
-                    >
-                      Posta Elettronica Certificata
-                    </LinkListItem>
-                    <LinkListItem
-                      href="#"
-                      title="Vai alla pagina: URP - Ufficio Relazioni con il Pubblico"
-                    >
-                      URP - Ufficio Relazioni con il Pubblico
-                    </LinkListItem>
-                  </LinkList>
-                </Col>
-                <Col className="pb-2" lg={4} md={4}>
-                  <h4>
-                    <a href="#" title="Vai alla pagina: Newsletter">
-                      Newsletter
-                    </a>
-                  </h4>
-                </Col>
-                <Col className="pb-2" lg={4} md={4}>
-                  <h4>
-                    <a href="#" title="Vai alla pagina: Seguici su">
-                      Seguici su
-                    </a>
-                  </h4>
-                  <ul className="list-inline text-start social">
-                    <li className="list-inline-item">
-                      <a className="p-2 text-white" href="#" target="_blank">
-                        <Icon
-                          className="align-top"
-                          color="white"
-                          icon="it-designers-italia"
-                          size="sm"
-                        />
-                        <span className="visually-hidden">
-                          Designers Italia
-                        </span>
-                      </a>
-                    </li>
-                    <li className="list-inline-item">
-                      <a className="p-2 text-white" href="#" target="_blank">
-                        <Icon
-                          className="align-top"
-                          color="white"
-                          icon="it-twitter"
-                          size="sm"
-                        />
-                        <span className="visually-hidden">Twitter</span>
-                      </a>
-                    </li>
-                    <li className="list-inline-item">
-                      <a className="p-2 text-white" href="#" target="_blank">
-                        <Icon
-                          className="align-top"
-                          color="white"
-                          icon="it-medium"
-                          size="sm"
-                        />
-                        <span className="visually-hidden">Medium</span>
-                      </a>
-                    </li>
-                    <li className="list-inline-item">
-                      <a className="p-2 text-white" href="#" target="_blank">
-                        <Icon
-                          className="align-top"
-                          color="white"
-                          icon="it-behance"
-                          size="sm"
-                        />
-                        <span className="visually-hidden">Behance</span>
-                      </a>
-                    </li>
-                  </ul>
-                </Col>
-              </Row>
-            </section>
+            <section className="py-4 border-white border-top"></section>
           </Container>
         </div>
         <div className="it-footer-small-prints clearfix">

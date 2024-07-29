@@ -1,8 +1,8 @@
-import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { create } from 'zustand';
+import { devtools } from 'zustand/middleware';
 
-import { defaultConfig } from "./constants";
-import { MatrixType } from "../types";
+import { defaultConfig } from './constants';
+import { MatrixType } from '../types';
 
 let store = (set: any) => ({
   data: 0,
@@ -12,7 +12,7 @@ let store = (set: any) => ({
   setConfig: (value: object) => set(() => ({ config: value })),
   setChart: (value: string) => set(() => ({ chart: value })),
   setRawData: (value: any) => set(() => ({ rawData: value })),
-  setData: (value: MatrixType) => set(() => ({ data: value })),
+  setData: (value: MatrixType | null) => set(() => ({ data: value })),
   setAll: (value: any) =>
     set(() => ({
       chart: value.chart,
@@ -22,6 +22,6 @@ let store = (set: any) => ({
 });
 
 const useStoreState = create(
-  devtools(store, { name: "MyStore", trace: false })
+  devtools(store, { name: 'MyStore', trace: false })
 );
 export default useStoreState;

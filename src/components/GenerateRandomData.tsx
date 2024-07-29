@@ -1,7 +1,8 @@
-import { Button, Input } from "design-react-kit";
-import { useState } from "react";
-import DataTable from "./DataTable";
-import { generateItems, fillArray, transposeData } from "../lib/utils";
+import { Button, Input } from 'design-react-kit';
+import { useState } from 'react';
+import DataTable from './DataTable';
+import { generateItems, fillArray, transposeData } from '../lib/utils';
+import { downloadCSV, dataToCSV } from '../lib/downloadUtils';
 
 function GenerateRandomData({ setData }) {
   const [rows, setRows] = useState(3);
@@ -13,8 +14,8 @@ function GenerateRandomData({ setData }) {
   const [generated, setGenerated] = useState(null);
 
   function generate() {
-    const rowLabels = generateItems("SERIE", rows);
-    const colLabels = ["_", ...generateItems("T", cols)];
+    const rowLabels = generateItems('SERIE', rows);
+    const colLabels = ['_', ...generateItems('T', cols)];
 
     let matrix = [];
     matrix[0] = colLabels;
@@ -100,9 +101,17 @@ function GenerateRandomData({ setData }) {
       </Button>
       {generated && (
         <div className="my-10">
-          <div className="w-[500px] overflow-scroll">
-            <DataTable data={generated} reset={reset} transpose={transpose} />
-          </div>
+          <DataTable
+            data={generated}
+            reset={reset}
+            transpose={transpose}
+            download={() => {
+              downloadCSV(
+                dataToCSV(generated),
+                'generated-data-' + rows + 'x' + cols + Date.now()
+              );
+            }}
+          />
           <Button
             className="btn btn-primary"
             onClick={() => setData(generated)}

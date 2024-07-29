@@ -1,6 +1,18 @@
-import { Button } from "design-react-kit";
+import { Button } from 'design-react-kit';
 
-export default function DataTable({ data, reset, transpose }): JSX.Element {
+type DataTableProps = {
+  data: any;
+  reset?: () => void;
+  transpose?: () => void;
+  download?: () => void;
+};
+
+export default function DataTable({
+  data,
+  reset,
+  transpose,
+  download,
+}: DataTableProps): JSX.Element {
   let max = 100;
   return (
     <>
@@ -11,17 +23,40 @@ export default function DataTable({ data, reset, transpose }): JSX.Element {
           }}
         >
           <p>{`${data.length} righe, ${data[0].length} colonne`}</p>
+          <div className="my-4">
+            {transpose && (
+              <span className="">
+                <Button type="button" onClick={() => transpose()} size="xs">
+                  Trasponi
+                </Button>
+              </span>
+            )}
+            {reset && (
+              <span className="ms-3">
+                <Button type="button" onClick={() => reset()} size="xs">
+                  Reset
+                </Button>
+              </span>
+            )}
+            {download && (
+              <span className="ms-3">
+                <Button type="button" onClick={() => download()} size="xs">
+                  download
+                </Button>
+              </span>
+            )}
+          </div>
           <div
             style={{
-              width: "700px",
-              height: "350px",
-              overflowX: "scroll",
-              overflowY: "scroll",
+              width: '700px',
+              height: '350px',
+              overflowX: 'scroll',
+              overflowY: 'scroll',
             }}
           >
             <table
               style={{
-                border: "1px solid lightgray",
+                border: '1px solid lightgray',
                 fontSize: 14,
               }}
             >
@@ -32,8 +67,8 @@ export default function DataTable({ data, reset, transpose }): JSX.Element {
                       className={`px-2 border-2 bg-gray-100  border-lightgray`}
                       key={`head-cell-${ii}`}
                       style={{
-                        borderLeft: ii ? "1px solid gray" : "",
-                        borderBottom: "1px solid gray",
+                        borderLeft: ii ? '1px solid gray' : '',
+                        borderBottom: '1px solid gray',
                       }}
                     >
                       {cell}
@@ -50,12 +85,12 @@ export default function DataTable({ data, reset, transpose }): JSX.Element {
                           key={`cell-${ii}`}
                           className={`px-2 ${
                             ii === 0
-                              ? "font-bold border-2 bg-gray-100  border-gray"
-                              : ""
+                              ? 'font-bold border-2 bg-gray-100  border-gray'
+                              : ''
                           }`}
                           style={{
-                            borderLeft: ii ? "1px solid gray" : "",
-                            borderBottom: "1px solid gray",
+                            borderLeft: ii ? '1px solid gray' : '',
+                            borderBottom: '1px solid gray',
                           }}
                         >
                           {cell}
@@ -66,22 +101,6 @@ export default function DataTable({ data, reset, transpose }): JSX.Element {
                 })}
               </tbody>
             </table>
-          </div>
-          <div className="my-4">
-            {transpose && (
-              <span className="">
-                <Button type="button" onClick={() => transpose()} size="xs">
-                  Trasponi
-                </Button>
-              </span>
-            )}
-            {reset && (
-              <span className="ms-3">
-                <Button type="button" onClick={() => reset()} size="xs">
-                  Reset
-                </Button>
-              </span>
-            )}
           </div>
         </div>
       )}

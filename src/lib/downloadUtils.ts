@@ -4,7 +4,7 @@ export function log(...args) {
   console.log(args);
 }
 
-export async function downLoadPng(echartInstance, name) {
+export async function downloadPng(echartInstance, name) {
   if (!echartInstance) return;
   const dataUrl = echartInstance.getDataURL();
   try {

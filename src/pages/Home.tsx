@@ -12,16 +12,17 @@ import { getAvailablePalettes, getPalette, transposeData } from '../lib/utils';
 import DataTable from '../components/DataTable';
 import RenderChart from '../components/RenderChart';
 
-import TransformSource from '../components/TransformSource';
 import useStoreState from '../lib/store';
 import GenerateRandomData from '../components/GenerateRandomData';
 import LoadSource from '../components/LoadSource';
 import CSVUpload from '../components/CSVUpload';
 import SelectChart from '../components/SelectChart';
 import ChartOptions from '../components/ChartOptions';
+import { useMachine } from '@xstate/react';
+import stepMachine from '../lib/stepMachine';
 
 function Home() {
-  const [state, send] = useState('INPUT.UPLOAD');
+  const [state, send] = useMachine(stepMachine);
   const config = useStoreState((state) => state.config);
   const setConfig = useStoreState((state) => state.setConfig);
   const chart = useStoreState((state) => state.chart);
@@ -55,55 +56,66 @@ function Home() {
     setData(d);
     send('CHOOSE' as any);
   }
-  function matches(state, value) {
-    return state.indexOf(value) > -1;
-  }
 
   return (
     <div>
       <Row>
         <Col sm="2">
           <Container>
-            <Button onClick={() => send('INPUT.UPLOAD')}>1 - INPUT DATA</Button>
-            {matches(state, 'INPUT') && (
-              <div style={{ marginLeft: '2rem' }}>
-                <Button onClick={() => send('INPUT.UPLOAD')}>
-                  Upload File
-                </Button>
-                <Button onClick={() => send('INPUT.GENERATE')}>
-                  Generate Data
-                </Button>
-                <Button onClick={() => send('INPUT.TRANSFORM')}>
-                  Load from Url
-                </Button>
-              </div>
+            <button onClick={() => send({ type: 'PREV' })}>PREV</button>
+            <button onClick={() => send({ type: 'NEXT' })}>NEXT</button>
+
+            <Button
+              onClick={() =>
+                send({ type: state.matches('idle') ? 'NEXT' : 'PREV' })
+              }
+            >
+              1 - INPUT DATA
+            </Button>
+
+            {data && (
+              <>
+                <div>
+                  <Button
+                    onClick={() =>
+                      send({ type: state.matches('input') ? 'NEXT' : 'PREV' })
+                    }
+                  >
+                    2 - CHOOSE CHART
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    onClick={() =>
+                      send({
+                        type: state.matches('selection') ? 'NEXT' : 'PREV',
+                      })
+                    }
+                  >
+                    3 - CHART OPTIONS
+                  </Button>
+                </div>
+              </>
             )}
-            <div>
-              <Button onClick={() => send('CHOOSE')}>2 - CHOOSE CHART</Button>
-            </div>
-            <div>
-              <Button onClick={() => send('SETTINGS')}>
-                3 - CHART OPTIONS
-              </Button>
-            </div>
           </Container>
         </Col>
-        <Col sm="10">
+        <Col sm="4">
           <div style={{ background: 'light-gray', margin: '10px auto' }}>
+            <h1>{state.value as string}</h1>
             <div>
-              {matches(state, 'UPLOAD') && (
+              {state.matches('input') && (
                 <div>
                   <h4>Upload your data</h4>
                   <CSVUpload setData={(d: any) => setData(d)} />
                 </div>
               )}
-              {matches(state, 'GENERATE') && (
+              {state.matches('generate') && (
                 <div>
                   <h4>Generate data</h4>
                   <GenerateRandomData setData={setData} />
                 </div>
               )}
-              {matches(state, 'TRANSFORM') && (
+              {state.matches('transform') && (
                 <div>
                   <h4>Load remote data</h4>
                   <LoadSource setRawData={setRawData} />
@@ -120,13 +132,13 @@ function Home() {
               )}
             </div>
 
-            {matches(state, 'CHOOSE') && (
+            {state.matches('selection') && (
               <div>
                 <SelectChart setChart={setChart} chart={chart} />
               </div>
             )}
 
-            {matches(state, 'SETTINGS') && (
+            {state.matches('config') && (
               <div>
                 <ChartOptions
                   config={config}
@@ -136,8 +148,11 @@ function Home() {
                 />
               </div>
             )}
-
-            {data && data[0] && (
+          </div>
+        </Col>
+        <Col sm="6">
+          <div>
+            {data && (
               <div style={{ maxWidth: 1200 }}>
                 <div className="shadow-lg p-5">
                   <RenderChart chart={chart} data={data} config={config} />
