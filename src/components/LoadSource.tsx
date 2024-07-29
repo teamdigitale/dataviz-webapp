@@ -6,13 +6,16 @@ import Papa from 'papaparse';
 
 function LoadSource({ setRawData }) {
   const [loading, setLoading] = useState(false);
-  const [url, setUrl] = useState(null);
+  const [url, setUrl] = useState(
+    'https://www.datocms-assets.com/38008/1722249098-generated-data-3x51722249031636.csv'
+  );
 
   async function getData() {
     setLoading(true);
     try {
       let testUrl = new URL(url);
       if (testUrl) {
+        axios.defaults.timeout = 5000;
         const response = await axios.get(url);
         console.log('response.data', response.data);
         Papa.parse(response.data, {

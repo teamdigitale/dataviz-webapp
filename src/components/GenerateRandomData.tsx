@@ -11,7 +11,7 @@ function GenerateRandomData({ setData }) {
   const [max, setMax] = useState(100);
   const [offset, setOffset] = useState(0);
   const [multiplier, setMultiplier] = useState(1);
-  const [generated, setGenerated] = useState(null);
+  // const [generated, setGenerated] = useState(null);
 
   function generate() {
     const rowLabels = generateItems('SERIE', rows);
@@ -25,16 +25,17 @@ function GenerateRandomData({ setData }) {
         ...fillArray(cols, min, max).map((v) => (v + offset) * multiplier),
       ];
     }
-    setGenerated(matrix);
+    // setGenerated(matrix);
+    setData(matrix);
   }
 
-  function reset() {
-    setGenerated(null);
-  }
+  // function reset() {
+  //   setGenerated(null);
+  // }
 
-  function transpose() {
-    setGenerated((prev) => transposeData(prev));
-  }
+  // function transpose() {
+  //   setGenerated((prev) => transposeData(prev));
+  // }
 
   return (
     <div className="my-10">
@@ -99,7 +100,7 @@ function GenerateRandomData({ setData }) {
       <Button className="my-5 btn btn-primary" onClick={() => generate()}>
         GENERATE
       </Button>
-      {generated && (
+      {/* {generated && (
         <div className="my-10">
           <DataTable
             data={generated}
@@ -119,7 +120,7 @@ function GenerateRandomData({ setData }) {
             USE GENERATED DATA
           </Button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

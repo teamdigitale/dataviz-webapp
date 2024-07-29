@@ -6,7 +6,7 @@ import { MatrixType } from '../types';
 
 let store = (set: any) => ({
   data: 0,
-  chart: null,
+  chart: 'bar',
   config: defaultConfig,
   rawData: null,
   setConfig: (value: object) => set(() => ({ config: value })),

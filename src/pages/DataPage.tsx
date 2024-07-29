@@ -23,7 +23,6 @@ function Home() {
   const data = useStoreState((state) => state.data);
   const setData = useStoreState((state) => state.setData);
   const rawData = useStoreState((state) => state.rawData);
-  const setRawData = useStoreState((state) => state.setRawData);
   const [activeTab, toggleTab] = useState('1');
 
   function reset() {
@@ -91,23 +90,7 @@ function Home() {
             <TabPane tabId="2" className="p-3">
               <>
                 <h4>Load remote data</h4>
-
-                <LoadSource setRawData={setRawData} />
-                <div>
-                  <h1>RAW DATA</h1>
-                  {rawData && (
-                    <div>
-                      <DataTable
-                        data={rawData}
-                        reset={reset}
-                        transpose={transpose}
-                        download={() => {
-                          downloadCSV(rawData, 'raw-data');
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
+                <LoadSource setRawData={setData} />
               </>
             </TabPane>
           </TabContent>
@@ -119,7 +102,7 @@ function Home() {
                 reset={reset}
                 transpose={transpose}
                 download={() => {
-                  downloadCSV(rawData, 'data');
+                  downloadCSV(data, 'data');
                 }}
               />
             </div>
