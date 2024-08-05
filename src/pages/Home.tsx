@@ -1,12 +1,3 @@
-import {
-  Button,
-  Col,
-  Container,
-  Nav,
-  NavItem,
-  NavLink,
-  Row,
-} from 'design-react-kit';
 import { useState } from 'react';
 import { getAvailablePalettes, getPalette, transposeData } from '../lib/utils';
 import DataTable from '../components/DataTable';
@@ -59,110 +50,104 @@ function Home() {
 
   return (
     <div>
-      <Row>
-        <Col sm="2">
-          <Container>
-            <button onClick={() => send({ type: 'PREV' })}>PREV</button>
-            <button onClick={() => send({ type: 'NEXT' })}>NEXT</button>
+      <div>
+        <div>
+          <button onClick={() => send({ type: 'PREV' })}>PREV</button>
+          <button onClick={() => send({ type: 'NEXT' })}>NEXT</button>
 
-            <Button
-              onClick={() =>
-                send({ type: state.matches('idle') ? 'NEXT' : 'PREV' })
-              }
-            >
-              1 - INPUT DATA
-            </Button>
+          <button
+            onClick={() =>
+              send({ type: state.matches('idle') ? 'NEXT' : 'PREV' })
+            }
+          >
+            1 - INPUT DATA
+          </button>
 
-            {data && (
-              <>
-                <div>
-                  <Button
-                    onClick={() =>
-                      send({ type: state.matches('input') ? 'NEXT' : 'PREV' })
-                    }
-                  >
-                    2 - CHOOSE CHART
-                  </Button>
-                </div>
-                <div>
-                  <Button
-                    onClick={() =>
-                      send({
-                        type: state.matches('selection') ? 'NEXT' : 'PREV',
-                      })
-                    }
-                  >
-                    3 - CHART OPTIONS
-                  </Button>
-                </div>
-              </>
-            )}
-          </Container>
-        </Col>
-        <Col sm="4">
-          <div style={{ background: 'light-gray', margin: '10px auto' }}>
-            <h1>{state.value as string}</h1>
-            <div>
-              {state.matches('input') && (
-                <div>
-                  <h4>Upload your data</h4>
-                  <CSVUpload setData={(d: any) => setData(d)} />
-                </div>
-              )}
-              {state.matches('generate') && (
-                <div>
-                  <h4>Generate data</h4>
-                  <GenerateRandomData setData={setData} />
-                </div>
-              )}
-              {state.matches('transform') && (
-                <div>
-                  <h4>Load remote data</h4>
-                  <LoadSource setRawData={setRawData} />
-                  {rawData && (
-                    <div>
-                      <DataTable
-                        data={rawData}
-                        reset={reset}
-                        transpose={transpose}
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {state.matches('selection') && (
+          {data && (
+            <>
               <div>
-                <SelectChart setChart={setChart} chart={chart} />
+                <button
+                  onClick={() =>
+                    send({ type: state.matches('input') ? 'NEXT' : 'PREV' })
+                  }
+                >
+                  2 - CHOOSE CHART
+                </button>
               </div>
-            )}
-
-            {state.matches('config') && (
               <div>
-                <ChartOptions
-                  config={config}
-                  setConfig={setConfig}
-                  chart={chart}
-                  numSeries={(data as any)?.length - 1 || 0}
-                />
+                <button
+                  onClick={() =>
+                    send({
+                      type: state.matches('selection') ? 'NEXT' : 'PREV',
+                    })
+                  }
+                >
+                  3 - CHART OPTIONS
+                </button>
               </div>
-            )}
-          </div>
-        </Col>
-        <Col sm="6">
+            </>
+          )}
+        </div>
+        <div style={{ background: 'light-gray', margin: '10px auto' }}>
+          <h1>{state.value as string}</h1>
           <div>
-            {data && (
-              <div style={{ maxWidth: 1200 }}>
-                <div className="shadow-lg p-5">
-                  <RenderChart chart={chart} data={data} config={config} />
-                </div>
-                <DataTable data={data} reset={reset} transpose={transpose} />
+            {state.matches('input') && (
+              <div>
+                <h4>Upload your data</h4>
+                <CSVUpload setData={(d: any) => setData(d)} />
+              </div>
+            )}
+            {state.matches('generate') && (
+              <div>
+                <h4>Generate data</h4>
+                <GenerateRandomData setData={setData} />
+              </div>
+            )}
+            {state.matches('transform') && (
+              <div>
+                <h4>Load remote data</h4>
+                <LoadSource setRawData={setRawData} />
+                {rawData && (
+                  <div>
+                    <DataTable
+                      data={rawData}
+                      reset={reset}
+                      transpose={transpose}
+                    />
+                  </div>
+                )}
               </div>
             )}
           </div>
-        </Col>
-      </Row>
+
+          {state.matches('selection') && (
+            <div>
+              <SelectChart setChart={setChart} chart={chart} />
+            </div>
+          )}
+
+          {state.matches('config') && (
+            <div>
+              <ChartOptions
+                config={config}
+                setConfig={setConfig}
+                chart={chart}
+                numSeries={(data as any)?.length - 1 || 0}
+              />
+            </div>
+          )}
+        </div>
+        <div>
+          {data && (
+            <div style={{ maxWidth: 1200 }}>
+              <div className="shadow-lg p-5">
+                <RenderChart chart={chart} data={data} config={config} />
+              </div>
+              <DataTable data={data} reset={reset} transpose={transpose} />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

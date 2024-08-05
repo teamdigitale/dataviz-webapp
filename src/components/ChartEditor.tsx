@@ -1,15 +1,14 @@
-import useStoreState from "../lib/store";
-import { transposeData } from "../lib/utils";
+import useStoreState from '../lib/store';
+import { transposeData } from '../lib/utils';
 
-import DataTable from "../components/DataTable";
-import RenderChart from "../components/RenderChart";
-import CSVUpload from "../components/CSVUpload";
-import ChartOptions from "../components/ChartOptions";
-import SelectChart from "../components/SelectChart";
+import DataTable from '../components/DataTable';
+import RenderChart from '../components/RenderChart';
+import CSVUpload from '../components/CSVUpload';
+import ChartOptions from '../components/ChartOptions';
+import SelectChart from '../components/SelectChart';
 
-import { MatrixType } from "../types";
-import { useState, useEffect } from "react";
-import { Container, Row } from "design-react-kit";
+import { MatrixType } from '../types';
+import { useState, useEffect } from 'react';
 
 export default function ChartEditor({ ctx }) {
   const currentValue = JSON.parse(ctx.formValues[ctx.fieldPath] as string) || {
@@ -46,10 +45,10 @@ export default function ChartEditor({ ctx }) {
       setUploadOpen(false);
     } else if (data) {
       const valueString = JSON.stringify(data);
-      const prevValue = JSON.stringify(currentValue?.data || "");
+      const prevValue = JSON.stringify(currentValue?.data || '');
       if (valueString !== prevValue) {
-        saveData(str({ chart: "", config: {}, data }));
-        setChart("");
+        saveData(str({ chart: '', config: {}, data }));
+        setChart('');
         setConfig({});
       }
     }
@@ -71,15 +70,15 @@ export default function ChartEditor({ ctx }) {
   }, [config, data]);
 
   function doReset() {
-    saveData(str({ config: {}, chart: "" }));
+    saveData(str({ config: {}, chart: '' }));
     setTimeout(() => {
-      setAll({ config: {}, chart: "", data: null });
+      setAll({ config: {}, chart: '', data: null });
       setUploadOpen(true);
     }, 1000);
   }
 
   function handleUploadData(data) {
-    saveData(str({ config: {}, chart: "" }));
+    saveData(str({ config: {}, chart: '' }));
     setTimeout(() => {
       setData(data);
       setUploadOpen(false);
@@ -89,21 +88,21 @@ export default function ChartEditor({ ctx }) {
 
   function transpose() {
     const transposed = transposeData(data);
-    saveData(str({ config: {}, chart: "", data: transposed }));
+    saveData(str({ config: {}, chart: '', data: transposed }));
     setTimeout(() => {
-      setAll({ config: {}, chart: "", data: transposed });
+      setAll({ config: {}, chart: '', data: transposed });
     }, 1000);
   }
 
   const hasData = data != null && data[0] ? true : false;
   return (
-    <Container>
-      <Row>
+    <div>
+      <div>
         <div title="Dati">
-          <div style={{ margin: "0 20px 20px" }}>
+          <div style={{ margin: '0 20px 20px' }}>
             <CSVUpload setData={(d) => handleUploadData(d)} />
             {hasData && (
-              <div style={{ margin: "20px auto" }}>
+              <div style={{ margin: '20px auto' }}>
                 <div>
                   <DataTable
                     data={data}
@@ -118,7 +117,7 @@ export default function ChartEditor({ ctx }) {
 
         {hasData && (
           <div title="Tipologia grafico">
-            <div style={{ margin: "0 20px 20px" }}>
+            <div style={{ margin: '0 20px 20px' }}>
               <SelectChart chart={chart} setChart={setChart} />
             </div>
           </div>
@@ -126,7 +125,7 @@ export default function ChartEditor({ ctx }) {
 
         {hasData && chart && (
           <div title="Configurazioni grafico">
-            <div style={{ margin: "0 20px 20px" }}>
+            <div style={{ margin: '0 20px 20px' }}>
               <ChartOptions
                 config={config}
                 setConfig={setConfig}
@@ -145,7 +144,7 @@ export default function ChartEditor({ ctx }) {
               <center>{/* <RenderChart ds={currentValue} /> */}</center>
             </div>
           )}
-      </Row>
-    </Container>
+      </div>
+    </div>
   );
 }

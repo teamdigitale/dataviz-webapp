@@ -1,13 +1,3 @@
-import {
-  Col,
-  Container,
-  Nav,
-  NavItem,
-  NavLink,
-  Row,
-  TabContent,
-  TabPane,
-} from 'design-react-kit';
 import { useState } from 'react';
 import { getAvailablePalettes, getPalette, transposeData } from '../lib/utils';
 import DataTable from '../components/DataTable';
@@ -49,67 +39,47 @@ function Home() {
   }
 
   return (
-    <Container className="m-3">
-      <Row>
-        <Col sm={'3'}>
-          <Nav pills className="mb-3" vertical>
-            <NavItem>
-              <NavLink
-                href="#"
-                active={activeTab === '1'}
-                onClick={(e) => {
-                  e.preventDefault();
-                  toggleTab('1');
-                }}
-              >
-                Generate data
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                href="#"
-                active={activeTab === '2'}
-                onClick={(e) => {
-                  e.preventDefault();
-                  toggleTab('2');
-                }}
-              >
-                Load remote data
-              </NavLink>
-            </NavItem>
-          </Nav>
-        </Col>
-        <Col sm={'9'}>
-          <TabContent activeTab={activeTab}>
-            <TabPane tabId="1" className="p-3">
-              <>
-                <h4>Generate data</h4>
-                <GenerateRandomData setData={setData} />
-              </>
-            </TabPane>
-            <TabPane tabId="2" className="p-3">
-              <>
-                <h4>Load remote data</h4>
-                <LoadSource setRawData={setData} />
-              </>
-            </TabPane>
-          </TabContent>
-          {data && (
-            <div>
-              <h1> DATA</h1>
-              <DataTable
-                data={data}
-                reset={reset}
-                transpose={transpose}
-                download={() => {
-                  downloadCSV(data, 'data');
-                }}
-              />
-            </div>
-          )}
-        </Col>
-      </Row>
-    </Container>
+    <div>
+      {activeTab}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          toggleTab('1');
+        }}
+      >
+        Generate data
+      </button>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          toggleTab('2');
+        }}
+      >
+        Load remote data
+      </button>
+      <>
+        <h4>Generate data</h4>
+        <GenerateRandomData setData={setData} />
+      </>
+      <>
+        <h4>Load remote data</h4>
+        <LoadSource setRawData={setData} />
+      </>
+
+      {data && (
+        <div>
+          <h1> DATA</h1>
+          <DataTable
+            data={data}
+            reset={reset}
+            transpose={transpose}
+            download={() => {
+              downloadCSV(data, 'data');
+            }}
+          />
+        </div>
+      )}
+    </div>
   );
 }
 

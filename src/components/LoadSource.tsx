@@ -1,4 +1,3 @@
-import { Button } from 'design-react-kit';
 import { useState } from 'react';
 import axios from 'axios';
 import { log } from '../lib/utils';
@@ -52,7 +51,7 @@ function LoadSource({ setRawData }) {
           onChange={(e) => setUrl(e.target.value)}
         />
       </div>
-      <Button onClick={() => getData()}>fetch data</Button>
+      <button onClick={() => getData()}>fetch data</button>
     </div>
   );
 }

@@ -1,5 +1,3 @@
-import { Button } from 'design-react-kit';
-
 type DataTableProps = {
   data: any;
   reset?: () => void;
@@ -26,23 +24,31 @@ export default function DataTable({
           <div className="my-4">
             {transpose && (
               <span className="">
-                <Button type="button" onClick={() => transpose()} size="xs">
+                <button
+                  className="btn"
+                  type="button"
+                  onClick={() => transpose()}
+                >
                   Trasponi
-                </Button>
+                </button>
               </span>
             )}
             {reset && (
               <span className="ms-3">
-                <Button type="button" onClick={() => reset()} size="xs">
+                <button className="btn" type="button" onClick={() => reset()}>
                   Reset
-                </Button>
+                </button>
               </span>
             )}
             {download && (
               <span className="ms-3">
-                <Button type="button" onClick={() => download()} size="xs">
+                <button
+                  className="btn"
+                  type="button"
+                  onClick={() => download()}
+                >
                   download
-                </Button>
+                </button>
               </span>
             )}
           </div>
@@ -56,7 +62,7 @@ export default function DataTable({
           >
             <table
               style={{
-                border: '1px solid lightgray',
+                border: '1px solid ',
                 fontSize: 14,
               }}
             >
@@ -64,11 +70,11 @@ export default function DataTable({
                 <tr key={`row-head`}>
                   {data[0].map((cell, ii) => (
                     <th
-                      className={`px-2 border-2 bg-gray-100  border-lightgray`}
+                      className={`px-2 border-2 `}
                       key={`head-cell-${ii}`}
                       style={{
-                        borderLeft: ii ? '1px solid gray' : '',
-                        borderBottom: '1px solid gray',
+                        borderLeft: ii ? '1px solid ' : '',
+                        borderBottom: '1px solid ',
                       }}
                     >
                       {cell}
@@ -84,13 +90,11 @@ export default function DataTable({
                         <td
                           key={`cell-${ii}`}
                           className={`px-2 ${
-                            ii === 0
-                              ? 'font-bold border-2 bg-gray-100  border-gray'
-                              : ''
+                            ii === 0 ? 'font-bold border-2 ' : ''
                           }`}
                           style={{
-                            borderLeft: ii ? '1px solid gray' : '',
-                            borderBottom: '1px solid gray',
+                            borderLeft: ii ? '1px solid ' : '',
+                            borderBottom: '1px solid ',
                           }}
                         >
                           {cell}

@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
-import * as echarts from "echarts";
-import ReactEcharts from "echarts-for-react";
-import { useForm } from "react-hook-form";
-import { Button } from "design-react-kit";
+import { useEffect, useState } from 'react';
+import * as echarts from 'echarts';
+import ReactEcharts from 'echarts-for-react';
+import { useForm } from 'react-hook-form';
 
-import DataTable from "./DataTable";
-import { transposeData } from "../lib/utils";
-import UploadCSV from "./UploadCSVSimple";
+import DataTable from './DataTable';
+import { transposeData } from '../lib/utils';
+import UploadCSV from './UploadCSVSimple';
 
 function PreviewGeoMapChart({ url, series, nameProperty }) {
   const [data, setData] = useState(null);
@@ -28,7 +27,7 @@ function PreviewGeoMapChart({ url, series, nameProperty }) {
     const options = {
       series: series.map(({ data }) => {
         return {
-          type: "map",
+          type: 'map',
           data,
           map: id,
           nameProperty,
@@ -41,11 +40,11 @@ function PreviewGeoMapChart({ url, series, nameProperty }) {
   return (
     <div
       style={{
-        textAlign: "left",
-        border: "1px solid lightgray",
+        textAlign: 'left',
+        border: '1px solid lightgray',
         width: 500,
         height: 500,
-        maxWidth: "100%",
+        maxWidth: '100%',
       }}
     >
       <ReactEcharts
@@ -53,7 +52,7 @@ function PreviewGeoMapChart({ url, series, nameProperty }) {
         style={{
           width: 500,
           height: 500,
-          maxWidth: "100%",
+          maxWidth: '100%',
         }}
       />
     </div>
@@ -151,7 +150,7 @@ export default function CheckGeo() {
     <div>
       {loading && <div>Loading...</div>}
 
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         {geoProps && (
           <div>
             <DataTable
@@ -188,9 +187,9 @@ export default function CheckGeo() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              border: "1px solid lightgray",
+              display: 'flex',
+              alignItems: 'center',
+              border: '1px solid lightgray',
             }}
           >
             <div
@@ -200,10 +199,10 @@ export default function CheckGeo() {
               <label>GeoJson URL</label>
               <input
                 style={{ minWidth: 250 }}
-                type={"text"}
-                {...register("geoJsonUrl", { required: true })}
+                type={'text'}
+                {...register('geoJsonUrl', { required: true })}
               />
-              {errors["geoJsonUrl"] && <span>This field is required</span>}
+              {errors['geoJsonUrl'] && <span>This field is required</span>}
             </div>
             <div className="ml-5">
               <Button type="submit">Load Geo Json</Button>
@@ -215,13 +214,13 @@ export default function CheckGeo() {
         style={{
           marginTop: 20,
           marginBottom: 10,
-          border: "1px solid lightgray",
+          border: '1px solid lightgray',
           padding: 10,
         }}
       >
         <UploadCSV setData={(d) => setData(d)} />
       </div>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         {data && (
           <div>
             <DataTable
@@ -238,14 +237,15 @@ export default function CheckGeo() {
               {columnMatches.map(({ key, matches }) => (
                 <>
                   <h3>{key}</h3>
-                  <div key={key + "_matches"}>
+                  <div key={key + '_matches'}>
                     {matches.map(({ name, numMatches }) => (
-                      <Button
-                        key={key + "_" + name}
+                      <button
+                        className="btn"
+                        key={key + '_' + name}
                         onClick={() => setPropertyName(name)}
                       >
-                        ({numMatches}){" matches with " + name + " property"}
-                      </Button>
+                        ({numMatches}){' matches with ' + name + ' property'}
+                      </button>
                     ))}
                   </div>
                 </>

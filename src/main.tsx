@@ -1,10 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import 'bootstrap-italia/dist/css/bootstrap-italia.min.css';
-import 'typeface-titillium-web';
-import 'typeface-roboto-mono';
-import 'typeface-lora';
 import './style/index.css';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -20,7 +16,7 @@ function App() {
       element: <HomePage />,
     },
     {
-      path: '/manage-data',
+      path: '/data',
       element: <DataPage />,
     },
     {

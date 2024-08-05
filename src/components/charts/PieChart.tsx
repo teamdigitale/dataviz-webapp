@@ -1,6 +1,6 @@
-import ReactEcharts from "echarts-for-react";
-import { FieldDataType } from "../../types";
-import { formatTooltip } from "../../lib/utils";
+import ReactEcharts from 'echarts-for-react';
+import { FieldDataType } from '../../types';
+import { formatTooltip } from '../../lib/utils';
 
 type ChartPropsType = {
   data: FieldDataType;
@@ -17,13 +17,13 @@ function PieChart({ data, isMobile = false }: ChartPropsType) {
   const { dataSource } = data;
   const config: any = data.config;
   const responsive: boolean =
-    typeof config?.responsive === "undefined" ? true : config.responsive;
+    typeof config?.responsive === 'undefined' ? true : config.responsive;
   const tooltip = {
-    trigger: "item",
+    trigger: 'item',
     confine: true,
-    extraCssText: "z-index:1000;max-width:90%;white-space:pre-wrap;",
+    extraCssText: 'z-index:1000;max-width:90%;white-space:pre-wrap;',
     textStyle: {
-      overflow: "breakAll",
+      overflow: 'breakAll',
       width: 150,
     },
     valueFormatter: (value) => {
@@ -32,11 +32,11 @@ function PieChart({ data, isMobile = false }: ChartPropsType) {
     show: config.tooltip ?? true,
   };
 
-  let total = "";
+  let total = '';
   try {
     const serie: any = dataSource.series;
     let serieData: any;
-    if (typeof serie === "object" && !Array.isArray(serie)) {
+    if (typeof serie === 'object' && !Array.isArray(serie)) {
       serieData = serie.data;
     } else if (Array.isArray(serie)) {
       serieData = serie[0].data;
@@ -47,28 +47,28 @@ function PieChart({ data, isMobile = false }: ChartPropsType) {
 
   const showLabels = config.showPieLabels === false ? false : true;
   let options = {
-    backgroundColor: config.background ? config.background : "#F2F7FC",
+    backgroundColor: config.background ? config.background : '#F2F7FC',
     title: {
-      text: `${config?.totalLabel || "Totale"}\n${total ? total : "0"}`,
-      left: "center",
-      top: "50%",
-      textVerticalAlign: "middle",
+      text: `${config?.totalLabel || 'Totale'}\n${total ? total : '0'}`,
+      left: 'center',
+      top: '50%',
+      textVerticalAlign: 'middle',
       textStyle: {
-        fontFamily: "Titillium Web",
-        fontWeight: "bold",
+        fontFamily: 'Titillium Web',
+        fontWeight: 'bold',
         fontSize: 14,
       },
     },
     color: config.colors || [
-      "#5470c6",
-      "#91cc75",
-      "#fac858",
-      "#ee6666",
-      "#73c0de",
-      "#3ba272",
-      "#fc8452",
-      "#9a60b4",
-      "#ea7ccc",
+      '#5470c6',
+      '#91cc75',
+      '#fac858',
+      '#ee6666',
+      '#73c0de',
+      '#3ba272',
+      '#fc8452',
+      '#9a60b4',
+      '#ea7ccc',
     ],
     series: {
       ...dataSource.series,
@@ -77,18 +77,18 @@ function PieChart({ data, isMobile = false }: ChartPropsType) {
       },
       label: {
         show: showLabels,
-        position: config.labeLine ? "outside" : "inside",
+        position: config.labeLine ? 'outside' : 'inside',
       },
     },
     textStyle: {
-      fontFamily: "Titillium Web",
+      fontFamily: 'Titillium Web',
       fontSize: 12,
     },
     tooltip,
     legend: {
-      type: "scroll",
-      left: "center",
-      top: config?.legendPosition || "bottom",
+      type: 'scroll',
+      left: 'center',
+      top: config?.legendPosition || 'bottom',
       show: config.legend ?? true,
     },
   };
@@ -99,13 +99,13 @@ function PieChart({ data, isMobile = false }: ChartPropsType) {
   const chartHeight = responsive && isMobile ? (h / 100) * 80 : h;
 
   return (
-    <div style={{ textAlign: "left" }}>
+    <div style={{ textAlign: 'left' }}>
       <ReactEcharts
         option={options}
         style={{
           height: chartHeight,
-          width: "100%",
-          maxWidth: "100%",
+          width: '100%',
+          maxWidth: '100%',
         }}
       />
     </div>

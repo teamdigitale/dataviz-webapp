@@ -172,14 +172,14 @@ function UploadCSV({ setData }) {
 
           <div>
             {series && category?.value && series.length > 0 && (
-              <Button
-                className="btn btn-primary"
+              <button
+                className="btn bg-primary"
                 onClick={() => {
                   setData(cleanupData(filterData()));
                 }}
               >
                 Salva Dati
-              </Button>
+              </button>
             )}
           </div>
         </div>

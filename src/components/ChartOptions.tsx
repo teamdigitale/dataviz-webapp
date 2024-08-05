@@ -1,12 +1,11 @@
-import { Button } from "design-react-kit";
-import { useForm } from "react-hook-form";
-import { palettes, getFields, defaultConfig } from "../lib/constants";
-import { getAvailablePalettes, getMapPalettes } from "../lib/utils";
-import ShowPalette from "./ShowPalette";
+import { useForm } from 'react-hook-form';
+import { palettes, getFields, defaultConfig } from '../lib/constants';
+import { getAvailablePalettes, getMapPalettes } from '../lib/utils';
+import ShowPalette from './ShowPalette';
 
 function ChartOptions({ config, setConfig, chart, numSeries }) {
   const availabelPalettes =
-    chart === "map" ? getMapPalettes() : getAvailablePalettes(numSeries);
+    chart === 'map' ? getMapPalettes() : getAvailablePalettes(numSeries);
   const defaultPalette = availabelPalettes[0];
   const fields = getFields(availabelPalettes, defaultPalette);
   const {
@@ -15,19 +14,19 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
     watch,
     formState: { errors },
   } = useForm({
-    mode: "onBlur",
+    mode: 'onBlur',
     defaultValues: {
       ...defaultConfig,
       palette: defaultPalette,
       ...config,
     },
   });
-  const watchPalette = watch("palette", config?.palette || defaultPalette);
-  const watchDirection = watch("direction", null);
-  const watchToltip = watch("tooltip", true);
-  const watchLegend = watch("legend", true);
-  const watchShowPieLabels = watch("showPieLabels", true);
-  const watchVisualMap = watch("visualMap", true);
+  const watchPalette = watch('palette', config?.palette || defaultPalette);
+  const watchDirection = watch('direction', null);
+  const watchToltip = watch('tooltip', true);
+  const watchLegend = watch('legend', true);
+  const watchShowPieLabels = watch('showPieLabels', true);
+  const watchVisualMap = watch('visualMap', true);
 
   const onSubmit = (data) => {
     const { h, w, palette, ...rest } = data;
@@ -44,22 +43,22 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
   );
   if (!watchToltip) {
     filteredFields = filteredFields.filter(
-      (field) => field.dependsOn !== "tooltip"
+      (field) => field.dependsOn !== 'tooltip'
     );
   }
   if (!watchLegend) {
     filteredFields = filteredFields.filter(
-      (field) => field.dependsOn !== "legend"
+      (field) => field.dependsOn !== 'legend'
     );
   }
   if (!watchShowPieLabels) {
     filteredFields = filteredFields.filter(
-      (field) => field.dependsOn !== "showPieLabels"
+      (field) => field.dependsOn !== 'showPieLabels'
     );
   }
   if (!watchVisualMap) {
     filteredFields = filteredFields.filter(
-      (field) => field.dependsOn !== "visualMap"
+      (field) => field.dependsOn !== 'visualMap'
     );
   }
   return (
@@ -67,27 +66,27 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr 1fr',
             gridGap: 10,
             fontSize: 14,
           }}
         >
           {filteredFields.map((field) => {
-            if (["text", "email", "number", "color"].includes(field.type)) {
+            if (['text', 'email', 'number', 'color'].includes(field.type)) {
               let style = {};
               if (field.layout) {
                 style = { gridColumn: `span ${field.layout}` };
               }
               let label = field.label;
               if (
-                (field.name === "xLabel" || field.name === "yLabel") &&
-                watchDirection === "horizontal"
+                (field.name === 'xLabel' || field.name === 'yLabel') &&
+                watchDirection === 'horizontal'
               ) {
                 label =
-                  field.name === "xLabel"
-                    ? field.label.replace("X", "Y")
-                    : field.label.replace("Y", "X");
+                  field.name === 'xLabel'
+                    ? field.label.replace('X', 'Y')
+                    : field.label.replace('Y', 'X');
               }
               return (
                 <div key={field.name} style={style}>
@@ -102,7 +101,7 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
                   {errors[field.name] && <span>This field is required</span>}
                 </div>
               );
-            } else if (["checkbox"].includes(field.type)) {
+            } else if (['checkbox'].includes(field.type)) {
               let style = {};
               if (field.layout) {
                 style = { gridColumn: `span ${field.layout}` };
@@ -120,7 +119,7 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
                   {errors[field.name] && <span>This field is required</span>}
                 </div>
               );
-            } else if (["select"].includes(field.type)) {
+            } else if (['select'].includes(field.type)) {
               let style = {};
               if (field.layout) {
                 style = { gridColumn: `span ${field.layout}` };
@@ -130,7 +129,7 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
                   <div>{field.label}</div>
                   <select
                     className="my-2 p-2"
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                     {...field.otherProps}
                     {...register(field.name, { required: field.required })}
                   >
@@ -143,7 +142,7 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
                     })}
                   </select>
                   {errors[field.name] && <span>This field is required</span>}
-                  {field.name === "palette" && watchPalette && (
+                  {field.name === 'palette' && watchPalette && (
                     <>
                       <ShowPalette palette={palettes[watchPalette]} />
                     </>
@@ -153,8 +152,8 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
             } else {
               let style = {
                 marginTop: 10,
-                gridColumn: "span 3",
-                fontWeight: "bold",
+                gridColumn: 'span 3',
+                fontWeight: 'bold',
                 fontSize: 16,
               };
               return (
@@ -163,7 +162,7 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
                     <span
                       style={{
                         padding: 5,
-                        backgroundColor: "#eee",
+                        backgroundColor: '#eee',
                         borderRadius: 5,
                       }}
                     >
@@ -176,7 +175,7 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
           })}
         </div>
         <div className="mt-5">
-          <Button type="submit">Applica</Button>
+          <button type="submit">Applica</button>
         </div>
       </form>
     </div>

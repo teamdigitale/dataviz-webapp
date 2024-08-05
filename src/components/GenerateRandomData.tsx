@@ -1,4 +1,3 @@
-import { Button, Input } from 'design-react-kit';
 import { useState } from 'react';
 import DataTable from './DataTable';
 import { generateItems, fillArray, transposeData } from '../lib/utils';
@@ -42,7 +41,7 @@ function GenerateRandomData({ setData }) {
       <div>
         <span>
           <label>ROWS:</label>
-          <Input
+          <input
             type="number"
             placeholder="rows"
             value={rows}
@@ -51,7 +50,7 @@ function GenerateRandomData({ setData }) {
         </span>
         <span>
           <label>COLS</label>
-          <Input
+          <input
             type="number"
             placeholder="Cols"
             value={cols}
@@ -62,7 +61,7 @@ function GenerateRandomData({ setData }) {
       <div>
         <span>
           <label> Range Min:</label>
-          <Input
+          <input
             type="number"
             placeholder="min"
             value={min}
@@ -71,7 +70,7 @@ function GenerateRandomData({ setData }) {
         </span>
         <span>
           <label>Range Max:</label>
-          <Input
+          <input
             type="number"
             placeholder="Max"
             value={max}
@@ -81,14 +80,14 @@ function GenerateRandomData({ setData }) {
       </div>
       <div>
         <label>Offset</label>
-        <Input
+        <input
           type="number"
           placeholder="offset"
           value={offset}
           onChange={(e) => setOffset(Number.parseInt(e.target.value))}
         />
         <label>Multiplier</label>
-        <Input
+        <input
           type="number"
           step={0.5}
           placeholder="multiplier"
@@ -97,9 +96,9 @@ function GenerateRandomData({ setData }) {
         />
       </div>
 
-      <Button className="my-5 btn btn-primary" onClick={() => generate()}>
+      <button className="my-5 btn btn-primary" onClick={() => generate()}>
         GENERATE
-      </Button>
+      </button>
       {/* {generated && (
         <div className="my-10">
           <DataTable
