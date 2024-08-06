@@ -1,5 +1,5 @@
 import daisyui from 'daisyui';
-import forms from '@tailwindcss/forms';
+// import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
 
 /** @type {import('tailwindcss').Config} */
@@ -51,5 +51,5 @@ export default {
     logs: true, // Shows info about daisyUI version and used config in the console when building your CSS
     themeRoot: ':root', // The element that receives theme color CSS variables
   },
-  plugins: [daisyui, forms, typography],
+  plugins: [typography, daisyui],
 };

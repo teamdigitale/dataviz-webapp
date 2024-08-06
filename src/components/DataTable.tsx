@@ -12,14 +12,14 @@ export default function DataTable({
   download,
 }: DataTableProps): JSX.Element {
   let max = 100;
+
+  function isBig(rows, cols) {
+    return rows > 10 || cols > 10;
+  }
   return (
     <>
       {data && data[0] && (
-        <div
-          style={{
-            marginTop: 20,
-          }}
-        >
+        <div>
           <p>{`${data.length} righe, ${data[0].length} colonne`}</p>
           <div className="my-4">
             {transpose && (
@@ -34,14 +34,14 @@ export default function DataTable({
               </span>
             )}
             {reset && (
-              <span className="ms-3">
+              <span className="mx-3">
                 <button className="btn" type="button" onClick={() => reset()}>
                   Reset
                 </button>
               </span>
             )}
             {download && (
-              <span className="ms-3">
+              <span className="mx-3">
                 <button
                   className="btn"
                   type="button"
@@ -54,29 +54,21 @@ export default function DataTable({
           </div>
           <div
             style={{
-              width: '700px',
-              height: '350px',
+              maxWidth: '700px',
+              maxHeight: '350px',
               overflowX: 'scroll',
               overflowY: 'scroll',
             }}
           >
             <table
-              style={{
-                border: '1px solid ',
-                fontSize: 14,
-              }}
+              className={`table border ${
+                isBig(data.length, data[0].length) ? 'table-xs' : ''
+              }`}
             >
               <thead>
                 <tr key={`row-head`}>
                   {data[0].map((cell, ii) => (
-                    <th
-                      className={`px-2 border-2 `}
-                      key={`head-cell-${ii}`}
-                      style={{
-                        borderLeft: ii ? '1px solid ' : '',
-                        borderBottom: '1px solid ',
-                      }}
-                    >
+                    <th className={`px-2 `} key={`head-cell-${ii}`}>
                       {cell}
                     </th>
                   ))}
@@ -89,13 +81,7 @@ export default function DataTable({
                       {row.map((cell, ii) => (
                         <td
                           key={`cell-${ii}`}
-                          className={`px-2 ${
-                            ii === 0 ? 'font-bold border-2 ' : ''
-                          }`}
-                          style={{
-                            borderLeft: ii ? '1px solid ' : '',
-                            borderBottom: '1px solid ',
-                          }}
+                          className={`px-2 ${ii === 0 ? 'font-bold' : ''}`}
                         >
                           {cell}
                         </td>

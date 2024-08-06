@@ -7,7 +7,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './pages/Home';
 import AboutPage from './pages/About';
-import DataPage from './pages/DataPage';
+import DataPage from './pages/GenerateDataPage';
+import LoadDataPage from './pages/LoadDataPage';
+import GenerateDataPage from './pages/GenerateDataPage';
 
 function App() {
   const router = createBrowserRouter([
@@ -16,8 +18,12 @@ function App() {
       element: <HomePage />,
     },
     {
-      path: '/data',
-      element: <DataPage />,
+      path: '/load-data',
+      element: <LoadDataPage />,
+    },
+    {
+      path: '/generate-data',
+      element: <GenerateDataPage />,
     },
     {
       path: '/about',
@@ -26,11 +32,9 @@ function App() {
   ]);
 
   return (
-    <>
-      <Layout>
-        <RouterProvider router={router} />
-      </Layout>
-    </>
+    <Layout>
+      <RouterProvider router={router} />
+    </Layout>
   );
 }
 

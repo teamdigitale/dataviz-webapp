@@ -7,18 +7,9 @@ import PieChart from './charts/PieChart';
 import GeoMapChart from './charts/GeoMapChart';
 import DataTable from './DataTable';
 
-import {
-  getPieValues,
-  getBasicValues,
-  getMapValues,
-} from '../lib/utils';
+import { getPieValues, getBasicValues, getMapValues } from '../lib/utils';
 
-import {
-  dataToCSV,
-  downLoadPng,
-  downloadCSV,
-} from '../lib/downloadUtils';
-
+import { dataToCSV, downloadPng, downloadCSV } from '../lib/downloadUtils';
 
 export default function ChartWrapper(props) {
   const {
@@ -43,7 +34,7 @@ export default function ChartWrapper(props) {
   const chartType = chart;
   const csvData = dataToCSV(data.data);
 
-  const dateOptions:any = {
+  const dateOptions: any = {
     year: 'numeric',
     month: 'numeric',
     day: 'numeric',
@@ -57,8 +48,6 @@ export default function ChartWrapper(props) {
     chartType === 'map' ? '500px' : chartType === 'pie' ? '350px' : '300px';
 
   const sharableSocials = ['facebook', 'twitter', 'linkedin', 'whatsapp'];
-
-
 
   function LinkRenderer(props) {
     return (
@@ -101,8 +90,8 @@ export default function ChartWrapper(props) {
     };
   }, []);
 
-  return null
-/*
+  return null;
+  /*
   return (
     <div className="px-3 pt-3 px-md-4 pt-md-4">
       <h3 className="mid-caption--lead fw-semibold text-black">{title}</h3>

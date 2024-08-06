@@ -1,7 +1,6 @@
 import { useState, useTransition } from 'react';
 import Papa from 'papaparse';
 import DataTable from './DataTable';
-import { Button, Select } from 'design-react-kit';
 
 import { log, transposeData, moveDataColumn } from '../lib/utils';
 import { MatrixType } from '../types';
@@ -111,8 +110,8 @@ function UploadCSV({ setData }) {
   }
 
   return (
-    <div>
-      <label style={{ width: '200px' }}>Carica CSV:</label>
+    <div className="">
+      <label className="label">Carica CSV:</label>
       <input
         className="input"
         type="file"
@@ -122,65 +121,72 @@ function UploadCSV({ setData }) {
       />
 
       {rawData && (
-        <div>
-          <DataTable
-            data={rawData}
-            transpose={() => transpose()}
-            reset={() => setRawData(null)}
-          />
-          <label>Seleziona la colonna categoria:</label>
-          <select
-            name="category"
-            id="category"
-            // label="category"
-            // hint="Selezione la colonna categoria"
-            value={category?.value}
-            onChange={(e) => handleChangeCategory(e.target.value)}
-          >
-            {getCols(rawData[0]).map((col) => (
-              <option key={col.value} value={col.value}>
-                {col.value}
-              </option>
-            ))}
-          </select>
-          {category && (
-            <>
-              <label>Seleziona una o più serie:</label>
+        <div className="">
+          <div className="">
+            <DataTable
+              data={rawData}
+              transpose={() => transpose()}
+              reset={() => setRawData(null)}
+            />
+          </div>
+          <div className="bg-base-200 p-5">
+            <div>
+              <label className="label">Seleziona la colonna categoria:</label>
               <select
-                name="series"
-                id="series"
-                // label="series"
-                // hint="Seleziona una o più serie"
-                multiple={true}
-                value={series.map((s) => s.value)}
-                onChange={(e) =>
-                  handleChangeSerie(
-                    [...e.target.selectedOptions].map((o) => o.value)
-                  )
-                }
+                className="input select w-[200px]"
+                name="category"
+                id="category"
+                // label="category"
+                // hint="Selezione la colonna categoria"
+                value={category?.value}
+                onChange={(e) => handleChangeCategory(e.target.value)}
               >
-                {getCols(rawData[0])
-                  .filter((i) => !isSameObject(i, category))
-                  .map((col) => (
-                    <option key={col.value} value={col.value}>
-                      {col.value}
-                    </option>
-                  ))}
+                {getCols(rawData[0]).map((col) => (
+                  <option key={col.value} value={col.value}>
+                    {col.value}
+                  </option>
+                ))}
               </select>
-            </>
-          )}
-
-          <div>
-            {series && category?.value && series.length > 0 && (
-              <button
-                className="btn bg-primary"
-                onClick={() => {
-                  setData(cleanupData(filterData()));
-                }}
-              >
-                Salva Dati
-              </button>
+            </div>
+            {category && (
+              <div>
+                <label className="label">Seleziona una o più serie:</label>
+                <select
+                  className="input select w-[200px]"
+                  name="series"
+                  id="series"
+                  // label="series"
+                  // hint="Seleziona una o più serie"
+                  multiple={true}
+                  value={series.map((s) => s.value)}
+                  onChange={(e) =>
+                    handleChangeSerie(
+                      [...e.target.selectedOptions].map((o) => o.value)
+                    )
+                  }
+                >
+                  {getCols(rawData[0])
+                    .filter((i) => !isSameObject(i, category))
+                    .map((col) => (
+                      <option key={col.value} value={col.value}>
+                        {col.value}
+                      </option>
+                    ))}
+                </select>
+              </div>
             )}
+            <div className="my-4">
+              {series && category?.value && series.length > 0 && (
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    setData(cleanupData(filterData()));
+                  }}
+                >
+                  Salva Dati
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}

@@ -7,15 +7,61 @@ export type SerieType = {
 };
 
 export type FieldDataType = {
-  config: object;
+  config: ChartConfigType;
   dataSource: any;
   chart: string;
   data: MatrixType;
+  name?: string;
+  id?: string;
 };
-
 
 export type Step = {
   name: string;
   id: string;
   index: number;
+};
+
+export type ChartPropsType = {
+  id?: string;
+  data: FieldDataType;
+  isMobile?: boolean;
+  setEchartInstance: (i: any) => void;
+};
+
+export type ChartConfigType = {
+  colors: [] | string[];
+  direction: string;
+  h: number;
+  labeLine: boolean;
+  legend: boolean;
+  legendPosition: string;
+  palette: string;
+  tooltip: boolean;
+  tooltipFormatter: string;
+  valueFormatter: string;
+  totalLabel: string;
+  tooltipTrigger: string;
+  xLabel?: string;
+  yLabel?: string;
+  responsive?: boolean;
+  zoom?: boolean;
+  geoJsonUrl?: string;
+  stack?: boolean;
+  gridLeft?: string | number;
+  gridRight?: string | number;
+  gridTop?: string | number;
+  gridBottom?: string | number;
+  gridHeight?: string | number;
+  gridWidth?: string | number;
+  visualMapLeft?: string;
+  visualMapOrient?: string;
+  background?: string;
+  smooth?: boolean;
+  showArea?: boolean;
+  showAllSymbol?: boolean;
+  showPieLabels?: boolean;
+  serieName?: string;
+  showMapLabels?: boolean;
+  areaColors?: string;
+  nameProperty?: string;
 };

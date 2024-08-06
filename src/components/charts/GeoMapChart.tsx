@@ -1,30 +1,31 @@
-import * as echarts from "echarts";
-import ReactEcharts from "echarts-for-react";
-import { useRef, useEffect, useState } from "react";
-import { formatTooltip } from "../../lib/utils";
-import { FieldDataType } from "../../types";
+import React from 'react';
+import ReactEcharts from 'echarts-for-react';
+import { useRef, useEffect, useState } from 'react';
+import * as echarts from 'echarts';
+import { formatTooltip } from '../../lib/utils';
+import { ChartPropsType } from '../../types';
 
-type ChartPropsType = {
-  data: FieldDataType;
-  id: string;
-  isMobile?: boolean;
-};
+function GeoMapChart({
+  data,
+  id,
+  setEchartInstance,
+  isMobile = false,
+}: ChartPropsType) {
+  const refCanvas = useRef(null);
+  const [geoData, setGeoData] = useState(null);
+  const [weDoNotHaveInstance, setWeDoNotHaveInstance] = useState(true);
 
-function GeoMapChart({ data, id, isMobile = false }: ChartPropsType) {
-  const [geoData, setGeoData] = useState<any>(null);
-  const refCanvas = useRef<ReactEcharts>();
-
-  function getOptions(data: FieldDataType, geoData: any) {
+  function getOptions(data, geoData) {
     echarts.registerMap(id, geoData);
-    const config: any = data.config;
+    const config = data.config;
 
     const tooltip = {
-      trigger: "item",
+      trigger: 'item',
       // valueFormatter: (value) => {
       //   return formatTooltip(value, config);
       // },
       show: config.tooltip ?? true,
-      formatter: (params: any) => {
+      formatter: (params) => {
         const value = params.value;
         const name = params.name;
         const serieName = params.seriesName;
@@ -40,31 +41,28 @@ function GeoMapChart({ data, id, isMobile = false }: ChartPropsType) {
     const max = Math.max(...data.dataSource.series[0].data.map((d) => d.value));
 
     const options = {
-      backgroundColor: config.background ? config.background : "#F2F7FC",
+      backgroundColor: config.background ? config.background : '#F2F7FC',
       color: config.colors,
       textStyle: {
-        fontFamily: "Titillium Web, sans-serif",
+        fontFamily: 'Titillium Web, sans-serif',
         fontSize: 12,
       },
       tooltip,
       visualMap: {
-        left: config.visualMapLeft ?? "right",
-        orient: config.visualMapOrient ?? "vertical",
+        left: config.visualMapLeft ?? 'right',
+        orient: config.visualMapOrient ?? 'vertical',
         min,
         max,
         text: [
           `${formatTooltip(max, config)} `,
           `${formatTooltip(min, config)} `,
         ],
-        backgroundColor: "rgba(255,255,255,1)",
-        inverse:
-          config.visualMapOrient && config.visualMapOrient == "vertical"
-            ? true
-            : false,
+        backgroundColor: 'rgba(255,255,255,1)',
+        inverse: config.visualMapOrient === 'vertical',
         textStyle: {
           fontSize: 11,
           lineHeight: 0,
-          overflow: "truncate",
+          overflow: 'truncate',
         },
         padding: 15,
         calculable: false,
@@ -74,34 +72,33 @@ function GeoMapChart({ data, id, isMobile = false }: ChartPropsType) {
         show: config.visualMap || false,
       },
       series: data.dataSource.series.map((serie) => {
-        let otherConfig: any = {};
+        let otherConfig = {};
         if (config.serieName) {
           otherConfig = {
             name: config.serieName,
           };
         }
-
         return {
           ...serie,
           ...otherConfig,
           label: {
             show: config.showMapLabels ? true : false,
-            color: "auto",
+            color: 'inherit',
           },
-          zoom: 1.2, //"scale",
+          zoom: 1.2,
           roam: true,
           select: { disabled: true },
           emphasis: {
             label: {
               show: config.showMapLabels,
-              color: "auto",
+              color: 'inherit',
             },
             itemStyle: {
-              areaColor: config.areaColor || "#F2F7FC",
+              areaColor: config.areaColor || '#F2F7FC',
             },
           },
           map: id,
-          nameProperty: config.nameProperty ? config.nameProperty : "NAME",
+          nameProperty: config.nameProperty ? config.nameProperty : 'NAME',
         };
       }),
     };
@@ -110,12 +107,17 @@ function GeoMapChart({ data, id, isMobile = false }: ChartPropsType) {
 
   async function getGeoData() {
     if (data) {
-      const config: any = data.config;
-      const url: string = config?.geoJsonUrl || "";
+      const config = data.config;
+      const url = config?.geoJsonUrl || '';
       if (url) {
-        const response = await fetch(url);
-        const raw: any = await response.json();
-        setGeoData(raw);
+        try {
+          const response = await fetch(url);
+          const raw = await response.json();
+          setGeoData(raw);
+        } catch (error) {
+          console.log(error);
+          setGeoData(null);
+        }
       }
     }
   }
@@ -124,23 +126,31 @@ function GeoMapChart({ data, id, isMobile = false }: ChartPropsType) {
     getGeoData();
   }, [data]);
 
-  if (!data) return <div>Caricamento...</div>;
-  if (!geoData) return <div>In attesa dei dati geo...</div>;
+  useEffect(() => {
+    if (refCanvas.current && weDoNotHaveInstance) {
+      const echartInstance = refCanvas.current.getEchartsInstance();
+      setEchartInstance(echartInstance);
+      setWeDoNotHaveInstance(false);
+    }
+  });
 
-  const config: any = data.config || null;
-  const height = config?.h || 500;
-
+  const chartHeight = data.config?.h || '500px';
+  const options = data && geoData ? getOptions(data, geoData) : null;
   return (
-    <div style={{ textAlign: "left" }}>
-      <ReactEcharts
-        option={getOptions(data, geoData)}
-        ref={refCanvas}
-        style={{
-          width: "100%",
-          height: height,
-          maxWidth: "100%",
-        }}
-      />
+    <div key={id} id={'chart_' + id}>
+      {!data && <div>Caricamento...</div>}
+      {!geoData && <div>In attesa dei dati geo...</div>}
+      {options && (
+        <ReactEcharts
+          option={options}
+          ref={refCanvas}
+          style={{
+            width: '100%',
+            height: chartHeight,
+            maxWidth: '100%',
+          }}
+        />
+      )}
     </div>
   );
 }

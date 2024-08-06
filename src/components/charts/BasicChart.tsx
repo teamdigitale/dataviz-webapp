@@ -1,17 +1,26 @@
-import ReactEcharts from 'echarts-for-react';
-import { FieldDataType } from '../../types';
 import { useRef, useEffect } from 'react';
-import { saveAs } from 'file-saver';
+import ReactEcharts from 'echarts-for-react';
+import { ChartPropsType, FieldDataType } from '../../types';
 import { formatTooltip } from '../../lib/utils';
 
-type ChartPropsType = {
-  data: FieldDataType;
-  isMobile?: boolean;
-};
-
-function BasicChart({ data, isMobile = false }: ChartPropsType, id: string) {
+function BasicChart({
+  data,
+  isMobile = false,
+  setEchartInstance,
+}: ChartPropsType) {
   const refCanvas = useRef<ReactEcharts>();
-
+  useEffect(() => {
+    if (refCanvas.current) {
+      try {
+        const echartInstance = refCanvas.current.getEchartsInstance();
+        if (setEchartInstance) {
+          setEchartInstance(echartInstance);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [refCanvas.current]);
   function getOptions(data: FieldDataType) {
     const config: any = data.config;
     const responsive: boolean =
@@ -210,30 +219,19 @@ function BasicChart({ data, isMobile = false }: ChartPropsType, id: string) {
     return options;
   }
 
-  useEffect(() => {
-    if (data && refCanvas.current) {
-      const options: any = getOptions(data);
-      refCanvas.current?.getEchartsInstance().setOption(options);
-    }
-  }, [data, refCanvas]);
-
-  async function downLoadImage(element: any, id: string) {
-    const echartInstance = element.getEchartsInstance();
-    const base64DataUrl = echartInstance.getDataURL();
-    try {
-      const blob = await fetch(base64DataUrl).then((res) => res.blob());
-      saveAs(blob, `chart-${'' + Date.now()}.png`);
-    } catch (error) {
-      console.log('error', error);
-    }
-  }
+  // useEffect(() => {
+  //   if (data && refCanvas.current) {
+  //     const options: any = getOptions(data);
+  //     refCanvas.current?.getEchartsInstance().setOption(options);
+  //   }
+  // }, [data, refCanvas]);
 
   const config: any = data.config || null;
   const height = config?.h || 500;
   return (
     <div style={{ textAlign: 'left' }}>
       <ReactEcharts
-        option={{}}
+        option={getOptions(data)}
         ref={refCanvas}
         style={{
           width: '100%',
@@ -242,12 +240,6 @@ function BasicChart({ data, isMobile = false }: ChartPropsType, id: string) {
           marginBottom: '30px',
         }}
       />
-      <button
-        type="submit"
-        onClick={() => downLoadImage(refCanvas.current, id)}
-      >
-        Download
-      </button>
     </div>
   );
 }

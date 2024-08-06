@@ -21,54 +21,56 @@ export default function Header() {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-base-100 text-primary rounded-box z-[1] mt-3 w-52 p-2 shadow"
           >
             <li>
-              <a>Item 1</a>
+              <a href="/">Create Chart</a>
             </li>
             <li>
-              <a>Parent</a>
+              <a>Data</a>
               <ul className="p-2">
                 <li>
-                  <a>Submenu 1</a>
+                  <a href="/generate-data">Generate</a>
                 </li>
                 <li>
-                  <a>Submenu 2</a>
+                  <a href="/load-data">Load Remote</a>
                 </li>
               </ul>
             </li>
             <li>
-              <a>Item 3</a>
+              <a href="/about">About</a>
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">Dataviz</a>
+        <a className="btn btn-ghost text-xl" href="/">
+          Dataviz
+        </a>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
+        <ul className="menu menu-horizontal px-1 bg-base text-content">
           <li>
-            <a>Item 1</a>
+            <a href="/">Create Chart</a>
           </li>
           <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
+            <a href="/about">About</a>
+          </li>
+          <li>
+            <details className="">
+              <summary>Data</summary>
+              <ul className="w-[125px] bg-base-100 text-primary">
+                <li className="bg-base-100 text-primary">
+                  <a href="/generate-data">Generate</a>
                 </li>
-                <li>
-                  <a>Submenu 2</a>
+                <li className="bg-base-100 text-primary">
+                  <a href="/load-data">Load Remote</a>
                 </li>
               </ul>
             </details>
           </li>
-          <li>
-            <a>Item 3</a>
-          </li>
         </ul>
       </div>
-      <div className="navbar-end">
-        <a className="btn">Button</a>
+      <div className="navbar-end px-4">
+        <a className="btn btn-ghost">Log In</a>
       </div>
     </div>
   );

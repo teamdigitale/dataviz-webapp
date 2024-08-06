@@ -11,6 +11,8 @@ import SelectChart from '../components/SelectChart';
 import ChartOptions from '../components/ChartOptions';
 import { useMachine } from '@xstate/react';
 import stepMachine from '../lib/stepMachine';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import { dataToCSV, downloadCSV } from '../lib/downloadUtils';
 
 function Home() {
   const [state, send] = useMachine(stepMachine);
@@ -47,87 +49,67 @@ function Home() {
     setData(d);
     send('CHOOSE' as any);
   }
+  const haveData = data && data[0].length > 0 ? true : false;
+
+  function handleUpload(d: any) {
+    setData(d);
+    send({ type: 'NEXT' });
+  }
 
   return (
-    <div>
-      <div>
-        <div>
-          <button onClick={() => send({ type: 'PREV' })}>PREV</button>
-          <button onClick={() => send({ type: 'NEXT' })}>NEXT</button>
-
-          <button
-            onClick={() =>
-              send({ type: state.matches('idle') ? 'NEXT' : 'PREV' })
-            }
-          >
-            1 - INPUT DATA
-          </button>
-
-          {data && (
-            <>
-              <div>
-                <button
-                  onClick={() =>
-                    send({ type: state.matches('input') ? 'NEXT' : 'PREV' })
-                  }
-                >
-                  2 - CHOOSE CHART
-                </button>
-              </div>
-              <div>
-                <button
-                  onClick={() =>
-                    send({
-                      type: state.matches('selection') ? 'NEXT' : 'PREV',
-                    })
-                  }
-                >
-                  3 - CHART OPTIONS
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-        <div style={{ background: 'light-gray', margin: '10px auto' }}>
-          <h1>{state.value as string}</h1>
-          <div>
-            {state.matches('input') && (
-              <div>
-                <h4>Upload your data</h4>
-                <CSVUpload setData={(d: any) => setData(d)} />
-              </div>
-            )}
-            {state.matches('generate') && (
-              <div>
-                <h4>Generate data</h4>
-                <GenerateRandomData setData={setData} />
-              </div>
-            )}
-            {state.matches('transform') && (
-              <div>
-                <h4>Load remote data</h4>
-                <LoadSource setRawData={setRawData} />
-                {rawData && (
-                  <div>
-                    <DataTable
-                      data={rawData}
-                      reset={reset}
-                      transpose={transpose}
-                    />
-                  </div>
-                )}
-              </div>
-            )}
+    <PanelGroup direction="horizontal" className="w-full">
+      <Panel defaultSize={10} minSize={10} className="bg-base-100">
+        <div className="p-4 block">
+          <div className="text-xl my-5">{state.value as string}</div>
+          <div className="my-2">
+            <button
+              className="btn btn-outline"
+              onClick={() =>
+                send({ type: state.matches('idle') ? 'NEXT' : 'PREV' })
+              }
+            >
+              1 - INPUT DATA
+            </button>
           </div>
-
-          {state.matches('selection') && (
+          <div className="my-2">
+            <button
+              disabled={!data}
+              className="btn btn-outline"
+              onClick={() =>
+                send({ type: state.matches('input') ? 'NEXT' : 'PREV' })
+              }
+            >
+              2 - CONFIGURE CHART
+            </button>
+          </div>
+          <div className="my-2">
+            <button
+              disabled={!data}
+              className="btn btn-outline"
+              onClick={() =>
+                send({
+                  type: state.matches('config') ? 'NEXT' : 'PREV',
+                })
+              }
+            >
+              3 - SAVE / EXPORT
+            </button>
+          </div>
+        </div>
+      </Panel>
+      <PanelResizeHandle className="bg-primary w-1" />
+      <Panel minSize={20} className="bg-base-100">
+        <div className="p-4">
+          {state.matches('input') && (
             <div>
-              <SelectChart setChart={setChart} chart={chart} />
+              <h4>Upload your data</h4>
+              <CSVUpload setData={(d: any) => handleUpload(d)} />
             </div>
           )}
 
           {state.matches('config') && (
             <div>
+              <SelectChart setChart={setChart} chart={chart} />
               <ChartOptions
                 config={config}
                 setConfig={setConfig}
@@ -137,18 +119,40 @@ function Home() {
             </div>
           )}
         </div>
-        <div>
-          {data && (
-            <div style={{ maxWidth: 1200 }}>
-              <div className="shadow-lg p-5">
-                <RenderChart chart={chart} data={data} config={config} />
-              </div>
-              <DataTable data={data} reset={reset} transpose={transpose} />
+      </Panel>
+      {haveData && (
+        <>
+          <PanelResizeHandle className="bg-primary w-1" />
+          <Panel defaultSize={30} minSize={20}>
+            <div className="p-4">
+              <DataTable
+                data={data}
+                reset={reset}
+                transpose={transpose}
+                download={() => {
+                  downloadCSV(dataToCSV(data), 'selected-data-' + Date.now());
+                }}
+              />
+              {chart && (
+                <>
+                  <RenderChart chart={chart} data={data} config={config} />
+                  {config && chart && (
+                    <div className="w-full flex justify-end">
+                      <button
+                        className="my-5 btn btn-primary"
+                        onClick={() => send({ type: 'NEXT' })}
+                      >
+                        DONE / EXPORT
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
-          )}
-        </div>
-      </div>
-    </div>
+          </Panel>
+        </>
+      )}
+    </PanelGroup>
   );
 }
 

@@ -62,16 +62,9 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
     );
   }
   return (
-    <div>
+    <div className="bg-base-200 p-4 rounded-box">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            gridGap: 10,
-            fontSize: 14,
-          }}
-        >
+        <div className="grid grid-cols-3 gap-4">
           {filteredFields.map((field) => {
             if (['text', 'email', 'number', 'color'].includes(field.type)) {
               let style = {};
@@ -90,15 +83,18 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
               }
               return (
                 <div key={field.name} style={style}>
-                  <label>{label}</label>
+                  <label className="label">{label}</label>
                   <div>
                     <input
+                      className="input"
                       type={field.type}
                       {...field.otherProps}
                       {...register(field.name, { required: field.required })}
                     />
                   </div>
-                  {errors[field.name] && <span>This field is required</span>}
+                  {errors[field.name] && (
+                    <span className="bg-danger">This field is required</span>
+                  )}
                 </div>
               );
             } else if (['checkbox'].includes(field.type)) {
@@ -108,15 +104,18 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
               }
               return (
                 <div key={field.name} style={style}>
-                  <label>{field.label}</label>
+                  <label className="label">{field.label}</label>
                   <div>
                     <input
+                      className="checkbox"
                       type="checkbox"
                       {...field.otherProps}
                       {...register(field.name, { required: field.required })}
                     />
                   </div>
-                  {errors[field.name] && <span>This field is required</span>}
+                  {errors[field.name] && (
+                    <span className="bg-danger">This field is required</span>
+                  )}
                 </div>
               );
             } else if (['select'].includes(field.type)) {
@@ -128,7 +127,7 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
                 <div key={field.name} style={style}>
                   <div>{field.label}</div>
                   <select
-                    className="my-2 p-2"
+                    className="input select"
                     style={{ width: '80%' }}
                     {...field.otherProps}
                     {...register(field.name, { required: field.required })}
@@ -141,7 +140,9 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
                       );
                     })}
                   </select>
-                  {errors[field.name] && <span>This field is required</span>}
+                  {errors[field.name] && (
+                    <span className="bg-danger">This field is required</span>
+                  )}
                   {field.name === 'palette' && watchPalette && (
                     <>
                       <ShowPalette palette={palettes[watchPalette]} />
@@ -159,13 +160,7 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
               return (
                 <>
                   <div style={style}>
-                    <span
-                      style={{
-                        padding: 5,
-                        backgroundColor: '#eee',
-                        borderRadius: 5,
-                      }}
-                    >
+                    <span className="badge badge-neutral badge-lg">
                       {field.name}
                     </span>
                   </div>
@@ -174,8 +169,10 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
             }
           })}
         </div>
-        <div className="mt-5">
-          <button type="submit">Applica</button>
+        <div className="my-5">
+          <button className="btn btn-primary" type="submit">
+            Applica
+          </button>
         </div>
       </form>
     </div>
