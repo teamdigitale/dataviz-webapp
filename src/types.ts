@@ -44,7 +44,7 @@ export type ChartConfigType = {
   xLabel?: string;
   yLabel?: string;
   responsive?: boolean;
-  zoom?: boolean;
+  zoom?: string;
   geoJsonUrl?: string;
   stack?: boolean;
   gridLeft?: string | number;
@@ -53,6 +53,7 @@ export type ChartConfigType = {
   gridBottom?: string | number;
   gridHeight?: string | number;
   gridWidth?: string | number;
+  visualMap?: boolean;
   visualMapLeft?: string;
   visualMapOrient?: string;
   background?: string;
@@ -62,6 +63,6 @@ export type ChartConfigType = {
   showPieLabels?: boolean;
   serieName?: string;
   showMapLabels?: boolean;
-  areaColors?: string;
+  areaColor?: string;
   nameProperty?: string;
 };

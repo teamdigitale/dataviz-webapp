@@ -68,25 +68,17 @@ function RenderChart(ds) {
         </div>
       </div>
       <button
-        className="mid-button-link"
+        className="btn btn-primary btn-outline"
         title={'Scarica PNG'}
         aria-label={'Scarica PNG'}
         onClick={() =>
           downloadPng(
             echartInstance,
-            ds.name || `${ds.chart}-chart-pic-${ds.id}-${Date.now()}`
+            ds.name || `${ds.chart}chart-pic-${Date.now()}`
           )
         }
       >
         {'Scarica'} PNG
-        <svg
-          className="icon icon-sm icon-primary ms-1"
-          focusable="false"
-          aria-label={`Scarica PNG`}
-          role="img"
-        >
-          <use href="/images/sprite.svg#it-download"></use>
-        </svg>
       </button>
     </div>
   );

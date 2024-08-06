@@ -2,17 +2,6 @@ import type { ChartConfigType, FieldDataType } from '../types';
 import { generateGradient, hexToHsla } from './utils';
 
 export const palettes = {
-  default: [
-    '#5470c6',
-    '#91cc75',
-    '#fac858',
-    '#ee6666',
-    '#73c0de',
-    '#3ba272',
-    '#fc8452',
-    '#9a60b4',
-    '#ea7ccc',
-  ],
   divergente: [
     '#003366',
     '#004D99',
@@ -48,6 +37,17 @@ export const palettes = {
     '#2F475E',
     '#B32D43',
     '#737373',
+  ],
+  default: [
+    '#5470c6',
+    '#91cc75',
+    '#fac858',
+    '#ee6666',
+    '#73c0de',
+    '#3ba272',
+    '#fc8452',
+    '#9a60b4',
+    '#ea7ccc',
   ],
 
   monocolore_a: generateGradient(hexToHsla('#0066CC'), 15),
@@ -90,13 +90,13 @@ export const fixedSettings = {
 };
 
 export const defaultConfig = {
-  colors: [],
+  colors: [...palettes.divergente],
+  palette: 'divergente',
   direction: 'vertical',
   h: 350,
   labeLine: false,
   legend: true,
   legendPosition: 'top',
-  palette: 'default',
   tooltip: true,
   tooltipFormatter: 'number',
   valueFormatter: '',

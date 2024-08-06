@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import ReactEcharts from 'echarts-for-react';
-import { ChartPropsType } from '../../types';
+import { ChartPropsType, FieldDataType } from '../../types';
 import { formatTooltip } from '../../lib/utils';
 
 function PieChart({
@@ -30,7 +30,7 @@ function PieChart({
     }, 0);
   }
 
-  function getOptions(data) {
+  function getOptions(data: FieldDataType) {
     const { dataSource } = data;
     const config = data.config;
 

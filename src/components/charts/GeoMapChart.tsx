@@ -3,7 +3,7 @@ import ReactEcharts from 'echarts-for-react';
 import { useRef, useEffect, useState } from 'react';
 import * as echarts from 'echarts';
 import { formatTooltip } from '../../lib/utils';
-import { ChartPropsType } from '../../types';
+import { ChartPropsType, FieldDataType } from '../../types';
 
 function GeoMapChart({
   data,
@@ -15,7 +15,7 @@ function GeoMapChart({
   const [geoData, setGeoData] = useState(null);
   const [weDoNotHaveInstance, setWeDoNotHaveInstance] = useState(true);
 
-  function getOptions(data, geoData) {
+  function getOptions(data: FieldDataType, geoData: any) {
     echarts.registerMap(id, geoData);
     const config = data.config;
 
