@@ -4,8 +4,6 @@ import DataTable from '../components/DataTable';
 import RenderChart from '../components/RenderChart';
 
 import useStoreState from '../lib/store';
-import GenerateRandomData from '../components/GenerateRandomData';
-import LoadSource from '../components/LoadSource';
 import CSVUpload from '../components/CSVUpload';
 import SelectChart from '../components/SelectChart';
 import ChartOptions from '../components/ChartOptions';
@@ -13,17 +11,24 @@ import { useMachine } from '@xstate/react';
 import stepMachine from '../lib/stepMachine';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { dataToCSV, downloadCSV } from '../lib/downloadUtils';
+import ChartSave from '../components/ChartSave';
 
 function Home() {
   const [state, send] = useMachine(stepMachine);
+
   const config = useStoreState((state) => state.config);
   const setConfig = useStoreState((state) => state.setConfig);
   const chart = useStoreState((state) => state.chart);
   const setChart = useStoreState((state) => state.setChart);
   const data = useStoreState((state) => state.data);
   const setData = useStoreState((state) => state.setData);
-  const rawData = useStoreState((state) => state.rawData);
-  const setRawData = useStoreState((state) => state.setRawData);
+  // const rawData = useStoreState((state) => state.rawData);
+  // const setRawData = useStoreState((state) => state.setRawData);
+  const setName = useStoreState((state) => state.setName);
+  const name = useStoreState((state) => state.name);
+  const id = useStoreState((state) => state.id);
+  const setId = useStoreState((state) => state.setId);
+  const list = useStoreState((state) => state.list);
 
   function reset() {
     setData(null);
@@ -118,6 +123,18 @@ function Home() {
               />
             </div>
           )}
+          {state.matches('done') && (
+            <div>
+              Give a name to your chart and save it
+              <ChartSave
+                chart={chart}
+                name={name}
+                id={id}
+                setName={setName}
+                setId={setId}
+              />
+            </div>
+          )}
         </div>
       </Panel>
       {haveData && (
@@ -142,7 +159,7 @@ function Home() {
                         className="my-5 btn btn-primary"
                         onClick={() => send({ type: 'NEXT' })}
                       >
-                        DONE / EXPORT
+                        SAVE / EXPORT
                       </button>
                     </div>
                   )}

@@ -111,15 +111,16 @@ function UploadCSV({ setData }) {
 
   return (
     <div className="">
-      <label className="label">Carica CSV:</label>
-      <input
-        className="input"
-        type="file"
-        name="file"
-        accept=".csv"
-        onChange={(e) => uploadFile(e)}
-      />
-
+      <div className="form-control">
+        <label className="label">Carica CSV:</label>
+        <input
+          className="file-input file-input-bordered w-full max-w-2xl"
+          type="file"
+          name="file"
+          accept=".csv"
+          onChange={(e) => uploadFile(e)}
+        />
+      </div>
       {rawData && (
         <div className="">
           <div className="">

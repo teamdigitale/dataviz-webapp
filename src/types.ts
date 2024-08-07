@@ -66,3 +66,25 @@ export type ChartConfigType = {
   areaColor?: string;
   nameProperty?: string;
 };
+
+export interface StoreStateType {
+  data: null | MatrixType;
+  chart: string;
+  config: any;
+  rawData: null | MatrixType;
+  name: null | string;
+  id: null | string;
+  list: null | FieldDataType[];
+  setId: (value: string) => void;
+  setName: (value: string) => void;
+  setConfig: (value: object) => void;
+  setChart: (value: string) => void;
+  setRawData: (value: any) => void;
+  setData: (value: MatrixType | null) => void;
+  load: (value: any) => void;
+
+  reset: () => void;
+  addItem: (item: FieldDataType) => void;
+  removeItem: (id: string) => void;
+  updateItem: (item: FieldDataType) => void;
+}

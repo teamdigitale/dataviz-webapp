@@ -1,7 +1,7 @@
 import { createMachine } from 'xstate';
 const toggleMachine = createMachine({
   id: 'steps',
-  initial: 'input',
+  initial: 'idle',
   states: {
     idle: {
       on: { NEXT: 'input' },

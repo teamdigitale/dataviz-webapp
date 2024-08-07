@@ -3,14 +3,66 @@ import { useState } from 'react';
 function About() {
   const [count, setCount] = useState(0);
 
+  const faqs = [
+    {
+      id: 1,
+      question: 'What is skishu?',
+      answer: 'Skishu is you divinity...',
+    },
+    {
+      id: 2,
+      question: 'Shamalaya?',
+      answer: 'Yes we can ....',
+    },
+
+    {
+      id: 3,
+      question: 'Who am I?',
+      answer: 'Roots of creation...',
+    },
+  ];
+
   return (
-    <div>
+    <div className="">
       <h1 className="text-4xl font-bold">About</h1>
       <div className="my-5 p-5 flex gap-4">
         <button className="btn btn-primary" onClick={() => setCount(count + 1)}>
           Increment
         </button>
         <div className="text-lg">Count : {count}</div>
+      </div>
+
+      <div className="space-y-2 mb-10 container max-w-xl">
+        <h2 className="text-4xl font-bold">FAQS</h2>
+        {faqs.map((faq) => (
+          <details
+            className="group [&_summary::-webkit-details-marker]:hidden"
+            key={faq.id}
+          >
+            <summary className="flex cursor-pointer items-center justify-between gap-1.5 rounded-lg  p-4  bg-accent text-accent-content">
+              <h2 className="font-medium">{faq.question}</h2>
+
+              <svg
+                className="size-5 shrink-0 transition duration-300 group-open:-rotate-180"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </summary>
+
+            <p className="mt-4 px-4 leading-relaxed text-content">
+              {faq.answer}
+            </p>
+          </details>
+        ))}
       </div>
 
       <div className="flex flex-grow flex-col gap-3">
