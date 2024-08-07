@@ -30,6 +30,10 @@ function Home() {
   const setId = useStoreState((state) => state.setId);
   const list = useStoreState((state) => state.list);
 
+  const addItem = useStoreState((state) => state.addItem);
+  const updateItem = useStoreState((state) => state.updateItem);
+  const resetState = useStoreState((state) => state.reset);
+
   function reset() {
     setData(null);
   }
@@ -58,6 +62,28 @@ function Home() {
 
   function handleUpload(d: any) {
     setData(d);
+    send({ type: 'NEXT' });
+  }
+
+  function handleSaveItem({ name: string, id: string }) {
+    setName(string);
+    setId(id);
+
+    const item = {
+      id,
+      name,
+      chart,
+      config,
+      data,
+    };
+
+    const exists = list.find((item) => item.id === id);
+    if (!exists) {
+      addItem(item as any);
+    } else {
+      updateItem(item as any);
+    }
+    resetState();
     send({ type: 'NEXT' });
   }
 
@@ -105,6 +131,19 @@ function Home() {
       <PanelResizeHandle className="bg-primary w-1" />
       <Panel minSize={20} className="bg-base-100">
         <div className="p-4">
+          {state.matches('idle') && (
+            <div>
+              <h4 className="text-4xl font-bold">Welcome</h4>
+              {list?.map((item) => (
+                <div key={item.id} className="my-2">
+                  <button className="btn btn-outline" onClick={() => {}}>
+                    {item.name}
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
           {state.matches('input') && (
             <div>
               <h4>Upload your data</h4>
@@ -130,8 +169,7 @@ function Home() {
                 chart={chart}
                 name={name}
                 id={id}
-                setName={setName}
-                setId={setId}
+                save={(obj) => handleSaveItem(obj)}
               />
             </div>
           )}

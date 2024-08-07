@@ -14,7 +14,6 @@ function RenderChart(ds) {
     }, 1000);
   }, [ds.config]);
 
-  let id = ds.id;
   const wrapRef = useRef(null);
   const [echartInstance, setEchartInstance] = useState(null);
   const [width, setWidth] = useState(null);

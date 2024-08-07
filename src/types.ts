@@ -88,3 +88,10 @@ export interface StoreStateType {
   removeItem: (id: string) => void;
   updateItem: (item: FieldDataType) => void;
 }
+
+export type ChartSaveProps = {
+  chart: string;
+  name?: string;
+  id?: string;
+  save: (obj: { name: string; id: string }) => void;
+};

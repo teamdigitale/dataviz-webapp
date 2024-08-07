@@ -114,7 +114,7 @@ function UploadCSV({ setData }) {
       <div className="form-control">
         <label className="label">Carica CSV:</label>
         <input
-          className="file-input file-input-bordered w-full max-w-2xl"
+          className="file-input file-input-bordered file-input-primary  w-full max-w-2xl"
           type="file"
           name="file"
           accept=".csv"
@@ -134,7 +134,7 @@ function UploadCSV({ setData }) {
             <div>
               <label className="label">Seleziona la colonna categoria:</label>
               <select
-                className="input select w-[200px]"
+                className="select select-primary max-w-lg"
                 name="category"
                 id="category"
                 // label="category"
@@ -153,7 +153,7 @@ function UploadCSV({ setData }) {
               <div>
                 <label className="label">Seleziona una o più serie:</label>
                 <select
-                  className="input select w-[200px]"
+                  className="select select-primary max-w-lg"
                   name="series"
                   id="series"
                   // label="series"

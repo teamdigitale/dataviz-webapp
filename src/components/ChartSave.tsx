@@ -1,20 +1,13 @@
 import dayjs from 'dayjs';
 import { nanoid } from 'nanoid';
 import { useForm } from 'react-hook-form';
+import { ChartSaveProps } from '../types';
 
-type ChartSaveProps = {
-  chart: string;
-  name?: string;
-  id?: string;
-  setName: (name: string) => void;
-  setId: (id: string) => void;
-};
-
-function ChartSave({ chart, name, id, setName, setId }) {
+function ChartSave({ chart, name, id, save }: ChartSaveProps) {
   const defaultName = `${chart}chart-${dayjs(Date.now()).format(
     'YYYY-MM-DD_HH-mm'
   )}`;
-  const defaultId = nanoid();
+  const generatedId = nanoid();
   const {
     register,
     handleSubmit,
@@ -22,13 +15,13 @@ function ChartSave({ chart, name, id, setName, setId }) {
   } = useForm({
     defaultValues: {
       name: name || defaultName,
-      id: id || defaultId,
+      id: id || generatedId,
     },
   });
 
   const onSubmit = (data) => {
-    setId(data.id);
-    setName(data.name);
+    const { id, name } = data;
+    save({ id, name });
   };
   if (!chart) {
     return <div className="my-5">Please choose a chart type</div>;
