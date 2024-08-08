@@ -148,7 +148,7 @@ function Home() {
                 {list.length ? 'My Charts' : 'Welcome'}
               </h4>
               <div>
-                <div className="flex my-5">
+                <div className="flex my-5 gap-4">
                   <div
                     className="btn btn-primary"
                     onClick={() => send({ type: 'INPUT' })}
@@ -157,13 +157,13 @@ function Home() {
                   </div>
                   {data && (
                     <div
-                      className="btn btn-primary"
+                      className="btn btn-outline btn-primary"
                       onClick={() => {
                         send({ type: 'IDLE' });
                         resetItem();
                       }}
                     >
-                      Reset this data
+                      Reset data
                     </div>
                   )}
                 </div>
