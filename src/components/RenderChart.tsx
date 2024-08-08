@@ -5,7 +5,7 @@ import { getPieValues, getBasicValues, getMapValues } from '../lib/utils';
 import { useEffect, useState, useRef } from 'react';
 import { downloadPng } from '../lib/downloadUtils';
 
-function RenderChart(ds) {
+function RenderChart(ds: any) {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
@@ -16,11 +16,17 @@ function RenderChart(ds) {
 
   const wrapRef = useRef(null);
   const [echartInstance, setEchartInstance] = useState(null);
-  const [width, setWidth] = useState(null);
-  const isMobile = width && width <= 480;
+  const [width, setWidth] = useState<number>(500);
+  const isMobile = width <= 480 ? true : false;
 
   function setDimension() {
-    setWidth(wrapRef?.current?.clientWidth);
+    const element: any = wrapRef.current;
+    if (!element) return;
+    let w: number = 500;
+    try {
+      w = element.clientWidth || element.getBoundingClientRect().width;
+    } catch (error) {}
+    if (w) setWidth(w);
   }
 
   useEffect(() => {
@@ -29,7 +35,7 @@ function RenderChart(ds) {
     return () => {
       window.removeEventListener('resize', setDimension);
     };
-  }, []);
+  }, [wrapRef]);
 
   if (loading) return null;
   return (

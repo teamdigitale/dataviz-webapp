@@ -19,7 +19,7 @@ function ChartSave({ chart, name, id, save }: ChartSaveProps) {
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: { id: string; name: string }) => {
     const { id, name } = data;
     save({ id, name });
   };

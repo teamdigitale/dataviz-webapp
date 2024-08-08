@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 
 import DataTable from './DataTable';
 import { transposeData } from '../lib/utils';
-import UploadCSV from './UploadCSVSimple';
+// import UploadCSV from './UploadCSVSimple';
 
 function PreviewGeoMapChart({ url, series, nameProperty }) {
   const [data, setData] = useState(null);
@@ -205,7 +205,7 @@ export default function CheckGeo() {
               {errors['geoJsonUrl'] && <span>This field is required</span>}
             </div>
             <div className="ml-5">
-              <Button type="submit">Load Geo Json</Button>
+              <button type="submit">Load Geo Json</button>
             </div>
           </div>
         </form>
@@ -218,7 +218,7 @@ export default function CheckGeo() {
           padding: 10,
         }}
       >
-        <UploadCSV setData={(d) => setData(d)} />
+        {/* <UploadCSV setData={(d) => setData(d)} /> */}
       </div>
       <div style={{ display: 'flex' }}>
         {data && (

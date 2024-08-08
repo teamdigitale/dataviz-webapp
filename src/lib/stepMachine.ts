@@ -12,5 +12,10 @@ const toggleMachine = createMachine({
     config: { on: { NEXT: 'done', PREV: 'input' } },
     done: { on: { NEXT: 'idle', PREV: 'config' } },
   },
+  on: {
+    CONFIG: {
+      target: '.config',
+    },
+  },
 });
 export default toggleMachine;

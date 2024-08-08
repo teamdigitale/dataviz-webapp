@@ -1,8 +1,7 @@
-import { Button } from "design-react-kit";
-import { useState, useEffect } from "react";
-import DataTable from "./DataTable";
-import { useForm } from "react-hook-form";
-import { transposeData } from "../lib/utils";
+import { useState, useEffect } from 'react';
+import DataTable from './DataTable';
+import { useForm } from 'react-hook-form';
+import { transposeData } from '../lib/utils';
 
 function TransformSource({ setData, rawData }) {
   const [keys, setKeys] = useState([]);
@@ -22,11 +21,11 @@ function TransformSource({ setData, rawData }) {
     });
 
     const xLabels = [...new Set(items.map((i) => i.x))].sort();
-    console.log("x", xLabels, xLabels.length);
+    console.log('x', xLabels, xLabels.length);
     const yLabels = [...new Set(items.map((i) => i.y))].sort();
-    console.log("y", yLabels, yLabels.length);
+    console.log('y', yLabels, yLabels.length);
 
-    let cols = ["_", ...xLabels];
+    let cols = ['_', ...xLabels];
     let rows = yLabels.map((yv) => {
       let row = xLabels.map((xv) => {
         return items
@@ -47,7 +46,7 @@ function TransformSource({ setData, rawData }) {
       console.log('rawData', rawData);
       const headers = Object.keys(rawData[0]);
       setKeys(headers);
-      
+
       let rows = rawData.slice(0, 5).map((r) => {
         return Object.values(r);
       });
@@ -68,21 +67,17 @@ function TransformSource({ setData, rawData }) {
       {table && (
         <div>
           <p className="text-xl">EXTRACTED DATA</p>
-          <DataTable
-            data={table}
-            reset={setTable(null)}
-            transpose={transpose}
-          />
-          <Button type="button" className="btn" onClick={setData(table)}>
+          <DataTable data={table} transpose={transpose} />
+          <button type="button" className="btn" onClick={setData(table)}>
             Use this data
-          </Button>
+          </button>
         </div>
       )}
       {keys.length > 0 && (
         <div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <p>Value colum</p>
-            <select {...register("value", { required: true })}>
+            <select {...register('value', { required: true })}>
               {keys.map((k) => (
                 <option key={`value-${k}`} value={k}>
                   {k}
@@ -90,7 +85,7 @@ function TransformSource({ setData, rawData }) {
               ))}
             </select>
             <p>X column</p>
-            <select {...register("x", { required: true })}>
+            <select {...register('x', { required: true })}>
               {keys.map((k) => (
                 <option key={`x-${k}`} value={k}>
                   {k}
@@ -98,7 +93,7 @@ function TransformSource({ setData, rawData }) {
               ))}
             </select>
             <p>Y column</p>
-            <select {...register("y", { required: true })}>
+            <select {...register('y', { required: true })}>
               {keys.map((k) => (
                 <option key={`y-${k}`} value={k}>
                   {k}
@@ -106,12 +101,12 @@ function TransformSource({ setData, rawData }) {
               ))}
             </select>
             <div>
-              <Button
+              <button
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
                 submit
-              </Button>
+              </button>
             </div>
           </form>
         </div>

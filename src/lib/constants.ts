@@ -115,7 +115,7 @@ export const sampleData: FieldDataType = {
   },
 };
 
-export const getFields = (availabelPalettes, defaultPalette) => [
+export const getFields = (availabelPalettes: any, defaultPalette: string) => [
   {
     label: 'Grafico a Linee',
     name: 'Grafico a Linee',

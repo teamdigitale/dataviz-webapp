@@ -10,7 +10,7 @@ export type FieldDataType = {
   config: ChartConfigType;
   dataSource: any;
   chart: string;
-  data: MatrixType;
+  data: MatrixType | null;
   name?: string;
   id?: string;
 };
@@ -68,10 +68,10 @@ export type ChartConfigType = {
 };
 
 export interface StoreStateType {
-  data: null | MatrixType;
+  data: MatrixType | null;
   chart: string;
   config: any;
-  rawData: null | MatrixType;
+  rawData: MatrixType | null;
   name: null | string;
   id: null | string;
   list: null | FieldDataType[];

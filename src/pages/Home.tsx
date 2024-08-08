@@ -33,6 +33,7 @@ function Home() {
   const addItem = useStoreState((state) => state.addItem);
   const updateItem = useStoreState((state) => state.updateItem);
   const resetState = useStoreState((state) => state.reset);
+  const loadItem = useStoreState((state) => state.load);
 
   function reset() {
     setData(null);
@@ -65,8 +66,8 @@ function Home() {
     send({ type: 'NEXT' });
   }
 
-  function handleSaveItem({ name: string, id: string }) {
-    setName(string);
+  function handleSaveItem({ name, id }: { name: string; id: string }) {
+    setName(name);
     setId(id);
 
     const item = {
@@ -77,7 +78,7 @@ function Home() {
       data,
     };
 
-    const exists = list.find((item) => item.id === id);
+    const exists = list?.find((item) => item.id === id);
     if (!exists) {
       addItem(item as any);
     } else {
@@ -136,7 +137,13 @@ function Home() {
               <h4 className="text-4xl font-bold">Welcome</h4>
               {list?.map((item) => (
                 <div key={item.id} className="my-2">
-                  <button className="btn btn-outline" onClick={() => {}}>
+                  <button
+                    className="btn btn-outline"
+                    onClick={() => {
+                      loadItem(item);
+                      send({ type: 'CONFIG' });
+                    }}
+                  >
                     {item.name}
                   </button>
                 </div>
@@ -167,8 +174,8 @@ function Home() {
               Give a name to your chart and save it
               <ChartSave
                 chart={chart}
-                name={name}
-                id={id}
+                name={name || ''}
+                id={id || ''}
                 save={(obj) => handleSaveItem(obj)}
               />
             </div>
