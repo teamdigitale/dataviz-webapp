@@ -117,14 +117,14 @@ export const sampleData: FieldDataType = {
 
 export const getFields = (availabelPalettes: any, defaultPalette: string) => [
   {
-    label: 'Grafico a Linee',
-    name: 'Grafico a Linee',
+    label: 'Line Chart',
+    name: 'Line Chart',
     type: 'label',
     chartType: ['line'],
     layout: '3',
   },
   {
-    label: 'Mostra Zoom',
+    label: 'Show Zoom',
     name: 'zoom',
     type: 'select',
     options: ['none', 'both_axis', 'x_axis', 'y_axis'],
@@ -133,7 +133,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     otherProps: {},
   },
   {
-    label: 'Line Stondate',
+    label: 'Smooth lines',
     name: 'smooth',
     type: 'number',
     options: [],
@@ -143,7 +143,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Mostra Area',
+    label: 'Show Area',
     name: 'showArea',
     type: 'checkbox',
     options: [],
@@ -154,7 +154,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
   },
 
   {
-    label: 'Mostra tutti i simboli',
+    label: 'Show All Symbol',
     name: 'showAllSymbol',
     type: 'checkbox',
     options: [],
@@ -165,14 +165,14 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
   },
 
   {
-    label: 'Grafico a Barre',
-    name: 'Grafico a Barre',
+    label: 'Bar Chart',
+    name: 'Bar Chart',
     type: 'label',
     chartType: ['bar'],
     layout: '3',
   },
   {
-    label: 'Direzione',
+    label: 'Direction',
     name: 'direction',
     type: 'select',
     options: ['horizontal', 'vertical'],
@@ -184,7 +184,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Impila i valori',
+    label: 'Stack Values',
     name: 'stack',
     type: 'checkbox',
     options: [],
@@ -195,14 +195,14 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
   },
 
   {
-    label: 'Grafico a Ciambella',
-    name: 'Grafico a Ciambella',
+    label: 'Pie Chart',
+    name: 'Pie Chart',
     type: 'label',
     chartType: ['pie'],
     layout: '3',
   },
   {
-    label: 'Testo label totale',
+    label: 'Total Label',
     name: 'totalLabel',
     type: 'text',
     options: [],
@@ -213,7 +213,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
   },
 
   {
-    label: 'Mostra labels',
+    label: 'Show labels',
     name: 'showPieLabels',
     type: 'checkbox',
     options: [],
@@ -226,7 +226,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
   },
 
   {
-    label: 'Mostra label esterne',
+    label: 'Show Label Line',
     name: 'labeLine',
     type: 'checkbox',
     options: [],
@@ -238,8 +238,8 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
   },
 
   {
-    label: 'Grafici GeoMap',
-    name: 'Grafici GeoMap',
+    label: 'Map Chart',
+    name: 'Map Chart',
     type: 'label',
     chartType: ['map'],
     layout: '3',
@@ -257,7 +257,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '2',
   },
   {
-    label: 'Nome Proprietà Matching',
+    label: 'Matching Property Name',
     name: 'nameProperty',
     type: 'text',
     options: [],
@@ -269,7 +269,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Mostra Labels',
+    label: 'Show Labels',
     name: 'showMapLabels',
     type: 'checkbox',
     options: [],
@@ -279,7 +279,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Nome Serie',
+    label: 'Serie Name',
     name: 'serieName',
     type: 'text',
     options: [],
@@ -291,7 +291,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Colore Area Overlay',
+    label: 'Area Overlay Color',
     name: 'areaColor',
     type: 'color',
     options: [],
@@ -303,7 +303,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Mostra VisualMap',
+    label: 'Show VisualMap',
     name: 'visualMap',
     type: 'checkbox',
     options: [],
@@ -326,7 +326,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     dependsOn: 'visualMap',
   },
   {
-    label: 'Orientamento VisualMap',
+    label: 'VisualMap Orientation',
     name: 'visualMapOrient',
     type: 'select',
     options: ['vertical', 'horizontal'],
@@ -339,14 +339,14 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     dependsOn: 'visualMap',
   },
   {
-    label: 'Generali',
-    name: 'Generali',
+    label: 'General',
+    name: 'General',
     type: 'label',
     chartType: ['bar', 'line', 'pie', 'map'],
     layout: '3',
   },
   {
-    label: 'Palette colori',
+    label: 'Palette',
     name: 'palette',
     type: 'select',
     options: availabelPalettes,
@@ -357,7 +357,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '2',
   },
   {
-    label: 'Altezza Grafico',
+    label: 'Chart Height',
     name: 'h',
     type: 'number',
     options: [],
@@ -369,7 +369,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Attiva Responsive',
+    label: 'Responsive',
     name: 'responsive',
     type: 'checkbox',
     options: [],
@@ -379,7 +379,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Mostra Legenda',
+    label: 'Show Legend',
     name: 'legend',
     type: 'checkbox',
 
@@ -390,7 +390,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Posizione Legenda',
+    label: 'Legend Position',
     name: 'legendPosition',
     type: 'select',
     options: ['bottom', 'top'],
@@ -411,7 +411,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '3',
   },
   {
-    label: 'Mostra Tooltip',
+    label: 'Show Tooltip',
     name: 'tooltip',
     type: 'checkbox',
     options: [],
@@ -421,7 +421,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Suffisso Valore',
+    label: 'Value Suffix',
     name: 'valueFormatter',
     type: 'text',
     options: [],
@@ -432,7 +432,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     dependsOn: 'tooltip',
   },
   {
-    label: 'Formato Valore',
+    label: 'Value Format',
     name: 'tooltipFormatter',
     type: 'select',
     options: ['', 'number', 'currency', 'percentage'],
@@ -455,14 +455,14 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Griglia',
-    name: 'Griglia',
+    label: 'Grid',
+    name: 'Grid',
     type: 'label',
     chartType: ['bar', 'line'],
     layout: '3',
   },
   {
-    label: 'Altezza',
+    label: 'Height',
     name: 'gridHeight',
     type: 'text',
     options: [],
@@ -474,7 +474,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Larghezza',
+    label: 'Width',
     name: 'gridWidth',
     type: 'text',
     options: [],
@@ -486,7 +486,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Margine sinistro (%/px)',
+    label: 'Left Margin (%/px)',
     name: 'gridLeft',
     type: 'text',
     options: [],
@@ -498,7 +498,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Margine destro (%/px)',
+    label: 'Right Margin (%/px)',
     name: 'gridRight',
     type: 'text',
     options: [],
@@ -510,7 +510,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Margine top (%/px)',
+    label: 'Top Margin (%/px)',
     name: 'gridTop',
     type: 'text',
     options: [],
@@ -520,7 +520,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Margine bottom (%/px)',
+    label: 'Bottom Margin (%/px)',
     name: 'gridBottom',
     type: 'text',
     options: [],
@@ -531,14 +531,14 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
   },
 
   {
-    label: 'Assi',
-    name: 'Assi',
+    label: 'Axes',
+    name: 'Axes',
     type: 'label',
     chartType: ['bar', 'line'],
     layout: '3',
   },
   {
-    label: 'Nome asse X',
+    label: 'X axis Label',
     name: 'xLabel',
     type: 'text',
     options: [],
@@ -548,7 +548,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: 'Nome asse Y',
+    label: 'Y axis Label',
     name: 'yLabel',
     type: 'text',
     options: [],
@@ -558,7 +558,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     layout: '',
   },
   {
-    label: "Distanza dall'asse",
+    label: 'Name Gap',
     name: 'nameGap',
     type: 'number',
     options: [],

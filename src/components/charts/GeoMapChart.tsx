@@ -138,7 +138,7 @@ function GeoMapChart({
   const options = data && geoData ? getOptions(data, geoData) : null;
   return (
     <div key={id} id={'chart_' + id}>
-      {!data && <div>Caricamento...</div>}
+      {!data && <div>Loading...</div>}
       {!geoData && <div>In attesa dei dati geo...</div>}
       {options && (
         <ReactEcharts

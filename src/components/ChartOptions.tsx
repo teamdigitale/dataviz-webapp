@@ -64,6 +64,11 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
   return (
     <div className="bg-base-200 p-4 rounded-box">
       <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="my-5">
+          <button className="btn btn-primary w-full" type="submit">
+            Apply Changes
+          </button>
+        </div>
         <div className="grid grid-cols-3 gap-4">
           {filteredFields.map((field) => {
             if (['text', 'email', 'number', 'color'].includes(field.type)) {
@@ -170,8 +175,8 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
           })}
         </div>
         <div className="my-5">
-          <button className="btn btn-primary" type="submit">
-            Applica
+          <button className="btn btn-primary w-full" type="submit">
+            Apply Changes
           </button>
         </div>
       </form>

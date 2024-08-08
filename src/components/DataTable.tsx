@@ -20,7 +20,7 @@ export default function DataTable({
     <>
       {data && data[0] && (
         <div>
-          <p>{`${data.length} righe, ${data[0].length} colonne`}</p>
+          <p>{`${data.length} rows, ${data[0].length} columns`}</p>
           <div className="my-4">
             {transpose && (
               <span className="">
@@ -29,7 +29,7 @@ export default function DataTable({
                   type="button"
                   onClick={() => transpose()}
                 >
-                  Trasponi
+                  Traspose
                 </button>
               </span>
             )}

@@ -195,15 +195,15 @@ export default function ChartWrapper(props) {
           <span className="ps-lg-2 pe-3 pe-lg-0 pt-2 pb-lg-0 fw-bold text-primary">
             <a
               className="mid-button-link"
-              title={labelsDownload || 'Scarica CSV'}
-              aria-label={labelsDownload || 'Scarica CSV'}
+              title={labelsDownload || 'Download CSV'}
+              aria-label={labelsDownload || 'Download CSV'}
               onClick={() => downloadCSV(csvData, id)}
             >
-              {labelsDownload || 'Scarica'} CSV
+              {labelsDownload || 'Download'} CSV
               <svg
                 className="icon icon-sm icon-primary ms-1"
                 focusable="false"
-                aria-label={`${labelsDownload || 'Scarica'} CSV`}
+                aria-label={`${labelsDownload || 'Download'} CSV`}
                 role="img"
               >
                 <use href="/images/sprite.svg#it-download"></use>
@@ -213,15 +213,15 @@ export default function ChartWrapper(props) {
           <span className="ps-lg-2 pe-3 pe-lg-0 pt-2 pb-lg-0 fw-bold text-primary">
             <button
               className="mid-button-link"
-              title={labelsDownload || 'Scarica PNG'}
-              aria-label={labelsDownload || 'Scarica PNG'}
+              title={labelsDownload || 'Download PNG'}
+              aria-label={labelsDownload || 'Download PNG'}
               onClick={() => downLoadPng(echartInstance, id)}
             >
-              {labelsDownload || 'Scarica'} PNG
+              {labelsDownload || 'Download'} PNG
               <svg
                 className="icon icon-sm icon-primary ms-1"
                 focusable="false"
-                aria-label={`${labelsDownload || 'Scarica'} PNG`}
+                aria-label={`${labelsDownload || 'Download'} PNG`}
                 role="img"
               >
                 <use href="/images/sprite.svg#it-download"></use>

@@ -74,8 +74,8 @@ function RenderChart(ds: any) {
       </div>
       <button
         className="btn btn-primary btn-outline"
-        title={'Scarica PNG'}
-        aria-label={'Scarica PNG'}
+        title={'Download PNG'}
+        aria-label={'Download PNG'}
         onClick={() =>
           downloadPng(
             echartInstance,
@@ -83,7 +83,7 @@ function RenderChart(ds: any) {
           )
         }
       >
-        {'Scarica'} PNG
+        {'Download'} PNG
       </button>
     </div>
   );

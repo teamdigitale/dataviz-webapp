@@ -112,7 +112,7 @@ function UploadCSV({ setData }) {
   return (
     <div className="">
       <div className="form-control">
-        <label className="label">Carica CSV:</label>
+        <label className="label">Load CSV:</label>
         <input
           className="file-input file-input-bordered file-input-primary  w-full max-w-2xl"
           type="file"

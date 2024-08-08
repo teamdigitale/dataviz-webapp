@@ -92,98 +92,126 @@ function Home() {
     }, 100);
   }
 
+  function getStepIndex() {
+    if (state.matches('idle')) return 0;
+    if (state.matches('input')) return 1;
+    if (state.matches('config')) return 2;
+    if (state.matches('done')) return 3;
+  }
+
   return (
     <PanelGroup direction="horizontal" className="w-full">
       <Panel defaultSize={10} minSize={10} className="bg-base-100">
-        <div className="p-4 block">
-          <div className="text-xl my-5">{state.value as string}</div>
-          <div className="my-2">
-            <button
-              className="btn btn-outline"
+        <div>
+          <ul className="steps steps-vertical">
+            <li
+              className={`step ${
+                getStepIndex() >= 0 ? 'step-primary text-primary' : ''
+              }`}
               onClick={() => send({ type: 'IDLE' })}
             >
-              0 - My Charts
-            </button>
-            <button
-              className="btn btn-outline"
+              {list.length > 0 ? 'My Charts' : 'Welcome'}
+            </li>
+            <li
+              className={`step ${
+                getStepIndex() >= 1 ? 'step-primary text-primary' : ''
+              }`}
               onClick={() => send({ type: 'INPUT' })}
             >
-              1 - INPUT DATA
-            </button>
-          </div>
-          <div className="my-2">
-            <button
-              disabled={!data}
-              className="btn btn-outline"
-              onClick={() => send({ type: 'CONFIG' })}
+              Upload data
+            </li>
+            <li
+              className={`step ${
+                getStepIndex() >= 2 ? 'step-primary text-primary' : ''
+              }`}
+              onClick={() => (data ? send({ type: 'CONFIG' }) : null)}
             >
-              2 - CONFIGURE CHART
-            </button>
-          </div>
-          <div className="my-2">
-            <button
-              disabled={!data}
-              className="btn btn-outline"
-              onClick={() =>
-                send({
-                  type: 'DONE',
-                })
-              }
+              Configure
+            </li>
+            <li
+              className={`step ${
+                getStepIndex() >= 3 ? 'step-primary text-primary' : ''
+              }`}
+              onClick={() => (data ? send({ type: 'DONE' }) : null)}
             >
-              3 - SAVE / EXPORT
-            </button>
-          </div>
+              Save
+            </li>
+          </ul>
         </div>
       </Panel>
       <PanelResizeHandle className="bg-primary w-1" />
       <Panel minSize={20} className="bg-base-100">
         <div className="p-4">
           {state.matches('idle') && (
-            <div>
-              <h4 className="text-4xl font-bold">Welcome</h4>
-              {list?.map((item) => (
-                <div
-                  key={item.id}
-                  className="my-2 flex gap-2 items-center border p-2"
-                >
-                  <div className="grow flex flex-col">
-                    <div className="text-lg">{item.name}</div>
-                    <small className="text-xxs text-content opacity-70 pr-4">
-                      {item.id}
-                    </small>
+            <div className="container">
+              <h4 className="text-4xl font-bold">
+                {list.length ? 'My Charts' : 'Welcome'}
+              </h4>
+              <div>
+                <div className="flex my-5">
+                  <div
+                    className="btn btn-primary"
+                    onClick={() => send({ type: 'INPUT' })}
+                  >
+                    + Create New chart
                   </div>
-                  <button
-                    className="btn btn-outline btn-primary btn-sm"
-                    onClick={() => {
-                      send({ type: 'CONFIG' });
-                      loadItem(item);
-                    }}
-                  >
-                    load
-                  </button>
-                  <button
-                    className="btn btn-outline btn-error btn-sm"
-                    onClick={() => {
-                      removeItem(item.id);
-                      send({ type: 'IDLE' });
-                    }}
-                  >
-                    delete
-                  </button>
+                  {data && (
+                    <div
+                      className="btn btn-primary"
+                      onClick={() => {
+                        send({ type: 'IDLE' });
+                        resetItem();
+                      }}
+                    >
+                      Reset this data
+                    </div>
+                  )}
                 </div>
-              ))}
+                {list?.map((item) => (
+                  <div
+                    key={item.id}
+                    className="my-2 flex gap-2 items-center border p-2"
+                  >
+                    <div className="grow flex flex-col">
+                      <div className="text-lg">{item.name}</div>
+                      <small className="text-xxs text-content opacity-70 pr-4">
+                        {item.id}
+                      </small>
+                    </div>
+                    <button
+                      className="btn btn-outline btn-primary btn-sm"
+                      onClick={() => {
+                        send({ type: 'CONFIG' });
+                        loadItem(item);
+                      }}
+                    >
+                      load
+                    </button>
+                    <button
+                      className="btn btn-outline btn-error btn-sm"
+                      onClick={() => {
+                        removeItem(item.id);
+                        send({ type: 'IDLE' });
+                      }}
+                    >
+                      delete
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
           {state.matches('input') && (
-            <div>
-              <h4>Upload your data</h4>
+            <div className="container">
+              <h4 className="text-4xl font-bold">Upload your data</h4>
               <CSVUpload setData={(d: any) => handleUpload(d)} />
             </div>
           )}
 
           {state.matches('config') && (
-            <div>
+            <div className="container">
+              <h4 className="text-4xl font-bold">Configure Chart</h4>
               <SelectChart setChart={setChart} chart={chart} />
               <ChartOptions
                 config={config}
@@ -194,7 +222,8 @@ function Home() {
             </div>
           )}
           {state.matches('done') && (
-            <div>
+            <div className="container">
+              <h4 className="text-4xl font-bold">Save Chart</h4>
               Give a name to your chart and save it
               <ChartSave
                 chart={chart}
