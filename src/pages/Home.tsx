@@ -15,25 +15,24 @@ import ChartSave from '../components/ChartSave';
 
 function Home() {
   const [state, send] = useMachine(stepMachine);
-
-  const config = useStoreState((state) => state.config);
-  const setConfig = useStoreState((state) => state.setConfig);
-  const chart = useStoreState((state) => state.chart);
-  const setChart = useStoreState((state) => state.setChart);
-  const data = useStoreState((state) => state.data);
-  const setData = useStoreState((state) => state.setData);
-  // const rawData = useStoreState((state) => state.rawData);
-  // const setRawData = useStoreState((state) => state.setRawData);
-  const setName = useStoreState((state) => state.setName);
-  const name = useStoreState((state) => state.name);
-  const id = useStoreState((state) => state.id);
-  const setId = useStoreState((state) => state.setId);
-  const list = useStoreState((state) => state.list);
-
-  const addItem = useStoreState((state) => state.addItem);
-  const updateItem = useStoreState((state) => state.updateItem);
-  const resetState = useStoreState((state) => state.reset);
-  const loadItem = useStoreState((state) => state.load);
+  const {
+    id,
+    name,
+    config,
+    chart,
+    data,
+    list,
+    setConfig,
+    setChart,
+    setData,
+    setName,
+    setId,
+    addItem,
+    updateItem,
+    removeItem,
+    loadItem,
+    resetItem,
+  } = useStoreState((state) => state);
 
   function reset() {
     setData(null);
@@ -78,14 +77,19 @@ function Home() {
       data,
     };
 
+    console.log('new item', item);
     const exists = list?.find((item) => item.id === id);
+    console.log('exists', exists ? true : false);
     if (!exists) {
       addItem(item as any);
     } else {
+      console.log('update item', id, item);
       updateItem(item as any);
     }
-    resetState();
     send({ type: 'NEXT' });
+    setTimeout(() => {
+      resetItem();
+    }, 100);
   }
 
   return (
@@ -96,9 +100,13 @@ function Home() {
           <div className="my-2">
             <button
               className="btn btn-outline"
-              onClick={() =>
-                send({ type: state.matches('idle') ? 'NEXT' : 'PREV' })
-              }
+              onClick={() => send({ type: 'IDLE' })}
+            >
+              0 - My Charts
+            </button>
+            <button
+              className="btn btn-outline"
+              onClick={() => send({ type: 'INPUT' })}
             >
               1 - INPUT DATA
             </button>
@@ -107,9 +115,7 @@ function Home() {
             <button
               disabled={!data}
               className="btn btn-outline"
-              onClick={() =>
-                send({ type: state.matches('input') ? 'NEXT' : 'PREV' })
-              }
+              onClick={() => send({ type: 'CONFIG' })}
             >
               2 - CONFIGURE CHART
             </button>
@@ -120,7 +126,7 @@ function Home() {
               className="btn btn-outline"
               onClick={() =>
                 send({
-                  type: state.matches('config') ? 'NEXT' : 'PREV',
+                  type: 'DONE',
                 })
               }
             >
@@ -136,15 +142,33 @@ function Home() {
             <div>
               <h4 className="text-4xl font-bold">Welcome</h4>
               {list?.map((item) => (
-                <div key={item.id} className="my-2">
+                <div
+                  key={item.id}
+                  className="my-2 flex gap-2 items-center border p-2"
+                >
+                  <div className="grow flex flex-col">
+                    <div className="text-lg">{item.name}</div>
+                    <small className="text-xxs text-content opacity-70 pr-4">
+                      {item.id}
+                    </small>
+                  </div>
                   <button
-                    className="btn btn-outline"
+                    className="btn btn-outline btn-primary btn-sm"
                     onClick={() => {
-                      loadItem(item);
                       send({ type: 'CONFIG' });
+                      loadItem(item);
                     }}
                   >
-                    {item.name}
+                    load
+                  </button>
+                  <button
+                    className="btn btn-outline btn-error btn-sm"
+                    onClick={() => {
+                      removeItem(item.id);
+                      send({ type: 'IDLE' });
+                    }}
+                  >
+                    delete
                   </button>
                 </div>
               ))}

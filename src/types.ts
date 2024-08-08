@@ -81,9 +81,8 @@ export interface StoreStateType {
   setChart: (value: string) => void;
   setRawData: (value: any) => void;
   setData: (value: MatrixType | null) => void;
-  load: (value: any) => void;
-
-  reset: () => void;
+  loadItem: (value: any) => void;
+  resetItem: () => void;
   addItem: (item: FieldDataType) => void;
   removeItem: (id: string) => void;
   updateItem: (item: FieldDataType) => void;
