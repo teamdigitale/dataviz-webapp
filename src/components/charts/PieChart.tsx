@@ -14,7 +14,7 @@ function PieChart({
   useEffect(() => {
     if (refCanvas.current) {
       try {
-        const echartInstance = refCanvas.current.getEchartsInstance();
+        const echartInstance = (refCanvas.current as any).getEchartsInstance();
         if (setEchartInstance) {
           setEchartInstance(echartInstance);
         }
@@ -24,8 +24,8 @@ function PieChart({
     }
   }, [refCanvas.current]);
 
-  function getTotal(data) {
-    return data.reduce((acc, v) => {
+  function getTotal(data: any) {
+    return data.reduce((acc: number, v: any) => {
       return acc + Number(v.value);
     }, 0);
   }
@@ -42,7 +42,7 @@ function PieChart({
         overflow: 'breakAll',
         width: 150,
       },
-      valueFormatter: (value) => {
+      valueFormatter: (value: any) => {
         return formatTooltip(value, config);
       },
       show: config.tooltip,

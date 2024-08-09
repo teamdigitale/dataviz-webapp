@@ -7,7 +7,7 @@ import LoadSource from './LoadSource';
 type NavProps = {
   data: any;
   state: any;
-  chart: object;
+  chart: string;
   config: object;
   send: (name: any) => void;
   setData: (data: any) => void;

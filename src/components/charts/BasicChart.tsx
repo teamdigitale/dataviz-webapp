@@ -34,7 +34,7 @@ function BasicChart({
       top: config.gridTop || 60,
     };
     const zoom = config.zoom || 'none';
-    let dataZoom = [];
+    let dataZoom: any = [];
     if (zoom !== 'none') {
       const x = [
         {
@@ -148,7 +148,7 @@ function BasicChart({
         type: 'shadow',
         snap: true,
       },
-      valueFormatter: (value) => {
+      valueFormatter: (value: any) => {
         return formatTooltip(value, config);
       },
       show: config.tooltip ?? true,
@@ -169,7 +169,7 @@ function BasicChart({
       ],
       ...axis,
       grid,
-      series: data.dataSource.series.map((serie) => {
+      series: data.dataSource.series.map((serie: any) => {
         let rest = {};
         if (serie.type === 'bar' && config.stack) {
           let stack: any = config.stack
@@ -232,7 +232,7 @@ function BasicChart({
     <div style={{ textAlign: 'left' }}>
       <ReactEcharts
         option={getOptions(data)}
-        ref={refCanvas}
+        ref={refCanvas as any}
         style={{
           width: '100%',
           height: height,

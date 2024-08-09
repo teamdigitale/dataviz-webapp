@@ -2,8 +2,19 @@ import { useForm } from 'react-hook-form';
 import { palettes, getFields, defaultConfig } from '../lib/constants';
 import { getAvailablePalettes, getMapPalettes } from '../lib/utils';
 import ShowPalette from './ShowPalette';
+import { ChartConfigType } from '../types';
 
-function ChartOptions({ config, setConfig, chart, numSeries }) {
+function ChartOptions({
+  config,
+  setConfig,
+  chart,
+  numSeries,
+}: {
+  config: any;
+  setConfig: (c: any) => void;
+  chart: string;
+  numSeries: number;
+}) {
   const availabelPalettes =
     chart === 'map' ? getMapPalettes() : getAvailablePalettes(numSeries);
   const defaultPalette = availabelPalettes[0];
@@ -28,7 +39,7 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
   const watchShowPieLabels = watch('showPieLabels', true);
   const watchVisualMap = watch('visualMap', true);
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     const { h, w, palette, ...rest } = data;
     const colors = palettes[palette];
     const newConfig = { h: Number(h), w: Number(w), ...rest, colors, palette };
@@ -137,7 +148,7 @@ function ChartOptions({ config, setConfig, chart, numSeries }) {
                     {...field.otherProps}
                     {...register(field.name, { required: field.required })}
                   >
-                    {field.options.map((option) => {
+                    {field.options.map((option: string) => {
                       return (
                         <option key={option} value={option}>
                           {option}

@@ -1,10 +1,7 @@
 import { saveAs } from 'file-saver';
+import { log } from './utils';
 
-export function log(...args) {
-  console.log(args);
-}
-
-export async function downloadPng(echartInstance, name) {
+export async function downloadPng(echartInstance: any, name: string) {
   if (!echartInstance) return;
   const dataUrl = echartInstance.getDataURL();
   try {
@@ -15,7 +12,7 @@ export async function downloadPng(echartInstance, name) {
   }
 }
 
-export async function downloadCSV(data, name) {
+export async function downloadCSV(data: any, name: string) {
   try {
     const blob = new Blob([data], {
       type: 'text/csv;charset=utf-8',
@@ -26,23 +23,23 @@ export async function downloadCSV(data, name) {
   }
 }
 
-export function generateCSV(dataSource) {
+export function generateCSV(dataSource: any) {
   const columns = '_,' + dataSource.categories.join(',');
-  const rows = dataSource.series.map((serie) => {
+  const rows = dataSource.series.map((serie: any) => {
     const { name = '', data = [] } = serie;
     return [name, ...data].join(',');
   });
   return [columns, ...rows].join('\n');
 }
 
-export function dataToCSV(data) {
-  const rows = data.map((r) => {
+export function dataToCSV(data: any) {
+  const rows = data.map((r: any) => {
     return r.join(',');
   });
   return rows.join('\n');
 }
 
-export function generateCSVPie(serie) {
+export function generateCSVPie(serie: any) {
   log('generateCSVPie', serie);
   if (!serie) {
     return null;
@@ -53,7 +50,7 @@ export function generateCSVPie(serie) {
     columns = serie.name || '_';
   }
 
-  const rows = serie.data.map((v) => {
+  const rows = serie.data.map((v: any) => {
     if (typeof v === 'object') {
       return [v.name, v.value].join(',');
     } else {

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { getAvailablePalettes, getPalette, transposeData } from '../lib/utils';
 import DataTable from '../components/DataTable';
 import RenderChart from '../components/RenderChart';
@@ -46,7 +45,7 @@ function Home() {
     }, 300);
   }
 
-  function handleChangeData(d) {
+  function handleChangeData(d: any) {
     if (!config.palette) {
       const numSeries = d.length - 1;
       let palette = getAvailablePalettes(numSeries)[0];
@@ -97,6 +96,7 @@ function Home() {
     if (state.matches('input')) return 1;
     if (state.matches('config')) return 2;
     if (state.matches('done')) return 3;
+    return 0;
   }
 
   return (
@@ -110,7 +110,7 @@ function Home() {
               }`}
               onClick={() => send({ type: 'IDLE' })}
             >
-              {list.length > 0 ? 'My Charts' : 'Welcome'}
+              {list && list?.length > 0 ? 'My Charts' : 'Welcome'}
             </li>
             <li
               className={`step ${
@@ -145,7 +145,7 @@ function Home() {
           {state.matches('idle') && (
             <div className="container">
               <h4 className="text-4xl font-bold">
-                {list.length ? 'My Charts' : 'Welcome'}
+                {list && list.length ? 'My Charts' : 'Welcome'}
               </h4>
               <div>
                 <div className="flex my-5 gap-4">
@@ -190,7 +190,7 @@ function Home() {
                     <button
                       className="btn btn-outline btn-error btn-sm"
                       onClick={() => {
-                        removeItem(item.id);
+                        removeItem(item?.id ?? '');
                         send({ type: 'IDLE' });
                       }}
                     >

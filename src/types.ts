@@ -35,7 +35,7 @@ export type ChartConfigType = {
   labeLine: boolean;
   legend: boolean;
   legendPosition: string;
-  palette: string;
+  palette: string[];
   tooltip: boolean;
   tooltipFormatter: string;
   valueFormatter: string;
@@ -74,7 +74,7 @@ export interface StoreStateType {
   rawData: MatrixType | null;
   name: null | string;
   id: null | string;
-  list: null | FieldDataType[];
+  list: [] | FieldDataType[];
   setId: (value: string) => void;
   setName: (value: string) => void;
   setConfig: (value: object) => void;

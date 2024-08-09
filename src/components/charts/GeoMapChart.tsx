@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactEcharts from 'echarts-for-react';
 import { useRef, useEffect, useState } from 'react';
 import * as echarts from 'echarts';
@@ -16,7 +15,7 @@ function GeoMapChart({
   const [weDoNotHaveInstance, setWeDoNotHaveInstance] = useState(true);
 
   function getOptions(data: FieldDataType, geoData: any) {
-    echarts.registerMap(id, geoData);
+    echarts.registerMap(id as string, geoData);
     const config = data.config;
 
     const tooltip = {
@@ -25,7 +24,7 @@ function GeoMapChart({
       //   return formatTooltip(value, config);
       // },
       show: config.tooltip ?? true,
-      formatter: (params) => {
+      formatter: (params: any) => {
         const value = params.value;
         const name = params.name;
         const serieName = params.seriesName;
@@ -37,8 +36,12 @@ function GeoMapChart({
       },
     };
 
-    const min = Math.min(...data.dataSource.series[0].data.map((d) => d.value));
-    const max = Math.max(...data.dataSource.series[0].data.map((d) => d.value));
+    const min = Math.min(
+      ...data.dataSource.series[0].data.map((d: any) => d.value)
+    );
+    const max = Math.max(
+      ...data.dataSource.series[0].data.map((d: any) => d.value)
+    );
 
     const options = {
       backgroundColor: config.background ? config.background : '#F2F7FC',
@@ -71,7 +74,7 @@ function GeoMapChart({
         },
         show: config.visualMap || false,
       },
-      series: data.dataSource.series.map((serie) => {
+      series: data.dataSource.series.map((serie: any) => {
         let otherConfig = {};
         if (config.serieName) {
           otherConfig = {
@@ -128,7 +131,7 @@ function GeoMapChart({
 
   useEffect(() => {
     if (refCanvas.current && weDoNotHaveInstance) {
-      const echartInstance = refCanvas.current.getEchartsInstance();
+      const echartInstance = (refCanvas.current as any).getEchartsInstance();
       setEchartInstance(echartInstance);
       setWeDoNotHaveInstance(false);
     }

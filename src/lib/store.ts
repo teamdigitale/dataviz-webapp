@@ -47,7 +47,7 @@ const useStoreState = create<StoreStateType>()(
           list: state.list.filter((i) => i.id !== id),
         }));
       },
-      updateItem: (newItem) =>
+      updateItem: (newItem: FieldDataType) =>
         set((state) => ({
           list: state.list.map((i) => {
             if (i.id === newItem.id) {

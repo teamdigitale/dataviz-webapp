@@ -1,7 +1,11 @@
-export default function ShowPalette({ palette }) {
+export default function ShowPalette({
+  palette,
+}: {
+  palette: any;
+}): JSX.Element {
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", margin: "10px 0" }}>
-      {palette.map((p, i) => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', margin: '10px 0' }}>
+      {palette.map((p: string, i: number) => (
         <div
           key={i}
           style={{

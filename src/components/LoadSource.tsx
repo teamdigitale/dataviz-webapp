@@ -3,7 +3,7 @@ import axios from 'axios';
 import { log } from '../lib/utils';
 import Papa from 'papaparse';
 
-function LoadSource({ setRawData }) {
+function LoadSource({ setRawData }: { setRawData: Function }) {
   const [loading, setLoading] = useState(false);
   const [url, setUrl] = useState(
     'https://www.datocms-assets.com/38008/1722249098-generated-data-3x51722249031636.csv'

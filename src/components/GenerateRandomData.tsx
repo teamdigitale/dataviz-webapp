@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { generateItems, fillArray, transposeData } from '../lib/utils';
 
-function GenerateRandomData({ setData }) {
+function GenerateRandomData({ setData }: { setData: (data: any) => void }) {
   const [rows, setRows] = useState(3);
   const [cols, setCols] = useState(9);
   const [min, setMin] = useState(1);

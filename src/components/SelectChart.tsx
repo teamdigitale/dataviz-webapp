@@ -1,4 +1,10 @@
-function SelectChart({ chart, setChart }) {
+function SelectChart({
+  chart,
+  setChart,
+}: {
+  chart?: string;
+  setChart: Function;
+}) {
   return (
     <div
       style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}

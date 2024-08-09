@@ -1,7 +1,7 @@
 type DataTableProps = {
   data: any;
   reset?: () => void;
-  transpose?: () => void;
+  transpose: () => void;
   download?: () => void;
 };
 
@@ -13,7 +13,7 @@ export default function DataTable({
 }: DataTableProps): JSX.Element {
   let max = 100;
 
-  function isBig(rows, cols) {
+  function isBig(rows: number, cols: number) {
     return rows > 10 || cols > 10;
   }
   return (
@@ -67,7 +67,7 @@ export default function DataTable({
             >
               <thead>
                 <tr key={`row-head`}>
-                  {data[0].map((cell, ii) => (
+                  {data[0].map((cell: string | number, ii: number) => (
                     <th className={`px-2 `} key={`head-cell-${ii}`}>
                       {cell}
                     </th>
@@ -75,17 +75,19 @@ export default function DataTable({
                 </tr>
               </thead>
               <tbody>
-                {data?.slice(1, max).map((row, index) => {
+                {data?.slice(1, max).map((row: number, index: number) => {
                   return (
                     <tr key={`row-${index}`}>
-                      {row.map((cell, ii) => (
-                        <td
-                          key={`cell-${ii}`}
-                          className={`px-2 ${ii === 0 ? 'font-bold' : ''}`}
-                        >
-                          {cell}
-                        </td>
-                      ))}
+                      {(row as any)?.map(
+                        (cell: string | number, ii: number) => (
+                          <td
+                            key={`cell-${ii}`}
+                            className={`px-2 ${ii === 0 ? 'font-bold' : ''}`}
+                          >
+                            {cell}
+                          </td>
+                        )
+                      )}
                     </tr>
                   );
                 })}

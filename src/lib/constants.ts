@@ -1,7 +1,7 @@
 import type { ChartConfigType, FieldDataType } from '../types';
 import { generateGradient, hexToHsla } from './utils';
 
-export const palettes = {
+export const palettes: any = {
   divergente: [
     '#003366',
     '#004D99',
@@ -106,7 +106,7 @@ export const defaultConfig = {
 };
 
 export const sampleData: FieldDataType = {
-  config: defaultConfig as ChartConfigType,
+  config: defaultConfig as any,
   data: null,
   chart: 'bar',
   dataSource: {

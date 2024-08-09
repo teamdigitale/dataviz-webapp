@@ -30,19 +30,19 @@ function cleanupData(matrix: MatrixType) {
   });
 }
 
-function UploadCSV({ setData }) {
+function UploadCSV({ setData }: { setData: Function }) {
   const [_, startTransition] = useTransition();
   const [rawData, setRawData] = useState<any>(null);
   const [category, setCategory] = useState<selectOptionType | null>(null);
   const [series, setSeries] = useState<selectOptionType[] | []>([]);
 
-  function uploadFile(event) {
+  function uploadFile(event: any) {
     let file = event.target.files[0];
 
     Papa.parse(file, {
       header: false,
       skipEmptyLines: true,
-      complete: (results) => {
+      complete: (results: any) => {
         const { data } = results;
         log('RESULTS DATA', data);
         const c = getFirstOfMAtrix(data);
@@ -62,10 +62,10 @@ function UploadCSV({ setData }) {
     });
   }
 
-  function isSameObject(a, b) {
+  function isSameObject(a: object, b: object) {
     return JSON.stringify(a) === JSON.stringify(b);
   }
-  function getFirstOfMAtrix(matrix) {
+  function getFirstOfMAtrix(matrix: any) {
     return matrix[0][0]?.trim();
   }
   function getCols(cols: string[]) {
@@ -86,9 +86,9 @@ function UploadCSV({ setData }) {
 
   function filterData() {
     if (!series) return;
-    const cols = [category, ...series].map((col) => col.value);
-    const filtered = rawData.map((row) => {
-      return row.filter((r, i) => {
+    const cols = [category, ...series].map((col: any) => col.value);
+    const filtered = rawData.map((row: any) => {
+      return row.filter((r: any, i: number) => {
         return cols.includes(rawData[0][i].trim());
       });
     });
@@ -97,7 +97,7 @@ function UploadCSV({ setData }) {
 
   function handleChangeCategory(newValue: string) {
     setSeries([]);
-    const category = getCols(rawData[0]).find((i) => i.value === newValue);
+    const category: any = getCols(rawData[0]).find((i) => i.value === newValue);
     setCategory(category);
     setRawData(moveDataColumn(rawData, newValue));
   }
@@ -128,6 +128,7 @@ function UploadCSV({ setData }) {
               data={rawData}
               transpose={() => transpose()}
               reset={() => setRawData(null)}
+              download={() => {}}
             />
           </div>
           <div className="bg-base-200 p-5">

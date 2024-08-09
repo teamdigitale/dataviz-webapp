@@ -1,21 +1,22 @@
 import { palettes } from '../lib/constants';
+import { ChartConfigType, FieldDataType } from '../types';
 
 export function isNumeric(s: string) {
   /^[+-]?\d+(\.\d+)?$/.test(s);
 }
 
-export function log(...args) {
+export function log(...args: any) {
   return; // comment this line to enable logs
   console.log(...args);
 }
 
 // function to compare two objects deeply
-export function isEqual(a, b) {
+export function isEqual(a: object, b: object) {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
 // function to get available palettes based on number of series + defaults
-export function getAvailablePalettes(numSeries) {
+export function getAvailablePalettes(numSeries: number) {
   const keys = Object.keys(palettes);
   const availabelPalettes = [
     ...keys.slice(1, 7),
@@ -36,14 +37,14 @@ export function getMapPalettes() {
 }
 
 // function to get palette colors by name
-export function getPalette(palette) {
-  return palettes[palette];
+export function getPalette(palette: any) {
+  return (palettes as any)[palette];
 }
 
 // move a column of the data matrix to first position
-export function moveDataColumn(data, columnName) {
+export function moveDataColumn(data: any, columnName: string) {
   const columnIndex = data[0].indexOf(columnName);
-  const newData = data.map((row) => {
+  const newData = data.map((row: any) => {
     const withouthCol = [
       ...row.slice(0, columnIndex),
       ...row.slice(columnIndex + 1),
@@ -55,14 +56,24 @@ export function moveDataColumn(data, columnName) {
 }
 
 // transpose data matrix
-export function transposeData(data) {
-  return data[0].map((_, colIndex) => data.map((row) => row[colIndex]));
+export function transposeData(data: any) {
+  return data[0].map((_: any, colIndex: number) =>
+    data.map((row: any) => row[colIndex])
+  );
 }
 
 // function to get values for basic charts
-export function getBasicValues({ config, data, chart }) {
+export function getBasicValues({
+  config,
+  data,
+  chart,
+}: {
+  config: ChartConfigType;
+  data: any;
+  chart: string;
+}) {
   const categories = data[0].slice(1) || [];
-  const series = data.slice(1).map((row) => {
+  const series = data.slice(1).map((row: any) => {
     const [name, ...data] = row;
     return {
       type: chart,
@@ -76,7 +87,7 @@ export function getBasicValues({ config, data, chart }) {
     chart,
     dataSource: {
       categories,
-      series: series.map((s) => {
+      series: series.map((s: any) => {
         return { ...s, type: chart };
       }),
     },
@@ -84,8 +95,16 @@ export function getBasicValues({ config, data, chart }) {
 }
 
 // function to get values for pie charts
-export function getPieValues({ config, data, chart }) {
-  const series = data.slice(1).map((row) => {
+export function getPieValues({
+  config,
+  data,
+  chart,
+}: {
+  config: ChartConfigType;
+  data: any;
+  chart: string;
+}) {
+  const series = data.slice(1).map((row: any) => {
     const [name, ...data] = row;
     return {
       type: chart,
@@ -110,7 +129,7 @@ export function getPieValues({ config, data, chart }) {
         labelLine: {
           show: false,
         },
-        data: series.map((row) => {
+        data: series.map((row: any) => {
           return {
             name: row.name,
             value: row.data[0],
@@ -123,8 +142,16 @@ export function getPieValues({ config, data, chart }) {
 }
 
 // function to get values for map charts
-export function getMapValues({ config, data, chart }) {
-  const objectData = data.slice(1).map((row) => {
+export function getMapValues({
+  config,
+  data,
+  chart,
+}: {
+  config: ChartConfigType;
+  data: any;
+  chart: string;
+}) {
+  const objectData = data.slice(1).map((row: any) => {
     return {
       name: row[0],
       value: row[1],
@@ -147,25 +174,25 @@ export function getMapValues({ config, data, chart }) {
 }
 
 //create a functions to generate a series of random numbers between a range of values
-export function getRandomInt(min, max) {
+export function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 //create a functions  to move a number in a range of values positive and negative
-export function moveNumber(number, min, max) {
+export function moveNumber(n: number, min: number, max: number) {
   const move = getRandomInt(min, max);
-  return number + move;
+  return n + move;
 }
 //create a function to fill an array of a given length with random numbers
-export function fillArray(length, min, max) {
+export function fillArray(length: number, min: number, max: number) {
   return Array.from({ length }, () => getRandomInt(min, max));
 }
 //create a function to generate a random array of arrays
-export function generateRandomData(length, min, max) {
+export function generateRandomData(length: number, min: number, max: number) {
   return Array.from({ length }, () => fillArray(length, min, max));
 }
 
 // create a function to generate words from a string of words
-export function generateWords(words, length) {
+export function generateWords(words: string, length: number) {
   const wordsArray = words.split(' ');
   return Array.from(
     { length },
@@ -174,21 +201,21 @@ export function generateWords(words, length) {
 }
 
 //return a letter of the alphabet
-export function getLetter(index) {
+export function getLetter(index: number) {
   return String.fromCharCode(65 + index);
 }
 
 //generate a string given the the length from random letters of the alphabet
-export function generateCategories(length) {
+export function generateCategories(length: number) {
   return Array.from({ length }, (_, index) => getLetter(getRandomInt(0, 25)));
 }
 
 //generate a string given the the length from random letters of the alphabet
-export function generateItems(prefix, length) {
+export function generateItems(prefix: string, length: number) {
   return Array.from({ length }, (_, index) => `${prefix} ${index + 1}`);
 }
 
-export function formatTooltip(value, config) {
+export function formatTooltip(value: any, config: any) {
   const formatter = config.tooltipFormatter;
   const valueFormatter = config.valueFormatter;
   let valueFormatted = value;
@@ -224,7 +251,7 @@ export function generateColors(hexStringColor: string, resourceLimits: number) {
 }
 
 //a function that convert a hex color to hsla
-export function hexToHsla(hex, alpha = 1) {
+export function hexToHsla(hex: string, alpha = 1) {
   let r = 0,
     g = 0,
     b = 0;

@@ -24,7 +24,7 @@ function Home() {
     }, 300);
   }
 
-  function handleChangeData(d) {
+  function handleChangeData(d: any) {
     if (!config.palette) {
       const numSeries = d.length - 1;
       let palette = getAvailablePalettes(numSeries)[0];
