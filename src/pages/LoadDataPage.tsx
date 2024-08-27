@@ -44,7 +44,7 @@ function Home() {
       <>
         <h4 className="text-4xl">Load remote data</h4>
         <div className="my-4">
-          Here some source of real data you can use here:
+          Here some Open Data sources of real data you can use here:
           <a
             href="https://www.dati.gov.it/view-dataset?groups=governo&organization=pcm-dipartimento-trasformazione-digitale"
             className="link link-primary"
