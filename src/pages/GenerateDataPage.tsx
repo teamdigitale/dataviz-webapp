@@ -1,23 +1,23 @@
-import { getAvailablePalettes, getPalette, transposeData } from '../lib/utils';
-import DataTable from '../components/DataTable';
+import { useEffect } from "react";
+import { getAvailablePalettes, getPalette, transposeData } from "../lib/utils";
+import DataTable from "../components/DataTable";
 
-import useStoreState from '../lib/store';
-import GenerateRandomData from '../components/GenerateRandomData';
-import { downloadCSV, dataToCSV } from '../lib/downloadUtils';
+import useStoreState from "../lib/store";
+import GenerateRandomData from "../components/GenerateRandomData";
+import { downloadCSV, dataToCSV } from "../lib/downloadUtils";
 
 function Home() {
-  const config = useStoreState((state) => state.config);
-  const setConfig = useStoreState((state) => state.setConfig);
-  const data = useStoreState((state) => state.data);
-  const setData = useStoreState((state) => state.setData);
-  const rawData = useStoreState((state) => state.rawData);
+  const { config, setConfig, rawData, setRawData, resetItem, setData } =
+    useStoreState((state) => state);
 
   function reset() {
+    resetItem();
     setData(null);
+    setRawData(null);
   }
   function transpose() {
-    setData(null);
-    const transposed = transposeData(data);
+    setRawData(null);
+    const transposed = transposeData(rawData);
     // setChart("");
     setTimeout(() => {
       handleChangeData(transposed);
@@ -32,24 +32,28 @@ function Home() {
       config.colors = getPalette(palette);
       setConfig(config);
     }
-    setData(d);
+    setRawData(d);
   }
+
+  useEffect(() => {
+    reset();
+  }, []);
 
   return (
     <div>
       <>
         <h4 className="text-4xl font-bold">Generate data</h4>
-        <GenerateRandomData setData={setData} />
+        <GenerateRandomData setData={setRawData} />
       </>
 
-      {data && (
+      {rawData && (
         <div>
           <DataTable
-            data={data}
+            data={rawData}
             reset={reset}
             transpose={transpose}
             download={() => {
-              downloadCSV(dataToCSV(data), 'generated-data-' + Date.now());
+              downloadCSV(dataToCSV(rawData), "generated-data-" + Date.now());
             }}
           />
         </div>

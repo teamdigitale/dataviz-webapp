@@ -1,23 +1,23 @@
-import { getAvailablePalettes, getPalette, transposeData } from '../lib/utils';
-import DataTable from '../components/DataTable';
+import { useEffect } from "react";
+import { getAvailablePalettes, getPalette, transposeData } from "../lib/utils";
+import DataTable from "../components/DataTable";
 
-import useStoreState from '../lib/store';
-import LoadSource from '../components/LoadSource';
-import { downloadCSV, dataToCSV } from '../lib/downloadUtils';
+import useStoreState from "../lib/store";
+import LoadSource from "../components/LoadSource";
+import { downloadCSV, dataToCSV } from "../lib/downloadUtils";
 
 function Home() {
   const config = useStoreState((state) => state.config);
   const setConfig = useStoreState((state) => state.setConfig);
-  const data = useStoreState((state) => state.data);
-  const setData = useStoreState((state) => state.setData);
   const rawData = useStoreState((state) => state.rawData);
+  const setRawData = useStoreState((state) => state.setRawData);
 
   function reset() {
-    setData(null);
+    setRawData(null);
   }
   function transpose() {
-    setData(null);
-    const transposed = transposeData(data);
+    setRawData(null);
+    const transposed = transposeData(rawData);
     // setChart("");
     setTimeout(() => {
       handleChangeData(transposed);
@@ -32,23 +32,27 @@ function Home() {
       config.colors = getPalette(palette);
       setConfig(config);
     }
-    setData(d);
+    setRawData(d);
   }
+
+  useEffect(() => {
+    reset();
+  }, []);
 
   return (
     <div>
       <>
         <h4 className="text-4xl">Load remote data</h4>
-        <LoadSource setRawData={setData} />
+        <LoadSource setRawData={setRawData} />
       </>
-      {data && (
+      {rawData && (
         <div>
           <DataTable
-            data={data}
+            data={rawData}
             reset={reset}
             transpose={transpose}
             download={() => {
-              downloadCSV(dataToCSV(data), 'remote-data-' + Date.now());
+              downloadCSV(dataToCSV(rawData), "remote-data-" + Date.now());
             }}
           />
         </div>

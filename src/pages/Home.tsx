@@ -1,16 +1,16 @@
-import { getAvailablePalettes, getPalette, transposeData } from '../lib/utils';
-import DataTable from '../components/DataTable';
-import RenderChart from '../components/RenderChart';
+import { getAvailablePalettes, getPalette, transposeData } from "../lib/utils";
+import DataTable from "../components/DataTable";
+import RenderChart from "../components/RenderChart";
 
-import useStoreState from '../lib/store';
-import CSVUpload from '../components/CSVUpload';
-import SelectChart from '../components/SelectChart';
-import ChartOptions from '../components/ChartOptions';
-import { useMachine } from '@xstate/react';
-import stepMachine from '../lib/stepMachine';
-import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-import { dataToCSV, downloadCSV } from '../lib/downloadUtils';
-import ChartSave from '../components/ChartSave';
+import useStoreState from "../lib/store";
+import CSVUpload from "../components/CSVUpload";
+import SelectChart from "../components/SelectChart";
+import ChartOptions from "../components/ChartOptions";
+import { useMachine } from "@xstate/react";
+import stepMachine from "../lib/stepMachine";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { dataToCSV, downloadCSV } from "../lib/downloadUtils";
+import ChartSave from "../components/ChartSave";
 
 function Home() {
   const [state, send] = useMachine(stepMachine);
@@ -55,13 +55,13 @@ function Home() {
     }
     // setChart("");
     setData(d);
-    send('CHOOSE' as any);
+    send({ type: "CONFIG" });
   }
   const haveData = data && data[0].length > 0 ? true : false;
 
   function handleUpload(d: any) {
     setData(d);
-    send({ type: 'NEXT' });
+    send({ type: "NEXT" });
   }
 
   function handleSaveItem({ name, id }: { name: string; id: string }) {
@@ -76,26 +76,26 @@ function Home() {
       data,
     };
 
-    console.log('new item', item);
+    console.log("new item", item);
     const exists = list?.find((item) => item.id === id);
-    console.log('exists', exists ? true : false);
+    console.log("exists", exists ? true : false);
     if (!exists) {
       addItem(item as any);
     } else {
-      console.log('update item', id, item);
+      console.log("update item", id, item);
       updateItem(item as any);
     }
-    send({ type: 'NEXT' });
+    send({ type: "NEXT" });
     setTimeout(() => {
       resetItem();
     }, 100);
   }
 
   function getStepIndex() {
-    if (state.matches('idle')) return 0;
-    if (state.matches('input')) return 1;
-    if (state.matches('config')) return 2;
-    if (state.matches('done')) return 3;
+    if (state.matches("idle")) return 0;
+    if (state.matches("input")) return 1;
+    if (state.matches("config")) return 2;
+    if (state.matches("done")) return 3;
     return 0;
   }
 
@@ -106,33 +106,33 @@ function Home() {
           <ul className="steps steps-vertical">
             <li
               className={`step ${
-                getStepIndex() >= 0 ? 'step-primary text-primary' : ''
+                getStepIndex() >= 0 ? "step-primary text-primary" : ""
               }`}
-              onClick={() => send({ type: 'IDLE' })}
+              onClick={() => send({ type: "IDLE" })}
             >
-              {list && list?.length > 0 ? 'My Charts' : 'Welcome'}
+              {list && list?.length > 0 ? "My Charts" : "Welcome"}
             </li>
             <li
               className={`step ${
-                getStepIndex() >= 1 ? 'step-primary text-primary' : ''
+                getStepIndex() >= 1 ? "step-primary text-primary" : ""
               }`}
-              onClick={() => send({ type: 'INPUT' })}
+              onClick={() => send({ type: "INPUT" })}
             >
               Upload data
             </li>
             <li
               className={`step ${
-                getStepIndex() >= 2 ? 'step-primary text-primary' : ''
+                getStepIndex() >= 2 ? "step-primary text-primary" : ""
               }`}
-              onClick={() => (data ? send({ type: 'CONFIG' }) : null)}
+              onClick={() => (data ? send({ type: "CONFIG" }) : null)}
             >
               Configure
             </li>
             <li
               className={`step ${
-                getStepIndex() >= 3 ? 'step-primary text-primary' : ''
+                getStepIndex() >= 3 ? "step-primary text-primary" : ""
               }`}
-              onClick={() => (data ? send({ type: 'DONE' }) : null)}
+              onClick={() => (data ? send({ type: "DONE" }) : null)}
             >
               Save
             </li>
@@ -142,24 +142,58 @@ function Home() {
       <PanelResizeHandle className="bg-primary w-1" />
       <Panel minSize={20} className="bg-base-100">
         <div className="p-4">
-          {state.matches('idle') && (
+          {state.matches("idle") && (
             <div className="container">
               <h4 className="text-4xl font-bold">
-                {list && list.length ? 'My Charts' : 'Welcome'}
+                {list && list.length ? "My Charts" : "Welcome"}
               </h4>
+              {!data && (!list || list?.length === 0) && (
+                <div className="my-5 prose">
+                  <h3>Quickstart</h3> If you want start quickly you can generate
+                  some dummy data for test purpose from the section{" "}
+                  <a className="link link-primary" href="/generate-data">
+                    Generate Data
+                  </a>{" "}
+                  or from the section{" "}
+                  <a className="link link-primary" href="/load-data">
+                    Load Data
+                  </a>{" "}
+                  and download th data in CSV format. Then you can upload the
+                  data e create a new chart.
+                  <h3>How to use:</h3>
+                  follow these steps to create a new chart:
+                  <ul>
+                    <li>Click on "Create New Chart" to start</li>
+                    <li>Upload your data</li>
+                    <li>Configure your chart</li>
+                    <li>Save your chart</li>
+                  </ul>
+                  <hr />
+                </div>
+              )}
               <div>
                 <div className="flex my-5 gap-4">
-                  <div
-                    className="btn btn-primary"
-                    onClick={() => send({ type: 'INPUT' })}
-                  >
-                    + Create New chart
-                  </div>
+                  {!data && (
+                    <div
+                      className="btn btn-primary"
+                      onClick={() => send({ type: "INPUT" })}
+                    >
+                      + Create New chart
+                    </div>
+                  )}
+                  {data && (
+                    <div
+                      className="btn btn-primary"
+                      onClick={() => send({ type: "CONFIG" })}
+                    >
+                      Congfigure chart
+                    </div>
+                  )}
                   {data && (
                     <div
                       className="btn btn-outline btn-primary"
                       onClick={() => {
-                        send({ type: 'IDLE' });
+                        send({ type: "IDLE" });
                         resetItem();
                       }}
                     >
@@ -181,7 +215,7 @@ function Home() {
                     <button
                       className="btn btn-outline btn-primary btn-sm"
                       onClick={() => {
-                        send({ type: 'CONFIG' });
+                        send({ type: "CONFIG" });
                         loadItem(item);
                       }}
                     >
@@ -190,8 +224,8 @@ function Home() {
                     <button
                       className="btn btn-outline btn-error btn-sm"
                       onClick={() => {
-                        removeItem(item?.id ?? '');
-                        send({ type: 'IDLE' });
+                        removeItem(item?.id ?? "");
+                        send({ type: "IDLE" });
                       }}
                     >
                       delete
@@ -202,14 +236,14 @@ function Home() {
             </div>
           )}
 
-          {state.matches('input') && (
+          {state.matches("input") && (
             <div className="container">
               <h4 className="text-4xl font-bold">Upload your data</h4>
               <CSVUpload setData={(d: any) => handleUpload(d)} />
             </div>
           )}
 
-          {state.matches('config') && (
+          {state.matches("config") && (
             <div className="container">
               <h4 className="text-4xl font-bold">Configure Chart</h4>
               <SelectChart setChart={setChart} chart={chart} />
@@ -221,14 +255,14 @@ function Home() {
               />
             </div>
           )}
-          {state.matches('done') && (
+          {state.matches("done") && (
             <div className="container">
               <h4 className="text-4xl font-bold">Save Chart</h4>
               Give a name to your chart and save it
               <ChartSave
                 chart={chart}
-                name={name || ''}
-                id={id || ''}
+                name={name || ""}
+                id={id || ""}
                 save={(obj) => handleSaveItem(obj)}
               />
             </div>
@@ -245,7 +279,7 @@ function Home() {
                 reset={reset}
                 transpose={transpose}
                 download={() => {
-                  downloadCSV(dataToCSV(data), 'selected-data-' + Date.now());
+                  downloadCSV(dataToCSV(data), "selected-data-" + Date.now());
                 }}
               />
               {chart && (
@@ -255,7 +289,7 @@ function Home() {
                     <div className="w-full flex justify-end">
                       <button
                         className="my-5 btn btn-primary"
-                        onClick={() => send({ type: 'NEXT' })}
+                        onClick={() => send({ type: "NEXT" })}
                       >
                         SAVE / EXPORT
                       </button>
