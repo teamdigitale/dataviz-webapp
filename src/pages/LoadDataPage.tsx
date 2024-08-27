@@ -7,12 +7,12 @@ import LoadSource from "../components/LoadSource";
 import { downloadCSV, dataToCSV } from "../lib/downloadUtils";
 
 function Home() {
-  const config = useStoreState((state) => state.config);
-  const setConfig = useStoreState((state) => state.setConfig);
-  const rawData = useStoreState((state) => state.rawData);
-  const setRawData = useStoreState((state) => state.setRawData);
+  const { config, setConfig, rawData, setRawData, resetItem, setData } =
+    useStoreState((state) => state);
 
   function reset() {
+    resetItem();
+    setData(null);
     setRawData(null);
   }
   function transpose() {
