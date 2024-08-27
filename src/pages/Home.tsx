@@ -289,7 +289,7 @@ function Home() {
                     <div className="w-full flex justify-end">
                       <button
                         className="my-5 btn btn-primary"
-                        onClick={() => send({ type: "NEXT" })}
+                        onClick={() => send({ type: "DONE" })}
                       >
                         SAVE / EXPORT
                       </button>
