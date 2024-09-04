@@ -1,33 +1,37 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-import './style/index.css';
+import "./style/index.css";
 
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Layout from './components/Layout';
-import HomePage from './pages/Home';
-import AboutPage from './pages/About';
-import DataPage from './pages/GenerateDataPage';
-import LoadDataPage from './pages/LoadDataPage';
-import GenerateDataPage from './pages/GenerateDataPage';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Layout from "./components/Layout";
+import HomePage from "./pages/Home";
+import AboutPage from "./pages/About";
+import LoadDataPage from "./pages/LoadDataPage";
+import GenerateDataPage from "./pages/GenerateDataPage";
+import ShowChartPage from "./pages/ShowChartPage";
 
 function App() {
   const router = createBrowserRouter([
     {
-      path: '/',
+      path: "/",
       element: <HomePage />,
     },
     {
-      path: '/load-data',
+      path: "/load-data",
       element: <LoadDataPage />,
     },
     {
-      path: '/generate-data',
+      path: "/generate-data",
       element: <GenerateDataPage />,
     },
     {
-      path: '/about',
+      path: "/about",
       element: <AboutPage />,
+    },
+    {
+      path: "/chart/:id",
+      element: <ShowChartPage />,
     },
   ]);
 
@@ -38,6 +42,6 @@ function App() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <App />
 );
