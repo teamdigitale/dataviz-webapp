@@ -10,6 +10,7 @@ import AboutPage from "./pages/About";
 import LoadDataPage from "./pages/LoadDataPage";
 import GenerateDataPage from "./pages/GenerateDataPage";
 import ShowChartPage from "./pages/ShowChartPage";
+import AuthPage from "./pages/AuthPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -32,6 +33,10 @@ function App() {
     {
       path: "/chart/:id",
       element: <ShowChartPage />,
+    },
+    {
+      path: "/enter",
+      element: <AuthPage />,
     },
   ]);
 

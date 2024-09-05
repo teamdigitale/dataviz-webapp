@@ -70,7 +70,9 @@ export default function Header() {
         </ul>
       </div>
       <div className="navbar-end px-4">
-        <a className="btn btn-ghost">Log In</a>
+        <a className="btn btn-ghost" href="/enter">
+          Sign In / Up
+        </a>
       </div>
     </div>
   );
