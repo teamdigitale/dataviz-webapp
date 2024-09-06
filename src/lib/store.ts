@@ -1,17 +1,17 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 // import { immer } from 'zustand/middleware/immer';
-import { defaultConfig } from './constants';
-import { MatrixType, FieldDataType, StoreStateType } from '../types';
+import { defaultConfig } from "./constants";
+import { MatrixType, FieldDataType, StoreStateType } from "../types";
 
 const useStoreState = create<StoreStateType>()(
   persist(
     (set) => ({
       data: null,
-      chart: 'bar',
+      chart: "bar",
       config: defaultConfig,
       rawData: null,
-      name: '',
+      name: "",
       id: null,
       list: [],
       setId: (value: string) => set(() => ({ id: value })),
@@ -33,10 +33,10 @@ const useStoreState = create<StoreStateType>()(
       resetItem: () =>
         set(() => ({
           data: null,
-          chart: 'bar',
+          chart: "bar",
           config: defaultConfig,
           rawData: null,
-          name: '',
+          name: "",
           id: null,
         })),
       addItem: (item: FieldDataType) => {
@@ -56,8 +56,11 @@ const useStoreState = create<StoreStateType>()(
             return i;
           }),
         })),
+      setList: (items: FieldDataType[]) => {
+        set((state) => ({ list: [...items] }));
+      },
     }),
-    { name: 'ChartsStore' }
+    { name: "ChartsStore" }
   )
 );
 export default useStoreState;

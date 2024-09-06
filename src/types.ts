@@ -94,3 +94,11 @@ export type ChartSaveProps = {
   id?: string;
   save: (obj: { name: string; id: string }) => void;
 };
+
+export interface RemoteStoreStateType {
+  list: [] | FieldDataType[];
+  addItem: (item: FieldDataType) => void;
+  removeItem: (id: string) => void;
+  updateItem: (item: FieldDataType) => void;
+  setList: (items: FieldDataType[]) => void;
+}
