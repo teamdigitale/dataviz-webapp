@@ -56,9 +56,6 @@ const useStoreState = create<StoreStateType>()(
             return i;
           }),
         })),
-      setList: (items: FieldDataType[]) => {
-        set((state) => ({ list: [...items] }));
-      },
     }),
     { name: "ChartsStore" }
   )

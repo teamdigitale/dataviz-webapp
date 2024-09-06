@@ -2,7 +2,7 @@ import { getAvailablePalettes, getPalette, transposeData } from "../lib/utils";
 import DataTable from "../components/DataTable";
 import RenderChart from "../components/RenderChart";
 
-import useChartsStoreState from "../lib/chartListStore";
+// import useChartsStoreState from "../lib/chartListStore";
 import useStoreState from "../lib/store";
 import CSVUpload from "../components/CSVUpload";
 import SelectChart from "../components/SelectChart";
@@ -30,11 +30,14 @@ function Home() {
 
     loadItem,
     resetItem,
+    addItem,
+    removeItem,
+    updateItem,
   } = useStoreState((state) => state);
 
-  const { addItem, removeItem, updateItem } = useChartsStoreState(
-    (state) => state
-  );
+  // const { addItem, removeItem, updateItem } = useChartsStoreState(
+  //   (state) => state
+  // );
 
   function reset() {
     setData(null);
@@ -67,12 +70,12 @@ function Home() {
     send({ type: "NEXT" });
   }
 
-   function handleSaveItem({ name, id }: { name: string; id: string }) {
-    // setName(name);
-    // setId(id);
+  function handleSaveItem({ name, id }: { name: string; id: string }) {
+    setName(name);
+    setId(id);
 
     const item = {
-      // id,
+      id,
       name,
       chart,
       config,
@@ -80,17 +83,14 @@ function Home() {
     };
 
     console.log("new item", item);
-    // const exists = list?.find((item) => item.id === id);
-    // console.log("exists", exists ? true : false);
-    // if (!exists) {
-    //   addItem(item as any);
-    // } else {
-    //   console.log("update item", id, item);
-    //   updateItem(item as any);
-    // }
-
-
-
+    const exists = list?.find((item) => item.id === id);
+    console.log("exists", exists ? true : false);
+    if (!exists) {
+      addItem(item as any);
+    } else {
+      console.log("update item", id, item);
+      updateItem(item as any);
+    }
     send({ type: "NEXT" });
     setTimeout(() => {
       resetItem();
