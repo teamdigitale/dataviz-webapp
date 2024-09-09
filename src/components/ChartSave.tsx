@@ -1,40 +1,59 @@
-import dayjs from 'dayjs';
-import { nanoid } from 'nanoid';
-import { useForm } from 'react-hook-form';
-import { ChartSaveProps } from '../types';
+import dayjs from "dayjs";
+import { useForm } from "react-hook-form";
+import * as api from "../lib/api";
 
-function ChartSave({ chart, name, id, save }: ChartSaveProps) {
-  const defaultName = `${chart}chart-${dayjs(Date.now()).format(
-    'YYYY-MM-DD_HH-mm'
+function ChartSave({ item, handleSave }: any) {
+  const defaultName = `${item.chart}chart-${dayjs(Date.now()).format(
+    "YYYY-MM-DD_HH-mm"
   )}`;
-  const generatedId = nanoid();
+  // const generatedId = nanoid();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: name || defaultName,
-      id: id || generatedId,
+      id: item?.id || "",
+      name: item?.name || defaultName,
+      description: item?.description || "",
+      publish: item?.published || true,
     },
   });
 
-  const onSubmit = (data: { id: string; name: string }) => {
-    const { id, name } = data;
-    save({ id, name });
-  };
-  if (!chart) {
-    return <div className="my-5">Please choose a chart type</div>;
+  function saveChart(formData: any) {
+    const { id = "", name, description = "", publish = false } = formData;
+    console.log("Save chart id", id);
+    const payload = {
+      name,
+      description,
+      publish,
+      chart: item.chart,
+      config: item.config,
+      data: item.data,
+    };
+    console.log("Save chart", JSON.stringify(payload, null, 2));
+    return api.upsertChart(payload, id);
   }
 
+  const onSubmit = async (formData: any) => {
+    const result = await saveChart(formData);
+    console.log("onSubmit", result);
+    if (result) {
+      handleSave();
+    }
+  };
+
+  if (!item.chart) {
+    return <div className="my-5">Please choose a item.chart type</div>;
+  }
+  console.log("errors", errors);
   return (
-    <div className="bg-base-200 p-4 rounded-box">
+    <div className="my-5 bg-base-200 p-4 rounded-box">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          Give a name to your chart and save it
+          <input type="hidden" {...register("id", { required: false })} />
           <div className="form-control">
             <label className="label">Chart name</label>
-            <input type="hidden" {...register('id', { required: true })} />
             <input
               type="text"
               className="input w-full"
@@ -42,13 +61,38 @@ function ChartSave({ chart, name, id, save }: ChartSaveProps) {
               // value={`${chart}chart-${dayjs(Date.now()).format(
               //   'YYYY-MM-DD_HH-mm'
               // )}`}
-              {...register('name', { required: true })}
+              {...register("name", { required: true })}
             />
-            {errors['name'] && (
-              <span className="bg-danger">This field is required</span>
+            {errors["name"] && (
+              <span className="text-danger">This field is required</span>
             )}
           </div>
-          <button type="submit" className="btn btn-primary mt-5">
+          <div className="form-control">
+            <label className="label">Description</label>
+            <input
+              type="text"
+              {...register("description", { required: false })}
+              className="textarea w-full"
+              placeholder="Description"
+            />
+          </div>
+          <div className="my-3">
+            <div className="flex items-center ">
+              <input
+                id="remember-me"
+                type="checkbox"
+                className="h-4 w-4 rounded"
+                {...register("publish", { required: false })}
+              />
+              <label
+                htmlFor="remember-me"
+                className="ml-3 block text-sm leading-6 "
+              >
+                Publish
+              </label>
+            </div>
+          </div>
+          <button type="submit" className="btn btn-primary full my-3">
             Save
           </button>
         </div>

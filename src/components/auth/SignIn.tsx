@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import * as api from "../../lib/api";
 
-const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 function SignIn({ setLogin }: { setLogin: (login: boolean) => void }) {
   let navigate = useNavigate();
   const {
@@ -16,34 +16,17 @@ function SignIn({ setLogin }: { setLogin: (login: boolean) => void }) {
     setMessage("");
     const { email, password } = submittedData;
     console.log(submittedData);
-    console.log(SERVER_URL);
     try {
-      const response = await fetch(`${SERVER_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      console.log(response.status);
-      if (response.status === 200) {
-        const data = await response.json();
-        console.log("response", data);
-
-        if (submittedData["remember-me"]) {
-          console.log("remember me!");
-          // localStorage.setItem("token", data.token);
-        }
-        sessionStorage.setItem("token", data.accessToken);
+      const rememberMe = submittedData["remember-me"] ?? false;
+      const result = await api.login({ email, password, rememberMe });
+      if (result) {
         navigate("/");
       } else {
-        const data = await response.json();
-        if (data.message) {
-          setMessage(data.message);
-        }
+        setMessage("Error while logging in");
       }
     } catch (error) {
       console.error("Error:", error);
+      setMessage("" + error);
     }
   };
 

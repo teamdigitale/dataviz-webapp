@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-// import { immer } from 'zustand/middleware/immer';
 import { defaultConfig } from "./constants";
-import { MatrixType, FieldDataType, StoreStateType } from "../types";
+import { MatrixType, StoreStateType } from "../types";
+// import { immer } from 'zustand/middleware/immer';
 
 const useStoreState = create<StoreStateType>()(
   persist(
@@ -11,9 +11,10 @@ const useStoreState = create<StoreStateType>()(
       chart: "bar",
       config: defaultConfig,
       rawData: null,
+      description: "",
+      publish: false,
       name: "",
       id: null,
-      list: [],
       setId: (value: string) => set(() => ({ id: value })),
       setName: (value: string) => set(() => ({ name: value })),
       setConfig: (value: object) => set(() => ({ config: value })),
@@ -26,35 +27,21 @@ const useStoreState = create<StoreStateType>()(
           config: value.config,
           rawData: null,
           data: value.data,
+          description: value.description,
+          publish: value.publish,
           name: value.name,
           id: value.id,
-          // list: state.list.filter((i: FieldDataType) => i.id !== value.id),
         })),
       resetItem: () =>
         set(() => ({
-          data: null,
+          id: null,
+          name: "",
+          description: "",
           chart: "bar",
+          data: null,
           config: defaultConfig,
           rawData: null,
-          name: "",
-          id: null,
-        })),
-      addItem: (item: FieldDataType) => {
-        set((state) => ({ list: [...state.list, item] }));
-      },
-      removeItem: (id: string) => {
-        set((state) => ({
-          list: state.list.filter((i) => i.id !== id),
-        }));
-      },
-      updateItem: (newItem: FieldDataType) =>
-        set((state) => ({
-          list: state.list.map((i) => {
-            if (i.id === newItem.id) {
-              return newItem;
-            }
-            return i;
-          }),
+          publish: true,
         })),
     }),
     { name: "ChartsStore" }

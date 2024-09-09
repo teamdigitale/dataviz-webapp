@@ -2,7 +2,7 @@ import { getAvailablePalettes, getPalette, transposeData } from "../lib/utils";
 import DataTable from "../components/DataTable";
 import RenderChart from "../components/RenderChart";
 
-// import useChartsStoreState from "../lib/chartListStore";
+import useChartsStoreState from "../lib/chartListStore";
 import useStoreState from "../lib/store";
 import CSVUpload from "../components/CSVUpload";
 import SelectChart from "../components/SelectChart";
@@ -12,32 +12,40 @@ import stepMachine from "../lib/stepMachine";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { dataToCSV, downloadCSV } from "../lib/downloadUtils";
 import ChartSave from "../components/ChartSave";
+import { useEffect } from "react";
+import * as api from "../lib/api";
 
 function Home() {
   const [state, send] = useMachine(stepMachine);
   const {
-    id,
-    name,
     config,
     chart,
     data,
-    list,
+    id,
+    name,
+    description,
+    publish,
+
     setConfig,
     setChart,
     setData,
-    setName,
-    setId,
 
     loadItem,
     resetItem,
-    addItem,
-    removeItem,
-    updateItem,
   } = useStoreState((state) => state);
 
-  // const { addItem, removeItem, updateItem } = useChartsStoreState(
-  //   (state) => state
-  // );
+  const { list, setList } = useChartsStoreState((state) => state);
+
+  function fetchCharts() {
+    return api.getCharts().then((data) => {
+      console.log("data", data);
+      setList(data);
+    });
+  }
+
+  useEffect(() => {
+    fetchCharts();
+  }, []);
 
   function reset() {
     setData(null);
@@ -70,28 +78,16 @@ function Home() {
     send({ type: "NEXT" });
   }
 
-  function handleSaveItem({ name, id }: { name: string; id: string }) {
-    setName(name);
-    setId(id);
-
-    const item = {
-      id,
-      name,
-      chart,
-      config,
-      data,
-    };
-
-    console.log("new item", item);
-    const exists = list?.find((item) => item.id === id);
-    console.log("exists", exists ? true : false);
-    if (!exists) {
-      addItem(item as any);
-    } else {
-      console.log("update item", id, item);
-      updateItem(item as any);
-    }
-    send({ type: "NEXT" });
+  function handleDeleteChart(id?: string) {
+    if (!id) return;
+    console.log("delete chart", id);
+    return api
+      .deleteChart(id)
+      .then(() => fetchCharts())
+      .then(() => send({ type: "IDLE" }));
+  }
+  function handleSaveChart() {
+    fetchCharts().then(() => send({ type: "IDLE" }));
     setTimeout(() => {
       resetItem();
     }, 100);
@@ -229,10 +225,7 @@ function Home() {
                     </button>
                     <button
                       className="btn btn-outline btn-error btn-sm"
-                      onClick={() => {
-                        removeItem(item?.id ?? "");
-                        send({ type: "IDLE" });
-                      }}
+                      onClick={() => handleDeleteChart(item.id || "")}
                     >
                       delete
                     </button>
@@ -266,10 +259,16 @@ function Home() {
               <h4 className="text-4xl font-bold">Save Chart</h4>
               Give a name to your chart and save it
               <ChartSave
-                chart={chart}
-                name={name || ""}
-                id={id || ""}
-                save={(obj) => handleSaveItem(obj)}
+                item={{
+                  id,
+                  chart,
+                  name,
+                  description,
+                  publish,
+                  config,
+                  data,
+                }}
+                handleSave={() => handleSaveChart()}
               />
             </div>
           )}

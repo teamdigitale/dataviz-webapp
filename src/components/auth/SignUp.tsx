@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import * as api from "../../lib/api";
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 function SignUp({ setLogin }: { setLogin: (login: boolean) => void }) {
@@ -23,33 +24,14 @@ function SignUp({ setLogin }: { setLogin: (login: boolean) => void }) {
     console.log(submittedData);
     console.log(SERVER_URL);
     try {
-      const response = await fetch(`${SERVER_URL}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      console.log(response.status);
-      if (response.status === 200) {
-        const data = await response.json();
-        console.log("response", data);
-
-        if (submittedData["remember-me"]) {
-          console.log("remember me!");
-          // localStorage.setItem("token", data.token);
-        }
-        sessionStorage.setItem("token", data.accessToken);
-        navigate("/");
+      const result = await api.register({ email, password });
+      if (result) {
+        navigate("/login");
       } else {
-        const data = await response.json();
-        if (data.message) {
-          setMessage(data.message);
-        }
-        // reset();
+        setMessage("Error while registering");
       }
     } catch (error) {
-      console.error("Error:", error);
+      setMessage("" + error);
     }
   };
 
