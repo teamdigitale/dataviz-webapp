@@ -1,3 +1,4 @@
+import * as auth from "./auth";
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export async function upsertChart(
@@ -11,7 +12,7 @@ export async function upsertChart(
   },
   id?: string
 ) {
-  const token = sessionStorage.getItem("token");
+  const token = auth.getAuth();
   if (!token) return null;
 
   const url = id ? `${SERVER_URL}/charts/${id}` : `${SERVER_URL}/charts/`;
@@ -29,6 +30,11 @@ export async function upsertChart(
     body: payload,
   });
   console.log("upsertChart", response.status);
+
+  if (response.status === 401) {
+    return auth.logout();
+  }
+
   if (response.status === 200) {
     const data = await response.json();
     return data;
@@ -37,7 +43,7 @@ export async function upsertChart(
 }
 
 export async function deleteChart(id: string) {
-  const token = sessionStorage.getItem("token");
+  const token = auth.getAuth();
   if (!token) return null;
 
   const response = await fetch(`${SERVER_URL}/charts/${id}`, {
@@ -48,6 +54,9 @@ export async function deleteChart(id: string) {
     },
   });
   console.log("deleteChart", response.status);
+  if (response.status === 401) {
+    return auth.logout();
+  }
   if (response.status === 200) {
     const data = await response.json();
     return data;
@@ -56,7 +65,7 @@ export async function deleteChart(id: string) {
 }
 
 export async function getCharts() {
-  const token = sessionStorage.getItem("token");
+  const token = auth.getAuth();
   if (!token) return null;
   const response = await fetch(`${SERVER_URL}/charts`, {
     method: "GET",
@@ -65,6 +74,11 @@ export async function getCharts() {
       Authorization: `Bearer ${token}`,
     },
   });
+
+  console.log("getCharts", response.status);
+  if (response.status === 401) {
+    return auth.logout();
+  }
   if (response.status === 200) {
     const data = await response.json();
     return data;
@@ -91,11 +105,8 @@ export async function login({
   });
   if (response.status === 200) {
     const data = await response.json();
-    if (rememberMe) {
-      console.log("remember me!");
-      // localStorage.setItem("token", data.token);
-    }
-    sessionStorage.setItem("token", data.accessToken);
+
+    auth.saveAuth(data.accessToken, rememberMe || false);
     return true;
   } else {
     const data = await response.json();
@@ -121,7 +132,7 @@ export async function register({
   });
   if (response.status === 200) {
     const data = await response.json();
-    sessionStorage.setItem("token", data.accessToken);
+    auth.saveAuth(data.accessToken, false);
     return true;
   } else {
     const data = await response.json();

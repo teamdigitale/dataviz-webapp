@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { getAvailablePalettes, getPalette, transposeData } from "../lib/utils";
 import DataTable from "../components/DataTable";
 
-import useStoreState from "../lib/store";
+import useStoreState from "../lib/storeState";
 import LoadSource from "../components/LoadSource";
 import { downloadCSV, dataToCSV } from "../lib/downloadUtils";
 

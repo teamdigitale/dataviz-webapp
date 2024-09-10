@@ -3,7 +3,7 @@ import DataTable from "../components/DataTable";
 import RenderChart from "../components/RenderChart";
 
 import useChartsStoreState from "../lib/chartListStore";
-import useStoreState from "../lib/store";
+import useStoreState from "../lib/storeState";
 import CSVUpload from "../components/CSVUpload";
 import SelectChart from "../components/SelectChart";
 import ChartOptions from "../components/ChartOptions";
@@ -14,6 +14,7 @@ import { dataToCSV, downloadCSV } from "../lib/downloadUtils";
 import ChartSave from "../components/ChartSave";
 import { useEffect } from "react";
 import * as api from "../lib/api";
+import * as auth from "../lib/auth";
 
 function Home() {
   const [state, send] = useMachine(stepMachine);
@@ -44,6 +45,9 @@ function Home() {
   }
 
   useEffect(() => {
+    if (!auth.isAuth()) {
+      window.location.href = "/enter";
+    }
     fetchCharts();
   }, []);
 
@@ -210,10 +214,23 @@ function Home() {
                   >
                     <div className="grow flex flex-col">
                       <div className="text-lg">{item.name}</div>
-                      <small className="text-xxs text-content opacity-70 pr-4">
-                        {item.id}
+                      <small
+                        className={`text-xxs text-content opacity-70 pr-4 ${
+                          item.publish ? "text-success" : "text-content"
+                        }`}
+                      >
+                        {item.publish ? "public" : "private"}
                       </small>
                     </div>
+                    {item.publish && (
+                      <a
+                        className="btn btn-outline btn-success btn-sm"
+                        target="_blank"
+                        href={`/chart/${item.id}`}
+                      >
+                        view
+                      </a>
+                    )}
                     <button
                       className="btn btn-outline btn-primary btn-sm"
                       onClick={() => {
