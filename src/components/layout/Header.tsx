@@ -1,4 +1,20 @@
+import React, { useEffect, useState } from "react";
+import * as auth from "../../lib/auth";
+
 export default function Header() {
+  const logged = auth.useAuth();
+
+  // useEffect(() => {
+  //   if (!logged) {
+  //     window.location.href = "/enter";
+  //   }
+  // }, [logged]);
+
+  function logoutAndRedir() {
+    auth.logout();
+    // window.location.href = "/enter";
+  }
+
   return (
     <div className="navbar bg-primary text-primary-content shadow-xl mb-2">
       <div className="navbar-start">
@@ -70,9 +86,15 @@ export default function Header() {
         </ul>
       </div>
       <div className="navbar-end px-4">
-        <a className="btn btn-ghost" href="/enter">
-          Sign In / Up
-        </a>
+        {!logged ? (
+          <a className="btn btn-ghost" href="/enter">
+            Sign In / Up
+          </a>
+        ) : (
+          <button className="btn btn-ghost" onClick={() => logoutAndRedir()}>
+            Logout
+          </button>
+        )}
       </div>
     </div>
   );

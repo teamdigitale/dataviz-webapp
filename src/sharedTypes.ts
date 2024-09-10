@@ -13,6 +13,8 @@ export type FieldDataType = {
   data: MatrixType | null;
   name?: string;
   id?: string;
+  description?: string;
+  publish: boolean;
 };
 
 export type Step = {
