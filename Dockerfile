@@ -1,29 +1,21 @@
-# Fase 1: Build dell'applicazione React
-FROM oven/bun:latest AS builder
+# BASE stage
+FROM oven/bun:latest AS base
 
-# Imposta la directory di lavoro
 WORKDIR /app
 
-# Copia il file package.json e bun.lockb per installare le dipendenze
+# INSTALL stage
+FROM base AS install
 COPY package.json bun.lockb ./
-
-# Installa le dipendenze senza ricostruire l'intera immagine
 RUN bun install --frozen-lockfile
 
-# Copia il resto del codice dell'applicazione
-COPY . .
+# BUILD stage
 
-# Costruisci l'applicazione React
+FROM install AS build
+COPY . .
 RUN bun run build
 
-# Fase 2: Immagine di produzione leggera con Nginx
+# RELEASE stage
 FROM nginx:alpine AS release
-
-# Copia i file di build dalla fase precedente
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Esponi la porta 80 per l'applicazione
+COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
-
-# Avvia Nginx in modalità foreground
 CMD ["nginx", "-g", "daemon off;"]
