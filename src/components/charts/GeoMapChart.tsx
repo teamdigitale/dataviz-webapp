@@ -1,8 +1,8 @@
-import ReactEcharts from 'echarts-for-react';
-import { useRef, useEffect, useState } from 'react';
-import * as echarts from 'echarts';
-import { formatTooltip } from '../../lib/utils';
-import { ChartPropsType, FieldDataType } from '../../types';
+import ReactEcharts from "echarts-for-react";
+import { useRef, useEffect, useState } from "react";
+import * as echarts from "echarts";
+import { formatTooltip } from "../../lib/utils";
+import { ChartPropsType, FieldDataType } from "../../sharedTypes";
 
 function GeoMapChart({
   data,
@@ -19,7 +19,7 @@ function GeoMapChart({
     const config = data.config;
 
     const tooltip = {
-      trigger: 'item',
+      trigger: "item",
       // valueFormatter: (value) => {
       //   return formatTooltip(value, config);
       // },
@@ -44,28 +44,28 @@ function GeoMapChart({
     );
 
     const options = {
-      backgroundColor: config.background ? config.background : '#F2F7FC',
+      backgroundColor: config.background ? config.background : "#F2F7FC",
       color: config.colors,
       textStyle: {
-        fontFamily: 'Titillium Web, sans-serif',
+        fontFamily: "Titillium Web, sans-serif",
         fontSize: 12,
       },
       tooltip,
       visualMap: {
-        left: config.visualMapLeft ?? 'right',
-        orient: config.visualMapOrient ?? 'vertical',
+        left: config.visualMapLeft ?? "right",
+        orient: config.visualMapOrient ?? "vertical",
         min,
         max,
         text: [
           `${formatTooltip(max, config)} `,
           `${formatTooltip(min, config)} `,
         ],
-        backgroundColor: 'rgba(255,255,255,1)',
-        inverse: config.visualMapOrient === 'vertical',
+        backgroundColor: "rgba(255,255,255,1)",
+        inverse: config.visualMapOrient === "vertical",
         textStyle: {
           fontSize: 11,
           lineHeight: 0,
-          overflow: 'truncate',
+          overflow: "truncate",
         },
         padding: 15,
         calculable: false,
@@ -86,7 +86,7 @@ function GeoMapChart({
           ...otherConfig,
           label: {
             show: config.showMapLabels ? true : false,
-            color: 'inherit',
+            color: "inherit",
           },
           zoom: 1.2,
           roam: true,
@@ -94,14 +94,14 @@ function GeoMapChart({
           emphasis: {
             label: {
               show: config.showMapLabels,
-              color: 'inherit',
+              color: "inherit",
             },
             itemStyle: {
-              areaColor: config.areaColor || '#F2F7FC',
+              areaColor: config.areaColor || "#F2F7FC",
             },
           },
           map: id,
-          nameProperty: config.nameProperty ? config.nameProperty : 'NAME',
+          nameProperty: config.nameProperty ? config.nameProperty : "NAME",
         };
       }),
     };
@@ -111,7 +111,7 @@ function GeoMapChart({
   async function getGeoData() {
     if (data) {
       const config = data.config;
-      const url = config?.geoJsonUrl || '';
+      const url = config?.geoJsonUrl || "";
       if (url) {
         try {
           const response = await fetch(url);
@@ -137,10 +137,10 @@ function GeoMapChart({
     }
   });
 
-  const chartHeight = data.config?.h || '500px';
+  const chartHeight = data.config?.h || "500px";
   const options = data && geoData ? getOptions(data, geoData) : null;
   return (
-    <div key={id} id={'chart_' + id}>
+    <div key={id} id={"chart_" + id}>
       {!data && <div>Loading...</div>}
       {!geoData && <div>In attesa dei dati geo...</div>}
       {options && (
@@ -148,9 +148,9 @@ function GeoMapChart({
           option={options}
           ref={refCanvas}
           style={{
-            width: '100%',
+            width: "100%",
             height: chartHeight,
-            maxWidth: '100%',
+            maxWidth: "100%",
           }}
         />
       )}

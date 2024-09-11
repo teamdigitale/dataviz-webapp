@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from 'react';
-import ReactEcharts from 'echarts-for-react';
-import { ChartPropsType, FieldDataType } from '../../types';
-import { formatTooltip } from '../../lib/utils';
+import React, { useRef, useEffect } from "react";
+import ReactEcharts from "echarts-for-react";
+import { ChartPropsType, FieldDataType } from "../../sharedTypes";
+import { formatTooltip } from "../../lib/utils";
 
 function PieChart({
   id,
@@ -35,11 +35,11 @@ function PieChart({
     const config = data.config;
 
     const tooltip = {
-      trigger: 'item',
+      trigger: "item",
       confine: true,
-      extraCssText: 'z-index:1000;max-width:80%;white-space:pre-wrap;',
+      extraCssText: "z-index:1000;max-width:80%;white-space:pre-wrap;",
       textStyle: {
-        overflow: 'breakAll',
+        overflow: "breakAll",
         width: 150,
       },
       valueFormatter: (value: any) => {
@@ -47,11 +47,11 @@ function PieChart({
       },
       show: config.tooltip,
     };
-    let total = '';
+    let total = "";
     try {
       const serie = dataSource.series;
       let serieData;
-      if (typeof serie === 'object' && !Array.isArray(serie)) {
+      if (typeof serie === "object" && !Array.isArray(serie)) {
         serieData = serie.data;
       } else if (Array.isArray(serie)) {
         serieData = serie[0].data;
@@ -62,29 +62,29 @@ function PieChart({
 
     const showLabels = config.showPieLabels === false ? false : true;
     let options = {
-      backgroundColor: config.background ? config.background : '#F2F7FC',
+      backgroundColor: config.background ? config.background : "#F2F7FC",
       title: {
-        text: `${config?.totalLabel || 'Totale'}\n${total ? total : '0'}`,
-        left: 'center',
-        top: '50%',
-        textVerticalAlign: 'middle',
+        text: `${config?.totalLabel || "Totale"}\n${total ? total : "0"}`,
+        left: "center",
+        top: "50%",
+        textVerticalAlign: "middle",
         textStyle: {
-          fontFamily: 'Titillium Web',
-          fontWeight: '600',
+          fontFamily: "Titillium Web",
+          fontWeight: "600",
           fontSize: 16,
-          color: '#003366',
+          color: "#003366",
         },
       },
       color: config.colors || [
-        '#5470c6',
-        '#91cc75',
-        '#fac858',
-        '#ee6666',
-        '#73c0de',
-        '#3ba272',
-        '#fc8452',
-        '#9a60b4',
-        '#ea7ccc',
+        "#5470c6",
+        "#91cc75",
+        "#fac858",
+        "#ee6666",
+        "#73c0de",
+        "#3ba272",
+        "#fc8452",
+        "#9a60b4",
+        "#ea7ccc",
       ],
       series: {
         ...dataSource.series,
@@ -93,18 +93,18 @@ function PieChart({
         },
         label: {
           show: showLabels,
-          position: config.labeLine ? 'outside' : 'inside',
+          position: config.labeLine ? "outside" : "inside",
         },
       },
       textStyle: {
-        fontFamily: 'Titillium Web',
+        fontFamily: "Titillium Web",
         fontSize: 12,
       },
       tooltip,
       legend: {
-        type: 'scroll',
-        left: 'center',
-        top: config?.legendPosition || 'bottom',
+        type: "scroll",
+        left: "center",
+        top: config?.legendPosition || "bottom",
         show: config.legend ?? true,
       },
     };
@@ -114,20 +114,20 @@ function PieChart({
   if (!data) return <div>...</div>;
   let h = data.config?.h || 350;
   const responsive =
-    typeof data.config?.responsive === 'undefined'
+    typeof data.config?.responsive === "undefined"
       ? true
       : data.config.responsive;
   const chartHeight = responsive && isMobile ? (h / 100) * 80 : h;
 
   return (
-    <div key={id} id={'chart_' + id}>
+    <div key={id} id={"chart_" + id}>
       <ReactEcharts
         option={getOptions(data)}
         ref={refCanvas}
         style={{
           height: chartHeight,
-          width: '100%',
-          maxWidth: '100%',
+          width: "100%",
+          maxWidth: "100%",
         }}
       />
     </div>
