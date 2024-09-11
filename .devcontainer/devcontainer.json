@@ -3,7 +3,7 @@
 {
   "name": "Dataviz-Webapp",
   "dockerFile": "Dockerfile",
-  "runArgs": ["--name","dataviz-webapp"],
+  "runArgs": ["--name", "dataviz-webapp_devcontainer"],
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   },
