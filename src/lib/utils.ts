@@ -1,5 +1,5 @@
-import { palettes } from '../lib/constants';
-import { ChartConfigType, FieldDataType } from '../types';
+import { palettes } from "../lib/constants";
+import { ChartConfigType, FieldDataType } from "../sharedTypes";
 
 export function isNumeric(s: string) {
   /^[+-]?\d+(\.\d+)?$/.test(s);
@@ -23,7 +23,7 @@ export function getAvailablePalettes(numSeries: number) {
     ...keys.filter((k) => k.indexOf(`_${numSeries}_`) > -1),
   ].sort();
 
-  return ['default', ...availabelPalettes];
+  return ["default", ...availabelPalettes];
 }
 
 // function to get palette colors for map type, adds default colors
@@ -119,12 +119,12 @@ export function getPieValues({
     dataSource: {
       categories: [],
       series: {
-        type: 'pie',
-        radius: ['45%', '75%'],
+        type: "pie",
+        radius: ["45%", "75%"],
         avoidLabelOverlap: true,
         label: {
           show: true,
-          position: 'inside',
+          position: "inside",
         },
         labelLine: {
           show: false,
@@ -133,7 +133,7 @@ export function getPieValues({
           return {
             name: row.name,
             value: row.data[0],
-            itemStyle: { borderColor: 'white', borderWidth: 1 },
+            itemStyle: { borderColor: "white", borderWidth: 1 },
           };
         }),
       },
@@ -165,7 +165,7 @@ export function getMapValues({
       categories: [],
       series: [
         {
-          type: 'map',
+          type: "map",
           data: objectData,
         },
       ],
@@ -193,11 +193,11 @@ export function generateRandomData(length: number, min: number, max: number) {
 
 // create a function to generate words from a string of words
 export function generateWords(words: string, length: number) {
-  const wordsArray = words.split(' ');
+  const wordsArray = words.split(" ");
   return Array.from(
     { length },
     () => wordsArray[getRandomInt(0, wordsArray.length - 1)]
-  ).join(' ');
+  ).join(" ");
 }
 
 //return a letter of the alphabet
@@ -220,26 +220,26 @@ export function formatTooltip(value: any, config: any) {
   const valueFormatter = config.valueFormatter;
   let valueFormatted = value;
   if (formatter) {
-    if (formatter === 'percentage') {
+    if (formatter === "percentage") {
       valueFormatted = `${value}%`;
-    } else if (formatter === 'currency') {
-      valueFormatted = new Intl.NumberFormat('it-IT', {
-        style: 'currency',
-        currency: 'EUR',
+    } else if (formatter === "currency") {
+      valueFormatted = new Intl.NumberFormat("it-IT", {
+        style: "currency",
+        currency: "EUR",
       }).format(value);
-    } else if (formatter === 'number') {
-      valueFormatted = new Intl.NumberFormat('it-IT', {
-        style: 'decimal',
+    } else if (formatter === "number") {
+      valueFormatted = new Intl.NumberFormat("it-IT", {
+        style: "decimal",
       }).format(value);
     }
   }
-  return `${valueFormatted} ${valueFormatter ? valueFormatter : ''}\n`;
+  return `${valueFormatted} ${valueFormatter ? valueFormatter : ""}\n`;
 }
 
 //a function that given a color hex and a number of resourceLimits, generate different hex of same color
 export function generateColors(hexStringColor: string, resourceLimits: number) {
   const colors = [];
-  const colorHex = hexStringColor.replace('#', '');
+  const colorHex = hexStringColor.replace("#", "");
   const colorInt = parseInt(colorHex, 16);
   const step = Math.floor(colorInt / resourceLimits);
   for (let i = 0; i < resourceLimits; i++) {
@@ -256,13 +256,13 @@ export function hexToHsla(hex: string, alpha = 1) {
     g = 0,
     b = 0;
   if (hex.length === 4) {
-    r = parseInt('0x' + hex[1] + hex[1], 16);
-    g = parseInt('0x' + hex[2] + hex[2], 16);
-    b = parseInt('0x' + hex[3] + hex[3], 16);
+    r = parseInt("0x" + hex[1] + hex[1], 16);
+    g = parseInt("0x" + hex[2] + hex[2], 16);
+    b = parseInt("0x" + hex[3] + hex[3], 16);
   } else if (hex.length === 7) {
-    r = parseInt('0x' + hex[1] + hex[2], 16);
-    g = parseInt('0x' + hex[3] + hex[4], 16);
-    b = parseInt('0x' + hex[5] + hex[6], 16);
+    r = parseInt("0x" + hex[1] + hex[2], 16);
+    g = parseInt("0x" + hex[3] + hex[4], 16);
+    b = parseInt("0x" + hex[5] + hex[6], 16);
   }
   r /= 255;
   g /= 255;
@@ -303,9 +303,9 @@ export function generateGradient(
 ) {
   let colors = [];
   const [h, s, l, a] = hslaStringColor
-    .replace('hsla(', '')
-    .replace(')', '')
-    .split(',')
+    .replace("hsla(", "")
+    .replace(")", "")
+    .split(",")
     .map((v) => parseInt(v));
   const step = Math.floor(l / resourceLimits);
 

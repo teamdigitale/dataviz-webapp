@@ -1,9 +1,9 @@
-import { useState, useTransition } from 'react';
-import Papa from 'papaparse';
-import DataTable from './DataTable';
+import { useState, useTransition } from "react";
+import Papa from "papaparse";
+import DataTable from "./DataTable";
 
-import { log, transposeData, moveDataColumn } from '../lib/utils';
-import { MatrixType } from '../types';
+import { log, transposeData, moveDataColumn } from "../lib/utils";
+import { MatrixType } from "../sharedTypes";
 
 type selectOptionType = {
   value: string;
@@ -13,7 +13,7 @@ type selectOptionType = {
 function cleanupValue(v: string | number) {
   if (!v) return 0;
   try {
-    const value = parseFloat('' + v);
+    const value = parseFloat("" + v);
     return value;
   } catch (error) {
     return 0;
@@ -44,14 +44,14 @@ function UploadCSV({ setData }: { setData: Function }) {
       skipEmptyLines: true,
       complete: (results: any) => {
         const { data } = results;
-        log('RESULTS DATA', data);
+        log("RESULTS DATA", data);
         const c = getFirstOfMAtrix(data);
         const category = { value: c, label: c };
-        log('CATEGORY', category);
+        log("CATEGORY", category);
         const cols = getCols(data[0]);
-        log('COLS', cols);
+        log("COLS", cols);
         const series = cols.filter((i) => !isSameObject(i, category));
-        log('SERIES', series);
+        log("SERIES", series);
 
         startTransition(() => {
           setRawData(data);

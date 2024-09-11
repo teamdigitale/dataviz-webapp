@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { FieldDataType, RemoteStoreStateType } from "../types";
+import { FieldDataType, RemoteStoreStateType } from "../sharedTypes";
 
 const useChartsStoreState = create<RemoteStoreStateType>()((set) => ({
   list: [],
