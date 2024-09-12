@@ -17,6 +17,7 @@
         "oven.bun-vscode",
         "esbenp.prettier-vscode",
         "ms-azuretools.vscode-docker",
+        "github.vscode-github-actions",
         "github.vscode-pull-request-github"
       ],
       "settings": {
