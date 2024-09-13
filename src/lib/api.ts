@@ -1,6 +1,7 @@
 import * as auth from "./auth";
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
+/** Upsert */
 export async function upsertChart(
   item: {
     name: string;
@@ -19,7 +20,7 @@ export async function upsertChart(
   const payload = JSON.stringify(item);
   const method = id ? "PUT" : "POST";
 
-  console.log("upsertChart", url, method);
+  console.log("UPSERT-CHART", url, method);
 
   const response = await fetch(url, {
     method,
@@ -29,7 +30,7 @@ export async function upsertChart(
     },
     body: payload,
   });
-  console.log("upsertChart", response.status);
+  console.log("UPSERT-CHART", response.status);
 
   if (response.status === 401) {
     return auth.logout();
@@ -39,9 +40,11 @@ export async function upsertChart(
     const data = await response.json();
     return data;
   }
+
   return null;
 }
 
+/** Delete */
 export async function deleteChart(id: string) {
   const token = auth.getAuth();
   if (!token) return null;
@@ -64,6 +67,7 @@ export async function deleteChart(id: string) {
   return null;
 }
 
+/** List */
 export async function getCharts() {
   const token = auth.getAuth();
   if (!token) return null;
@@ -87,6 +91,7 @@ export async function getCharts() {
   }
 }
 
+/** Login */
 export async function login({
   email,
   password,
@@ -116,6 +121,7 @@ export async function login({
   }
 }
 
+/** Register */
 export async function register({
   email,
   password,
@@ -139,5 +145,20 @@ export async function register({
     if (data.message) {
       throw new Error(data.message);
     }
+  }
+}
+
+export async function showChart(id: string) {
+  const response = await fetch(`${SERVER_URL}/charts/show/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (response.status === 200) {
+    const data = await response.json();
+    return data;
+  } else {
+    return [];
   }
 }

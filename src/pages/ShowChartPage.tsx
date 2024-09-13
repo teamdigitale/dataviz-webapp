@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import RenderChart from "../components/RenderChart";
-
-const SERVER_HOST = "http://localhost:3003";
+import * as api from "../lib/api";
 
 function ShowChartPage() {
   const { id } = useParams();
   const [chartData, setChartData] = useState<any>(null);
   useEffect(() => {
-    fetch(`${SERVER_HOST}/charts/show/${id}`)
-      .then((res) => res.json())
-      .then((data) => setChartData(data));
+    api.showChart(id as string).then((data) => setChartData(data));
   }, []);
 
   let description = (chartData as any)?.description ?? "";

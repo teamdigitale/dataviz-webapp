@@ -26,7 +26,7 @@ function SignUp({ setLogin }: { setLogin: (login: boolean) => void }) {
     try {
       const result = await api.register({ email, password });
       if (result) {
-        navigate("/login");
+        navigate("/home");
       } else {
         setMessage("Error while registering");
       }

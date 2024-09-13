@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import * as auth from "../../lib/auth";
 
 export default function Header() {
@@ -12,8 +11,33 @@ export default function Header() {
 
   function logoutAndRedir() {
     auth.logout();
-    // window.location.href = "/enter";
+    window.location.href = "/";
   }
+
+  const menu = [
+    {
+      name: "Home",
+      link: "/",
+    },
+    {
+      name: "Create Chart",
+      link: "/home",
+    },
+    {
+      name: "Manage Data",
+      link: "",
+      subMenu: [
+        {
+          name: "Generate",
+          link: "/generate-data",
+        },
+        {
+          name: "Load Remote",
+          link: "/load-data",
+        },
+      ],
+    },
+  ];
 
   return (
     <div className="navbar bg-primary text-primary-content shadow-xl mb-2">
@@ -39,23 +63,30 @@ export default function Header() {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 text-primary rounded-box z-[1] mt-3 w-52 p-2 shadow"
           >
-            <li>
-              <a href="/">Create Chart</a>
-            </li>
-            <li>
-              <a>Data</a>
-              <ul className="p-2">
-                <li>
-                  <a href="/generate-data">Generate</a>
-                </li>
-                <li>
-                  <a href="/load-data">Load Remote</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="/about">About</a>
-            </li>
+            {menu.map((item, index) => {
+              if (item.subMenu) {
+                return (
+                  <li>
+                    <a>{item.name}</a>
+                    <ul className="p-2">
+                      {item.subMenu.map((subItem, subIndex) => {
+                        return (
+                          <li key={subIndex}>
+                            <a href={subItem.link}>{subItem.name}</a>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </li>
+                );
+              } else {
+                return (
+                  <li key={index}>
+                    <a href={item.link}>{item.name}</a>
+                  </li>
+                );
+              }
+            })}
           </ul>
         </div>
         <a className="btn btn-ghost text-xl" href="/">
@@ -64,25 +95,35 @@ export default function Header() {
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 bg-base text-content">
-          <li>
-            <a href="/">Create Chart</a>
-          </li>
-          <li>
-            <a href="/about">About</a>
-          </li>
-          <li>
-            <details className="">
-              <summary>Data</summary>
-              <ul className="w-[125px] bg-base-100 text-primary">
-                <li className="bg-base-100 text-primary">
-                  <a href="/generate-data">Generate</a>
+          {menu.map((item, index) => {
+            if (item.subMenu) {
+              return (
+                <li>
+                  <details>
+                    <summary>{item.name}</summary>
+                    <ul className="w-[125px] bg-base-100 text-primary z-10">
+                      {item.subMenu.map((subItem, subIndex) => {
+                        return (
+                          <li
+                            key={subIndex}
+                            className="bg-base-100 text-primary"
+                          >
+                            <a href={subItem.link}>{subItem.name}</a>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </details>
                 </li>
-                <li className="bg-base-100 text-primary">
-                  <a href="/load-data">Load Remote</a>
+              );
+            } else {
+              return (
+                <li key={index}>
+                  <a href={item.link}>{item.name}</a>
                 </li>
-              </ul>
-            </details>
-          </li>
+              );
+            }
+          })}
         </ul>
       </div>
       <div className="navbar-end px-4">

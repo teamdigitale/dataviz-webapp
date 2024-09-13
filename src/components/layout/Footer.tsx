@@ -16,18 +16,17 @@ export default function Footer() {
         <p>Dataviz: share your charts</p>
       </aside>
       <nav>
-        <h6 className="footer-title">Services</h6>
-        <a className="link link-hover">Branding</a>
-        <a className="link link-hover">Design</a>
-        <a className="link link-hover">Marketing</a>
-        <a className="link link-hover">Advertisement</a>
+        <h6 className="footer-title">Tools</h6>
+        <a className="link link-hover">Generate Data</a>
+        <a className="link link-hover">Match Geo-Json Data</a>
+        <a className="link link-hover">Trasform raw data</a>
+        <a className="link link-hover">Use open source data</a>
       </nav>
       <nav>
-        <h6 className="footer-title">Company</h6>
-        <a className="link link-hover">About us</a>
-        <a className="link link-hover">Contact</a>
-        <a className="link link-hover">Jobs</a>
-        <a className="link link-hover">Press kit</a>
+        <h6 className="footer-title">Take part</h6>
+        <a className="link link-hover">Project Design</a>
+        <a className="link link-hover">Code</a>
+        <a className="link link-hover">Community</a>
       </nav>
       <nav>
         <h6 className="footer-title">Legal</h6>

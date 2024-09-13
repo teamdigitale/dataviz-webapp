@@ -16,7 +16,15 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <AboutPage />,
+    },
+    {
+      path: "/home",
       element: <HomePage />,
+    },
+    {
+      path: "/enter",
+      element: <AuthPage />,
     },
     {
       path: "/load-data",
@@ -26,17 +34,10 @@ function App() {
       path: "/generate-data",
       element: <GenerateDataPage />,
     },
-    {
-      path: "/about",
-      element: <AboutPage />,
-    },
+
     {
       path: "/chart/:id",
       element: <ShowChartPage />,
-    },
-    {
-      path: "/enter",
-      element: <AuthPage />,
     },
   ]);
 

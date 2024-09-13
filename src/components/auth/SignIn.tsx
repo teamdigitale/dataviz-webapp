@@ -20,7 +20,7 @@ function SignIn({ setLogin }: { setLogin: (login: boolean) => void }) {
       const rememberMe = submittedData["remember-me"] ?? false;
       const result = await api.login({ email, password, rememberMe });
       if (result) {
-        navigate("/");
+        navigate("/home");
       } else {
         setMessage("Error while logging in");
       }

@@ -10,7 +10,7 @@ function ChartSave({ item, handleSave }: any) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty, isSubmitting, touchedFields, submitCount },
   } = useForm({
     defaultValues: {
       id: item?.id || "",
@@ -92,7 +92,14 @@ function ChartSave({ item, handleSave }: any) {
               </label>
             </div>
           </div>
-          <button type="submit" className="btn btn-primary full my-3">
+          {isSubmitting && (
+            <div className="loading loading-lg">...sumbitting</div>
+          )}
+          <button
+            disabled={isSubmitting}
+            type="submit"
+            className="btn btn-primary full my-3"
+          >
             Save
           </button>
         </div>

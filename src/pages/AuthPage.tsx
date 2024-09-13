@@ -4,7 +4,6 @@ import SignUp from "../components/auth/SignUp";
 
 function AuthPage() {
   const [login, setLogin] = useState(true);
-
   return (
     <>
       <div className="flex min-h-full flex-1">
