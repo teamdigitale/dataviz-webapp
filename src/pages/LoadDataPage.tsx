@@ -5,6 +5,7 @@ import DataTable from "../components/DataTable";
 import useStoreState from "../lib/storeState";
 import LoadSource from "../components/LoadSource";
 import { downloadCSV, dataToCSV } from "../lib/downloadUtils";
+import Layout from "../components/layout";
 
 function Home() {
   const { config, setConfig, rawData, setRawData, resetItem, setData } =
@@ -40,34 +41,36 @@ function Home() {
   }, []);
 
   return (
-    <div>
-      <>
-        <h4 className="text-4xl">Load remote data</h4>
-        <div className="my-4">
-          Here some Open Data sources of real data you can use here: <br />
-          <a
-            target="_blank"
-            href="https://www.dati.gov.it/view-dataset?groups=governo&organization=pcm-dipartimento-trasformazione-digitale"
-            className="link link-primary"
-          >
-            Dati Italia, Governo e servizi pubblici
-          </a>
-        </div>
-        <LoadSource setRawData={setRawData} />
-      </>
-      {rawData && (
-        <div>
-          <DataTable
-            data={rawData}
-            reset={reset}
-            transpose={transpose}
-            download={() => {
-              downloadCSV(dataToCSV(rawData), "remote-data-" + Date.now());
-            }}
-          />
-        </div>
-      )}
-    </div>
+    <Layout>
+      <div>
+        <>
+          <h4 className="text-4xl">Load remote data</h4>
+          <div className="my-4">
+            Here some Open Data sources of real data you can use here: <br />
+            <a
+              target="_blank"
+              href="https://www.dati.gov.it/view-dataset?groups=governo&organization=pcm-dipartimento-trasformazione-digitale"
+              className="link link-primary"
+            >
+              Dati Italia, Governo e servizi pubblici
+            </a>
+          </div>
+          <LoadSource setRawData={setRawData} />
+        </>
+        {rawData && (
+          <div>
+            <DataTable
+              data={rawData}
+              reset={reset}
+              transpose={transpose}
+              download={() => {
+                downloadCSV(dataToCSV(rawData), "remote-data-" + Date.now());
+              }}
+            />
+          </div>
+        )}
+      </div>
+    </Layout>
   );
 }
 

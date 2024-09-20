@@ -13,20 +13,18 @@ function ShowChartPage() {
 
   let description = (chartData as any)?.description ?? "";
   return (
-    <Layout>
-      <div className="">
-        <div>ID: {id}</div>
-        <h1 className="text-4xl font-bold">
-          {`${(chartData as any)?.name ?? "Show Chart"}`}{" "}
-        </h1>
-        {description && (
-          <p dangerouslySetInnerHTML={{ __html: `${description}` }} />
-        )}
-        <div className="p-4">
-          {chartData && <RenderChart {...(chartData as any)} />}
-        </div>
+    <div className="">
+      <div>ID: {id}</div>
+      <h1 className="text-4xl font-bold">
+        {`${(chartData as any)?.name ?? "Show Chart"}`}{" "}
+      </h1>
+      {description && (
+        <p dangerouslySetInnerHTML={{ __html: `${description}` }} />
+      )}
+      <div className="p-4">
+        {chartData && <RenderChart {...(chartData as any)} />}
       </div>
-    </Layout>
+    </div>
   );
 }
 

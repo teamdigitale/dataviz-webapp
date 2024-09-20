@@ -1,9 +1,9 @@
-import BasicChart from './charts/BasicChart';
-import PieChart from './charts/PieChart';
-import GeoMapChart from './charts/GeoMapChart';
-import { getPieValues, getBasicValues, getMapValues } from '../lib/utils';
-import { useEffect, useState, useRef } from 'react';
-import { downloadPng } from '../lib/downloadUtils';
+import BasicChart from "./charts/BasicChart";
+import PieChart from "./charts/PieChart";
+import GeoMapChart from "./charts/GeoMapChart";
+import { getPieValues, getBasicValues, getMapValues } from "../lib/utils";
+import { useEffect, useState, useRef } from "react";
+import { downloadPng } from "../lib/downloadUtils";
 
 function RenderChart(ds: any) {
   const [loading, setLoading] = useState(false);
@@ -30,21 +30,21 @@ function RenderChart(ds: any) {
   }
 
   useEffect(() => {
-    window.addEventListener('resize', setDimension);
+    window.addEventListener("resize", setDimension);
     setDimension();
     return () => {
-      window.removeEventListener('resize', setDimension);
+      window.removeEventListener("resize", setDimension);
     };
   }, [wrapRef]);
 
   if (loading) return null;
   return (
-    <div className="w-full min-height-[800px]">
-      <div className="w-full min-height-[800px]">
+    <div className="w-full min-height-[800px] h-full">
+      <div className="w-full min-height-[800px]  h-full">
         <div ref={wrapRef}>
           {ds && (
             <>
-              {(ds.chart === 'bar' || ds.chart === 'line') && (
+              {(ds.chart === "bar" || ds.chart === "line") && (
                 <BasicChart
                   id={ds.id}
                   data={getBasicValues(ds)}
@@ -52,7 +52,7 @@ function RenderChart(ds: any) {
                   setEchartInstance={setEchartInstance}
                 />
               )}
-              {ds.chart === 'pie' && (
+              {ds.chart === "pie" && (
                 <PieChart
                   id={ds.id}
                   data={getPieValues(ds)}
@@ -60,7 +60,7 @@ function RenderChart(ds: any) {
                   setEchartInstance={setEchartInstance}
                 />
               )}
-              {ds.chart === 'map' && (
+              {ds.chart === "map" && (
                 <GeoMapChart
                   id={ds.id}
                   data={getMapValues(ds)}
@@ -73,9 +73,9 @@ function RenderChart(ds: any) {
         </div>
       </div>
       <button
-        className="btn btn-primary btn-outline"
-        title={'Download PNG'}
-        aria-label={'Download PNG'}
+        className="btn btn-primary btn-outline mt-4"
+        title={"Download PNG"}
+        aria-label={"Download PNG"}
         onClick={() =>
           downloadPng(
             echartInstance,
@@ -83,7 +83,7 @@ function RenderChart(ds: any) {
           )
         }
       >
-        {'Download'} PNG
+        {"Download"} PNG
       </button>
     </div>
   );

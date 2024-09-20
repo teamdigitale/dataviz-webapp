@@ -1,11 +1,12 @@
 import { useState } from "react";
 import SignIn from "../components/auth/SignIn";
 import SignUp from "../components/auth/SignUp";
+import Layout from "../components/layout";
 
 function AuthPage() {
   const [login, setLogin] = useState(true);
   return (
-    <>
+    <Layout>
       <div className="flex min-h-full flex-1">
         <>
           {login ? (
@@ -36,7 +37,7 @@ function AuthPage() {
           </div>
         </div>
       </div>
-    </>
+    </Layout>
   );
 }
 
