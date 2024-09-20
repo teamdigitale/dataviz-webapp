@@ -1,30 +1,36 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import RenderChart from "../components/RenderChart";
 import * as api from "../lib/api";
 import Layout from "../components/layout";
+import useSWR from "swr";
+import Loading from "../components/layout/Loading";
 
 function ShowChartPage() {
   const { id } = useParams();
-  const [chartData, setChartData] = useState<any>(null);
-  useEffect(() => {
-    api.showChart(id as string).then((data) => setChartData(data));
-  }, []);
-
-  let description = (chartData as any)?.description ?? "";
+  const { data, error, isLoading } = useSWR(`${id}`, api.showChart);
   return (
     <Layout>
       <div className="">
-        <div>ID: {id}</div>
-        <h1 className="text-4xl font-bold">
-          {`${(chartData as any)?.name ?? "Show Chart"}`}{" "}
-        </h1>
-        {description && (
-          <p dangerouslySetInnerHTML={{ __html: `${description}` }} />
+        {isLoading && <Loading />}
+        {error && (
+          <div role="alert" className="alert alert-error">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 shrink-0 stroke-current"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>{error.message}</span>
+          </div>
         )}
-        <div className="p-4">
-          {chartData && <RenderChart {...(chartData as any)} />}
-        </div>
+        {data && <RenderChart {...(data as any)} />}
       </div>
     </Layout>
   );

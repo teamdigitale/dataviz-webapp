@@ -13,14 +13,14 @@ import ChartSave from "../components/ChartSave";
 import Loading from "../components/layout/Loading";
 import QuickstartInfo from "../components/layout/QuickstartInfo";
 import ChartList from "../components/ChartList";
+import Steps from "../components/layout/Steps";
 
 import useStoreState from "../lib/storeState";
 import useChartsStoreState from "../lib/chartListStore";
 import stepMachine from "../lib/stepMachine";
 import { dataToCSV, downloadCSV } from "../lib/downloadUtils";
-
-import * as api from "../lib/api";
 import * as auth from "../lib/auth";
+import * as api from "../lib/api";
 import { FieldDataType } from "../sharedTypes";
 
 function Home() {
@@ -126,42 +126,12 @@ function Home() {
     <Layout>
       <PanelGroup direction="horizontal" className="w-full">
         <Panel defaultSize={10} minSize={10} className="bg-base-100">
-          <div>
-            <ul className="steps steps-vertical">
-              <li
-                className={`step ${
-                  getStepIndex() >= 0 ? "step-primary text-primary" : ""
-                }`}
-                onClick={() => send({ type: "IDLE" })}
-              >
-                {list && list?.length > 0 ? "My Charts" : "Welcome"}
-              </li>
-              <li
-                className={`step ${
-                  getStepIndex() >= 1 ? "step-primary text-primary" : ""
-                }`}
-                onClick={() => send({ type: "INPUT" })}
-              >
-                Upload data
-              </li>
-              <li
-                className={`step ${
-                  getStepIndex() >= 2 ? "step-primary text-primary" : ""
-                }`}
-                onClick={() => (data ? send({ type: "CONFIG" }) : null)}
-              >
-                Configure
-              </li>
-              <li
-                className={`step ${
-                  getStepIndex() >= 3 ? "step-primary text-primary" : ""
-                }`}
-                onClick={() => (data ? send({ type: "DONE" }) : null)}
-              >
-                Save
-              </li>
-            </ul>
-          </div>
+          <Steps
+            hasData={data ? true : false}
+            listLen={list.length ?? 0}
+            stepIndex={getStepIndex()}
+            send={send}
+          />
         </Panel>
         <PanelResizeHandle className="bg-primary w-1" />
         <Panel minSize={20} className="bg-base-100">
