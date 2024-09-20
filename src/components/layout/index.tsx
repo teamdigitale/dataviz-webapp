@@ -1,5 +1,5 @@
-import Header from "./layout/Header";
-import Footer from "./layout/Footer";
+import Header from "./Header";
+import Footer from "./Footer";
 function Layout({ children }: any) {
   return (
     <div data-theme="italia" className="w-screen h-screen h-full flex flex-col">

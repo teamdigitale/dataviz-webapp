@@ -1,20 +1,27 @@
+import { useState, useEffect } from "react";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { useMachine } from "@xstate/react";
+
 import { getAvailablePalettes, getPalette, transposeData } from "../lib/utils";
+import Layout from "../components/layout";
 import DataTable from "../components/DataTable";
 import RenderChart from "../components/RenderChart";
-
-import useChartsStoreState from "../lib/chartListStore";
-import useStoreState from "../lib/storeState";
 import CSVUpload from "../components/CSVUpload";
 import SelectChart from "../components/SelectChart";
 import ChartOptions from "../components/ChartOptions";
-import { useMachine } from "@xstate/react";
-import stepMachine from "../lib/stepMachine";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import { dataToCSV, downloadCSV } from "../lib/downloadUtils";
 import ChartSave from "../components/ChartSave";
-import { useEffect } from "react";
+import Loading from "../components/layout/Loading";
+import QuickstartInfo from "../components/layout/QuickstartInfo";
+import ChartList from "../components/ChartList";
+
+import useStoreState from "../lib/storeState";
+import useChartsStoreState from "../lib/chartListStore";
+import stepMachine from "../lib/stepMachine";
+import { dataToCSV, downloadCSV } from "../lib/downloadUtils";
+
 import * as api from "../lib/api";
 import * as auth from "../lib/auth";
+import { FieldDataType } from "../sharedTypes";
 
 function Home() {
   const [state, send] = useMachine(stepMachine);
@@ -37,11 +44,16 @@ function Home() {
 
   const { list, setList } = useChartsStoreState((state) => state);
 
-  function fetchCharts() {
-    return api.getCharts().then((data) => {
-      console.log("data", data);
+  const [loading, setLoading] = useState(true);
+  async function fetchCharts() {
+    setLoading(true);
+    try {
+      const data = await api.getCharts();
       setList(data);
-    });
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -82,6 +94,11 @@ function Home() {
     send({ type: "NEXT" });
   }
 
+  function handleLoadChart(item: FieldDataType) {
+    send({ type: "CONFIG" });
+    loadItem(item);
+  }
+
   function handleDeleteChart(id?: string) {
     if (!id) return;
     console.log("delete chart", id);
@@ -106,224 +123,176 @@ function Home() {
   }
 
   return (
-    <PanelGroup direction="horizontal" className="w-full">
-      <Panel defaultSize={10} minSize={10} className="bg-base-100">
-        <div>
-          <ul className="steps steps-vertical">
-            <li
-              className={`step ${
-                getStepIndex() >= 0 ? "step-primary text-primary" : ""
-              }`}
-              onClick={() => send({ type: "IDLE" })}
-            >
-              {list && list?.length > 0 ? "My Charts" : "Welcome"}
-            </li>
-            <li
-              className={`step ${
-                getStepIndex() >= 1 ? "step-primary text-primary" : ""
-              }`}
-              onClick={() => send({ type: "INPUT" })}
-            >
-              Upload data
-            </li>
-            <li
-              className={`step ${
-                getStepIndex() >= 2 ? "step-primary text-primary" : ""
-              }`}
-              onClick={() => (data ? send({ type: "CONFIG" }) : null)}
-            >
-              Configure
-            </li>
-            <li
-              className={`step ${
-                getStepIndex() >= 3 ? "step-primary text-primary" : ""
-              }`}
-              onClick={() => (data ? send({ type: "DONE" }) : null)}
-            >
-              Save
-            </li>
-          </ul>
-        </div>
-      </Panel>
-      <PanelResizeHandle className="bg-primary w-1" />
-      <Panel minSize={20} className="bg-base-100">
-        <div className="p-4">
-          {state.matches("idle") && (
-            <div className="container">
-              <h4 className="text-4xl font-bold">
-                {list && list.length ? "My Charts" : "Welcome"}
-              </h4>
-              {!data && (!list || list?.length === 0) && (
-                <div className="my-5 prose">
-                  <h3>Quickstart</h3> If you want start quickly you can generate
-                  some dummy data for test purpose from the section{" "}
-                  <a className="link link-primary" href="/generate-data">
-                    Generate Data
-                  </a>{" "}
-                  or from the section{" "}
-                  <a className="link link-primary" href="/load-data">
-                    Load Data
-                  </a>{" "}
-                  and download th data in CSV format. Then you can upload the
-                  data e create a new chart.
-                  <h3>How to use:</h3>
-                  follow these steps to create a new chart:
-                  <ul>
-                    <li>Click on "Create New Chart" to start</li>
-                    <li>Upload your data</li>
-                    <li>Configure your chart</li>
-                    <li>Save your chart</li>
-                  </ul>
-                  <hr />
-                </div>
-              )}
-              <div>
-                <div className="flex my-5 gap-4">
-                  {!data && (
-                    <div
-                      className="btn btn-primary"
-                      onClick={() => send({ type: "INPUT" })}
-                    >
-                      + Create New chart
-                    </div>
-                  )}
-                  {data && (
-                    <div
-                      className="btn btn-primary"
-                      onClick={() => send({ type: "CONFIG" })}
-                    >
-                      Congfigure chart
-                    </div>
-                  )}
-                  {data && (
-                    <div
-                      className="btn btn-outline btn-primary"
-                      onClick={() => {
-                        send({ type: "IDLE" });
-                        resetItem();
-                      }}
-                    >
-                      Reset data
-                    </div>
-                  )}
-                </div>
-                {list?.map((item) => (
-                  <div
-                    key={item.id}
-                    className="my-2 flex gap-2 items-center border p-2"
-                  >
-                    <div className="grow flex flex-col">
-                      <div className="text-lg">{item.name}</div>
-                      <small
-                        className={`text-xxs text-content opacity-70 pr-4 ${
-                          item.publish ? "text-success" : "text-content"
-                        }`}
-                      >
-                        {item.publish ? "public" : "private"}
-                      </small>
-                    </div>
-                    {item.publish && (
-                      <a
-                        className="btn btn-outline btn-success btn-sm"
-                        target="_blank"
-                        href={`/chart/${item.id}`}
-                      >
-                        view
-                      </a>
+    <Layout>
+      <PanelGroup direction="horizontal" className="w-full">
+        <Panel defaultSize={10} minSize={10} className="bg-base-100">
+          <div>
+            <ul className="steps steps-vertical">
+              <li
+                className={`step ${
+                  getStepIndex() >= 0 ? "step-primary text-primary" : ""
+                }`}
+                onClick={() => send({ type: "IDLE" })}
+              >
+                {list && list?.length > 0 ? "My Charts" : "Welcome"}
+              </li>
+              <li
+                className={`step ${
+                  getStepIndex() >= 1 ? "step-primary text-primary" : ""
+                }`}
+                onClick={() => send({ type: "INPUT" })}
+              >
+                Upload data
+              </li>
+              <li
+                className={`step ${
+                  getStepIndex() >= 2 ? "step-primary text-primary" : ""
+                }`}
+                onClick={() => (data ? send({ type: "CONFIG" }) : null)}
+              >
+                Configure
+              </li>
+              <li
+                className={`step ${
+                  getStepIndex() >= 3 ? "step-primary text-primary" : ""
+                }`}
+                onClick={() => (data ? send({ type: "DONE" }) : null)}
+              >
+                Save
+              </li>
+            </ul>
+          </div>
+        </Panel>
+        <PanelResizeHandle className="bg-primary w-1" />
+        <Panel minSize={20} className="bg-base-100">
+          <div className="p-4">
+            {state.matches("idle") && (
+              <div className="container">
+                {loading ? (
+                  <Loading />
+                ) : (
+                  <>
+                    <h4 className="text-4xl font-bold">
+                      {list && list.length ? "My Charts" : "Welcome"}
+                    </h4>
+
+                    {!data && (!list || list?.length === 0) && (
+                      <QuickstartInfo />
                     )}
-                    <button
-                      className="btn btn-outline btn-primary btn-sm"
-                      onClick={() => {
-                        send({ type: "CONFIG" });
-                        loadItem(item);
-                      }}
-                    >
-                      load
-                    </button>
-                    <button
-                      className="btn btn-outline btn-error btn-sm"
-                      onClick={() => handleDeleteChart(item.id || "")}
-                    >
-                      delete
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {state.matches("input") && (
-            <div className="container">
-              <h4 className="text-4xl font-bold">Upload your data</h4>
-              <CSVUpload setData={(d: any) => handleUpload(d)} />
-            </div>
-          )}
-
-          {state.matches("config") && (
-            <div className="container">
-              <h4 className="text-4xl font-bold">Configure Chart</h4>
-              <SelectChart setChart={setChart} chart={chart} />
-              <ChartOptions
-                config={config}
-                setConfig={setConfig}
-                chart={chart}
-                numSeries={(data as any)?.length - 1 || 0}
-              />
-            </div>
-          )}
-          {state.matches("done") && (
-            <div className="container">
-              <h4 className="text-4xl font-bold">Save Chart</h4>
-              Give a name to your chart and save it
-              <ChartSave
-                item={{
-                  id,
-                  chart,
-                  name,
-                  description,
-                  publish,
-                  config,
-                  data,
-                }}
-                handleSave={() => handleSaveChart()}
-              />
-            </div>
-          )}
-        </div>
-      </Panel>
-      {haveData && (
-        <>
-          <PanelResizeHandle className="bg-primary w-1" />
-          <Panel defaultSize={30} minSize={20}>
-            <div className="p-4">
-              <DataTable
-                data={data}
-                reset={reset}
-                transpose={transpose}
-                download={() => {
-                  downloadCSV(dataToCSV(data), "selected-data-" + Date.now());
-                }}
-              />
-              {chart && (
-                <>
-                  <RenderChart chart={chart} data={data} config={config} />
-                  {config && chart && (
-                    <div className="w-full flex justify-end">
-                      <button
-                        className="my-5 btn btn-primary"
-                        onClick={() => send({ type: "DONE" })}
-                      >
-                        SAVE / EXPORT
-                      </button>
+                    <div>
+                      <div className="flex my-5 gap-4">
+                        {!data && (
+                          <div
+                            className="btn btn-primary"
+                            onClick={() => send({ type: "INPUT" })}
+                          >
+                            + Create New chart
+                          </div>
+                        )}
+                        {data && (
+                          <div
+                            className="btn btn-primary"
+                            onClick={() => send({ type: "CONFIG" })}
+                          >
+                            Congfigure chart
+                          </div>
+                        )}
+                        {data && (
+                          <div
+                            className="btn btn-outline btn-primary"
+                            onClick={() => {
+                              send({ type: "IDLE" });
+                              resetItem();
+                            }}
+                          >
+                            Reset data
+                          </div>
+                        )}
+                      </div>
+                      <ChartList
+                        list={list}
+                        handleLoadChart={handleLoadChart}
+                        handleDeleteChart={handleDeleteChart}
+                      />
                     </div>
-                  )}
-                </>
-              )}
-            </div>
-          </Panel>
-        </>
-      )}
-    </PanelGroup>
+                  </>
+                )}
+              </div>
+            )}
+
+            {state.matches("input") && (
+              <div className="container">
+                <h4 className="text-4xl font-bold">Upload your data</h4>
+                <CSVUpload setData={(d: any) => handleUpload(d)} />
+              </div>
+            )}
+
+            {state.matches("config") && (
+              <div className="container">
+                <h4 className="text-4xl font-bold">Configure Chart</h4>
+                <SelectChart setChart={setChart} chart={chart} />
+                <ChartOptions
+                  config={config}
+                  setConfig={setConfig}
+                  chart={chart}
+                  numSeries={(data as any)?.length - 1 || 0}
+                />
+              </div>
+            )}
+            {state.matches("done") && (
+              <div className="container">
+                <h4 className="text-4xl font-bold">Save Chart</h4>
+                Give a name to your chart and save it
+                <ChartSave
+                  item={{
+                    id,
+                    chart,
+                    name,
+                    description,
+                    publish,
+                    config,
+                    data,
+                  }}
+                  handleSave={() => handleSaveChart()}
+                />
+              </div>
+            )}
+          </div>
+        </Panel>
+        {haveData && (
+          <>
+            <PanelResizeHandle className="bg-primary w-1" />
+            <Panel defaultSize={30} minSize={20}>
+              <div className="p-4">
+                <DataTable
+                  data={data}
+                  reset={reset}
+                  transpose={transpose}
+                  download={() => {
+                    downloadCSV(dataToCSV(data), "selected-data-" + Date.now());
+                  }}
+                />
+                {chart && (
+                  <>
+                    <RenderChart chart={chart} data={data} config={config} />
+                    {config && chart && (
+                      <div className="w-full flex justify-end">
+                        <button
+                          className="my-5 btn btn-primary"
+                          onClick={() => send({ type: "DONE" })}
+                        >
+                          SAVE / EXPORT
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            </Panel>
+          </>
+        )}
+      </PanelGroup>
+    </Layout>
   );
 }
 

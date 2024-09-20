@@ -5,6 +5,7 @@ import DataTable from "../components/DataTable";
 import useStoreState from "../lib/storeState";
 import GenerateRandomData from "../components/GenerateRandomData";
 import { downloadCSV, dataToCSV } from "../lib/downloadUtils";
+import Layout from "../components/layout";
 
 function Home() {
   const { config, setConfig, rawData, setRawData, resetItem, setData } =
@@ -40,25 +41,27 @@ function Home() {
   }, []);
 
   return (
-    <div>
-      <>
-        <h4 className="text-4xl font-bold">Generate data</h4>
-        <GenerateRandomData setData={setRawData} />
-      </>
+    <Layout>
+      <div>
+        <>
+          <h4 className="text-4xl font-bold">Generate data</h4>
+          <GenerateRandomData setData={setRawData} />
+        </>
 
-      {rawData && (
-        <div>
-          <DataTable
-            data={rawData}
-            reset={reset}
-            transpose={transpose}
-            download={() => {
-              downloadCSV(dataToCSV(rawData), "generated-data-" + Date.now());
-            }}
-          />
-        </div>
-      )}
-    </div>
+        {rawData && (
+          <div>
+            <DataTable
+              data={rawData}
+              reset={reset}
+              transpose={transpose}
+              download={() => {
+                downloadCSV(dataToCSV(rawData), "generated-data-" + Date.now());
+              }}
+            />
+          </div>
+        )}
+      </div>
+    </Layout>
   );
 }
 

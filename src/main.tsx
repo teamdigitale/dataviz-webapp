@@ -4,13 +4,13 @@ import ReactDOM from "react-dom/client";
 import "./style/index.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Layout from "./components/Layout";
 import HomePage from "./pages/Home";
 import AboutPage from "./pages/About";
 import LoadDataPage from "./pages/LoadDataPage";
 import GenerateDataPage from "./pages/GenerateDataPage";
 import ShowChartPage from "./pages/ShowChartPage";
 import AuthPage from "./pages/AuthPage";
+import EmbedChartPage from "./pages/EmbedChartPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -39,13 +39,13 @@ function App() {
       path: "/chart/:id",
       element: <ShowChartPage />,
     },
+    {
+      path: "/embed/:id",
+      element: <EmbedChartPage />,
+    },
   ]);
 
-  return (
-    <Layout>
-      <RouterProvider router={router} />
-    </Layout>
-  );
+  return <RouterProvider router={router} />;
 }
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

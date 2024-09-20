@@ -1,6 +1,8 @@
 import * as auth from "./auth";
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
+let headers: HeadersInit | undefined = { "Content-Type": "application/json" };
+
 /** Upsert */
 export async function upsertChart(
   item: {
@@ -20,12 +22,10 @@ export async function upsertChart(
   const payload = JSON.stringify(item);
   const method = id ? "PUT" : "POST";
 
-  console.log("UPSERT-CHART", url, method);
-
   const response = await fetch(url, {
     method,
     headers: {
-      "Content-Type": "application/json",
+      ...headers,
       Authorization: `Bearer ${token}`,
     },
     body: payload,
@@ -52,7 +52,7 @@ export async function deleteChart(id: string) {
   const response = await fetch(`${SERVER_URL}/charts/${id}`, {
     method: "DELETE",
     headers: {
-      "Content-Type": "application/json",
+      ...headers,
       Authorization: `Bearer ${token}`,
     },
   });
@@ -74,12 +74,11 @@ export async function getCharts() {
   const response = await fetch(`${SERVER_URL}/charts`, {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",
+      ...headers,
       Authorization: `Bearer ${token}`,
     },
   });
 
-  console.log("getCharts", response.status);
   if (response.status === 401) {
     return auth.logout();
   }
@@ -103,9 +102,7 @@ export async function login({
 }) {
   const response = await fetch(`${SERVER_URL}/auth/login`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers,
     body: JSON.stringify({ email, password }),
   });
   if (response.status === 200) {
@@ -131,9 +128,7 @@ export async function register({
 }) {
   const response = await fetch(`${SERVER_URL}/auth/register`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers,
     body: JSON.stringify({ email, password }),
   });
   if (response.status === 200) {
@@ -151,9 +146,7 @@ export async function register({
 export async function showChart(id: string) {
   const response = await fetch(`${SERVER_URL}/charts/show/${id}`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers,
   });
   if (response.status === 200) {
     const data = await response.json();
@@ -162,3 +155,26 @@ export async function showChart(id: string) {
     return [];
   }
 }
+
+type FetcherProps = {
+  path: string;
+  method: string;
+  open?: boolean;
+};
+const fetcher = ({ path, method = "GET", open = true }: FetcherProps) => {
+  let options = {
+    method,
+    headers,
+  };
+  if (!open) {
+    const token = auth.getAuth();
+    options.headers = { ...headers, Authorization: `Bearer ${token}` };
+  }
+  fetch(`${SERVER_URL}/${path}`, options).then((res) => res.json());
+};
+
+// function useApi() {
+//   let path = "/charts";
+//   const { data, error, isLoading } = useSWR(path, getCharts);
+//   return { data, error, isLoading };
+// }
