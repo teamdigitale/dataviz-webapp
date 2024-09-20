@@ -150,10 +150,12 @@ export async function showChart(id: string) {
   });
   if (response.status === 200) {
     const data = await response.json();
+    if (data.error) {
+      throw new Error(data.error.message);
+    }
     return data;
-  } else {
-    return [];
   }
+  return null;
 }
 
 type FetcherProps = {

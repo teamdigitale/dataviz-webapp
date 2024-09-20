@@ -39,52 +39,60 @@ function RenderChart(ds: any) {
 
   if (loading) return null;
   return (
-    <div className="w-full min-height-[800px] h-full">
-      <div className="w-full min-height-[800px]  h-full">
-        <div ref={wrapRef}>
-          {ds && (
-            <>
-              {(ds.chart === "bar" || ds.chart === "line") && (
-                <BasicChart
-                  id={ds.id}
-                  data={getBasicValues(ds)}
-                  isMobile={isMobile}
-                  setEchartInstance={setEchartInstance}
-                />
-              )}
-              {ds.chart === "pie" && (
-                <PieChart
-                  id={ds.id}
-                  data={getPieValues(ds)}
-                  isMobile={isMobile}
-                  setEchartInstance={setEchartInstance}
-                />
-              )}
-              {ds.chart === "map" && (
-                <GeoMapChart
-                  id={ds.id}
-                  data={getMapValues(ds)}
-                  isMobile={isMobile}
-                  setEchartInstance={setEchartInstance}
-                />
-              )}
-            </>
-          )}
+    <div className="w-full h-full max-height-full">
+      {ds.name && <h1 className="text-4xl font-bold">{ds.name}</h1>}
+      {ds.description && (
+        <p dangerouslySetInnerHTML={{ __html: `${ds.description}` }} />
+      )}
+      <div className="p-4">
+        <div className="w-full min-height-[500px]  h-full max-height-full">
+          <div ref={wrapRef}>
+            {ds && (
+              <>
+                {(ds.chart === "bar" || ds.chart === "line") && (
+                  <BasicChart
+                    id={ds.id}
+                    data={getBasicValues(ds)}
+                    isMobile={isMobile}
+                    setEchartInstance={setEchartInstance}
+                  />
+                )}
+                {ds.chart === "pie" && (
+                  <PieChart
+                    id={ds.id}
+                    data={getPieValues(ds)}
+                    isMobile={isMobile}
+                    setEchartInstance={setEchartInstance}
+                  />
+                )}
+                {ds.chart === "map" && (
+                  <GeoMapChart
+                    id={ds.id}
+                    data={getMapValues(ds)}
+                    isMobile={isMobile}
+                    setEchartInstance={setEchartInstance}
+                  />
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
-      <button
-        className="btn btn-primary btn-outline mt-4"
-        title={"Download PNG"}
-        aria-label={"Download PNG"}
-        onClick={() =>
-          downloadPng(
-            echartInstance,
-            ds.name || `${ds.chart}chart-pic-${Date.now()}`
-          )
-        }
-      >
-        {"Download"} PNG
-      </button>
+      {echartInstance && (
+        <button
+          className="btn btn-primary btn-outline mt-4"
+          title={"Download PNG"}
+          aria-label={"Download PNG"}
+          onClick={() =>
+            downloadPng(
+              echartInstance,
+              ds.name || `${ds.chart}chart-pic-${Date.now()}`
+            )
+          }
+        >
+          {"Download"} PNG
+        </button>
+      )}
     </div>
   );
 }

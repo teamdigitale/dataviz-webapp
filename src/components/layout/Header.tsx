@@ -66,12 +66,12 @@ export default function Header() {
             {menu.map((item, index) => {
               if (item.subMenu) {
                 return (
-                  <li>
+                  <li key={`mobile-${item.name}`}>
                     <a>{item.name}</a>
                     <ul className="p-2">
                       {item.subMenu.map((subItem, subIndex) => {
                         return (
-                          <li key={subIndex}>
+                          <li key={`mobile-sub-${subItem.name}`}>
                             <a href={subItem.link}>{subItem.name}</a>
                           </li>
                         );
@@ -81,7 +81,7 @@ export default function Header() {
                 );
               } else {
                 return (
-                  <li key={index}>
+                  <li key={`mobile-${item.name}`}>
                     <a href={item.link}>{item.name}</a>
                   </li>
                 );
@@ -98,14 +98,14 @@ export default function Header() {
           {menu.map((item, index) => {
             if (item.subMenu) {
               return (
-                <li>
+                <li key={`menu-${item.name}`}>
                   <details>
                     <summary>{item.name}</summary>
                     <ul className="w-[125px] bg-base-100 text-primary z-10">
                       {item.subMenu.map((subItem, subIndex) => {
                         return (
                           <li
-                            key={subIndex}
+                            key={`menu-sub-${subItem.name}`}
                             className="bg-base-100 text-primary"
                           >
                             <a href={subItem.link}>{subItem.name}</a>
@@ -118,7 +118,7 @@ export default function Header() {
               );
             } else {
               return (
-                <li key={index}>
+                <li key={`menu-${item.name}`}>
                   <a href={item.link}>{item.name}</a>
                 </li>
               );
