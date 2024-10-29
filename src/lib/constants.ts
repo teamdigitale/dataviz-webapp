@@ -113,6 +113,7 @@ export const sampleData: FieldDataType = {
     categories: [],
     series: [],
   },
+  isRemote: false,
 };
 
 export const getFields = (availabelPalettes: any, defaultPalette: string) => [

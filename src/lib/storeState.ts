@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { defaultConfig } from "./constants";
 import { MatrixType, StoreStateType } from "../sharedTypes";
+// import { persist } from "zustand/middleware";
 // import { immer } from 'zustand/middleware/immer';
 
 const useStoreState = create<StoreStateType>()(
@@ -13,6 +13,8 @@ const useStoreState = create<StoreStateType>()(
     rawData: null,
     description: "",
     publish: false,
+    remoteUrl: null,
+    isRemote: false,
     name: "",
     id: null,
     setId: (value: string) => set(() => ({ id: value })),
@@ -21,6 +23,8 @@ const useStoreState = create<StoreStateType>()(
     setChart: (value: string) => set(() => ({ chart: value })),
     setRawData: (value: any) => set(() => ({ rawData: value })),
     setData: (value: MatrixType | null) => set(() => ({ data: value })),
+    setRemoteUrl: (value: string | null) => set(() => ({ remoteUrl: value })),
+    setIsRemote: (value: boolean) => set(() => ({ isRemote: value })),
     loadItem: (value: any) =>
       set((state) => ({
         chart: value.chart,
@@ -30,6 +34,8 @@ const useStoreState = create<StoreStateType>()(
         description: value.description,
         publish: value.publish,
         name: value.name,
+        remoteUrl: value.remoteUrl,
+        isRemote: value.isRemote,
         id: value.id,
       })),
     resetItem: () =>
@@ -42,6 +48,8 @@ const useStoreState = create<StoreStateType>()(
         config: defaultConfig,
         rawData: null,
         publish: true,
+        // remoteUrl: null,
+        // isRemote: false,
       })),
   })
   // { name: "persistedStore" }

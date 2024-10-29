@@ -22,6 +22,7 @@ import { dataToCSV, downloadCSV } from "../lib/downloadUtils";
 import * as auth from "../lib/auth";
 import * as api from "../lib/api";
 import { FieldDataType } from "../sharedTypes";
+import LoadJsonSource from "../components/LoadJsonSource";
 
 function Home() {
   const [state, send] = useMachine(stepMachine);
@@ -33,10 +34,14 @@ function Home() {
     name,
     description,
     publish,
+    isRemote,
+    remoteUrl,
 
     setConfig,
     setChart,
     setData,
+    setRemoteUrl,
+    setIsRemote,
 
     loadItem,
     resetItem,
@@ -92,6 +97,15 @@ function Home() {
   function handleUpload(d: any) {
     setData(d);
     send({ type: "NEXT" });
+  }
+  function handleSetRemoteData(d: any) {
+    console.log("handleSetRemoteData", d);
+    setIsRemote(true);
+    setRemoteUrl(d.remoteUrl);
+    setData(d.data);
+    setTimeout(() => {
+      send({ type: "CONFIG" });
+    }, 100);
   }
 
   function handleLoadChart(item: FieldDataType) {
@@ -194,6 +208,10 @@ function Home() {
               <div className="container">
                 <h4 className="text-4xl font-bold">Upload your data</h4>
                 <CSVUpload setData={(d: any) => handleUpload(d)} />
+                <LoadJsonSource
+                  currentValue={remoteUrl}
+                  setData={(d: any) => handleSetRemoteData(d)}
+                />
               </div>
             )}
 
@@ -222,6 +240,8 @@ function Home() {
                     publish,
                     config,
                     data,
+                    remoteUrl,
+                    isRemote,
                   }}
                   handleSave={() => handleSaveChart()}
                 />
