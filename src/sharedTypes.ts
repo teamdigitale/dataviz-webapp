@@ -15,6 +15,8 @@ export type FieldDataType = {
   id?: string;
   description?: string;
   publish?: boolean;
+  remoteUrl?: string;
+  isRemote: boolean;
 };
 
 export type Step = {
@@ -77,6 +79,8 @@ export interface StoreStateType {
   name: null | string;
   description?: string;
   publish: boolean;
+  remoteUrl: null | string;
+  isRemote: boolean;
   id: null | string;
   setId: (value: string) => void;
   setName: (value: string) => void;
@@ -86,6 +90,8 @@ export interface StoreStateType {
   setData: (value: MatrixType | null) => void;
   loadItem: (value: any) => void;
   resetItem: () => void;
+  setRemoteUrl: (value: string | null) => void;
+  setIsRemote: (value: boolean) => void;
 }
 
 export interface RemoteStoreStateType {

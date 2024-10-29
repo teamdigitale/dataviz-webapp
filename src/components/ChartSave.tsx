@@ -1,3 +1,4 @@
+import * as R from "ramda";
 import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
 import * as api from "../lib/api";
@@ -7,6 +8,7 @@ function ChartSave({ item, handleSave }: any) {
     "YYYY-MM-DD_HH-mm"
   )}`;
   // const generatedId = nanoid();
+
   const {
     register,
     handleSubmit,
@@ -16,20 +18,19 @@ function ChartSave({ item, handleSave }: any) {
       id: item?.id || "",
       name: item?.name || defaultName,
       description: item?.description || "",
-      publish: item?.published || true,
+      publish: item?.id ? item?.publish : true,
     },
   });
 
   function saveChart(formData: any) {
     const { id = "", name, description = "", publish = false } = formData;
     console.log("Save chart id", id);
+    const itemData = R.omit(["id"], item);
     const payload = {
       name,
       description,
       publish,
-      chart: item.chart,
-      config: item.config,
-      data: item.data,
+      ...itemData,
     };
     console.log("Save chart", JSON.stringify(payload, null, 2));
     return api.upsertChart(payload, id);
@@ -92,6 +93,7 @@ function ChartSave({ item, handleSave }: any) {
               </label>
             </div>
           </div>
+
           {isSubmitting && (
             <div className="loading loading-lg">...sumbitting</div>
           )}

@@ -4,17 +4,7 @@ const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 let headers: HeadersInit | undefined = { "Content-Type": "application/json" };
 
 /** Upsert */
-export async function upsertChart(
-  item: {
-    name: string;
-    description?: string;
-    chart: string;
-    config?: any;
-    data: any;
-    publish: boolean;
-  },
-  id?: string
-) {
+export async function upsertChart(item: any, id?: string) {
   const token = auth.getAuth();
   if (!token) return null;
 

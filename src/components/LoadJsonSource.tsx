@@ -3,12 +3,17 @@ import axios from "axios";
 import { log } from "../lib/utils";
 import Papa from "papaparse";
 
-const PLACEHOLDER_URL =
-  "https://www.datocms-assets.com/38008/1722249098-generated-data-3x51722249031636.csv";
+const PLACEHOLDER_URL = "";
 
-function LoadSource({ setRawData }: { setRawData: Function }) {
+function LoadSource({
+  setData,
+  currentValue,
+}: {
+  setData: Function;
+  currentValue: string | null;
+}) {
   const [loading, setLoading] = useState(false);
-  const [url, setUrl] = useState(PLACEHOLDER_URL);
+  const [url, setUrl] = useState(currentValue || PLACEHOLDER_URL);
 
   async function getData() {
     setLoading(true);
@@ -18,15 +23,9 @@ function LoadSource({ setRawData }: { setRawData: Function }) {
         axios.defaults.timeout = 5000;
         const response = await axios.get(url);
         console.log("response.data", response.data);
-        Papa.parse(response.data, {
-          header: false,
-          skipEmptyLines: true,
-          complete: (results) => {
-            const { data } = results;
-            console.log("setRawData ", data);
-            setRawData(data);
-          },
-        });
+        if (response.data) {
+          setData({ remoteUrl: url, data: response.data });
+        }
       }
     } catch (error) {
       log(error);
@@ -54,7 +53,7 @@ function LoadSource({ setRawData }: { setRawData: Function }) {
         />
       </div>
       <button className="btn btn-primary" onClick={() => getData()}>
-        fetch data
+        USE REMOTE DATA
       </button>
     </div>
   );
