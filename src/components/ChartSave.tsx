@@ -24,13 +24,17 @@ function ChartSave({ item, handleSave }: any) {
 
   function saveChart(formData: any) {
     const { id = "", name, description = "", publish = false } = formData;
-    console.log("Save chart id", id);
-    const itemData = R.omit(["id"], item);
+    console.log("Save chart id", item);
+    // const itemData = R.omit(["id"], item);
     const payload = {
       name,
       description,
       publish,
-      ...itemData,
+      chart: item.chart,
+      config: item.config,
+      data: item.data,
+      isRemote: item.isRemote,
+      remoteUrl: item.remoteUrl,
     };
     console.log("Save chart", JSON.stringify(payload, null, 2));
     return api.upsertChart(payload, id);
