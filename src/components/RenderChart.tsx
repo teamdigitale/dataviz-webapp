@@ -4,6 +4,7 @@ import GeoMapChart from "./charts/GeoMapChart";
 import { getPieValues, getBasicValues, getMapValues } from "../lib/utils";
 import { useEffect, useState, useRef } from "react";
 import { downloadPng } from "../lib/downloadUtils";
+import dayjs from "dayjs";
 
 function RenderChart(ds: any) {
   const [loading, setLoading] = useState(false);
@@ -38,11 +39,17 @@ function RenderChart(ds: any) {
   }, [wrapRef]);
 
   if (loading) return null;
+  console.log("ds", ds);
   return (
     <div className="w-full h-full max-height-full">
       {ds.name && <h1 className="text-4xl font-bold">{ds.name}</h1>}
       {ds.description && (
         <p dangerouslySetInnerHTML={{ __html: `${ds.description}` }} />
+      )}
+      {ds.updatedAt && (
+        <small>
+          Ultimo aggiornamento: {dayjs(ds.updatedAt).format("DD/MM/YYYY HH:mm")}
+        </small>
       )}
       <div className="p-4">
         <div className="w-full min-height-[500px]  h-full max-height-full">

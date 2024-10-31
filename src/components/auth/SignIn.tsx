@@ -15,7 +15,6 @@ function SignIn({ setLogin }: { setLogin: (login: boolean) => void }) {
   const onSubmit = async (submittedData: any) => {
     setMessage("");
     const { email, password } = submittedData;
-    console.log(submittedData);
     try {
       const rememberMe = submittedData["remember-me"] ?? false;
       const result = await api.login({ email, password, rememberMe });
