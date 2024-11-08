@@ -41,16 +41,19 @@ function RenderChart(ds: any) {
   if (loading) return null;
   console.log("ds", ds);
   return (
-    <div className="w-full h-full max-height-full p4">
-      {ds.name && <h4 className="text-xl font-bold">{ds.name}</h4>}
-      {ds.description && (
-        <p dangerouslySetInnerHTML={{ __html: `${ds.description}` }} />
-      )}
-      {ds.updatedAt && (
-        <small>
-          Ultimo aggiornamento: {dayjs(ds.updatedAt).format("DD/MM/YYYY HH:mm")}
-        </small>
-      )}
+    <div className="w-full h-full max-height-full">
+      <div className="p-4">
+        {ds.name && <h4 className="text-xl font-bold">{ds.name}</h4>}
+        {ds.description && (
+          <p dangerouslySetInnerHTML={{ __html: `${ds.description}` }} />
+        )}
+        {ds.updatedAt && (
+          <small>
+            Ultimo aggiornamento:{" "}
+            {dayjs(ds.updatedAt).format("DD/MM/YYYY HH:mm")}
+          </small>
+        )}
+      </div>
       <div className="p-4">
         <div className="w-full min-height-[500px]  h-full max-height-full">
           <div ref={wrapRef}>
