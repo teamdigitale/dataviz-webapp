@@ -42,7 +42,7 @@ function RenderChart(ds: any) {
   console.log("ds", ds);
   return (
     <div className="w-full h-full max-height-full">
-      {ds.name && <h1 className="text-4xl font-bold">{ds.name}</h1>}
+      {ds.name && <h4 className="text-xl font-bold">{ds.name}</h4>}
       {ds.description && (
         <p dangerouslySetInnerHTML={{ __html: `${ds.description}` }} />
       )}
@@ -85,7 +85,7 @@ function RenderChart(ds: any) {
           </div>
         </div>
       </div>
-      {echartInstance && (
+      {/* {echartInstance && (
         <button
           className="btn btn-primary btn-outline mt-4"
           title={"Download PNG"}
@@ -99,7 +99,7 @@ function RenderChart(ds: any) {
         >
           {"Download"} PNG
         </button>
-      )}
+      )} */}
     </div>
   );
 }
