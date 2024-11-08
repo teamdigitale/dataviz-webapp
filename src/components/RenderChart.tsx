@@ -41,7 +41,7 @@ function RenderChart(ds: any) {
   if (loading) return null;
   console.log("ds", ds);
   return (
-    <div className="w-full h-full max-height-full">
+    <div className="w-full h-full max-height-full p4">
       {ds.name && <h4 className="text-xl font-bold">{ds.name}</h4>}
       {ds.description && (
         <p dangerouslySetInnerHTML={{ __html: `${ds.description}` }} />
