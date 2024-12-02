@@ -11,6 +11,7 @@ import GenerateDataPage from "./pages/GenerateDataPage";
 import ShowChartPage from "./pages/ShowChartPage";
 import AuthPage from "./pages/AuthPage";
 import EmbedChartPage from "./pages/EmbedChartPage";
+import TestGridPage from "./pages/TestGridPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -42,6 +43,10 @@ function App() {
     {
       path: "/embed/:id",
       element: <EmbedChartPage />,
+    },
+    {
+      path: "/grid",
+      element: <TestGridPage />,
     },
   ]);
 
