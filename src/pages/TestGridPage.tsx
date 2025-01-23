@@ -1,119 +1,81 @@
-import { useState } from "react";
-import { Responsive, WidthProvider } from "react-grid-layout";
+import React from "react";
+import GridLayout, { WidthProvider, Responsive } from "react-grid-layout";
+
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
-import Layout from "../components/layout";
+const TestGridPage: React.FC = () => {
+  let layout = [
+    { i: "item-0", x: 0, y: 0, w: 1, h: 1 },
+    { i: "item-1", x: 1, y: 0, w: 2, h: 1 },
+    { i: "item-2", x: 3, y: 0, w: 1, h: 1 },
 
-export default function Landing() {
-  const cols = { lg: 4, md: 3, sm: 2, xs: 1 };
-  const [breakPoint, setBreakpoint] = useState("lg");
-  const defaultItems = [
-    "What is skishu?",
-    "Skishu is you divinity...",
-    "Shamalaya?",
-    "Yes we can ....",
-    "Who am I?",
-    "Roots of creation...",
-    "hey you!",
-    "bro",
-    "man",
-    "hey yo bro",
-    "wtf",
-  ].map((txt, index) => {
-    return { id: "" + (Date.now() + index), txt };
-  });
-  const [items, setItems] = useState(defaultItems);
+    { i: "item-3", x: 0, y: 1, w: 1, h: 2 },
+    { i: "item-4", x: 1, y: 1, w: 3, h: 2 },
+  ];
 
-  function generateRandomWord() {
-    const minLength = 3,
-      maxLength = 6;
-    const alphabet = "abcdefghijklmnopqrstuvwxyz";
-    const wordLength =
-      Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
-    let word = "";
-    for (let i = 0; i < wordLength; i++) {
-      word += alphabet[Math.floor(Math.random() * alphabet.length)];
-    }
-    return word;
+  const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 };
+  const [result, setResult] = React.useState({ lg: layout });
+  const [breakpoint, setBreakpoint] = React.useState<string>("lg");
+
+  function addItem() {
+    const newLayout = {
+      i: `gen-${layout.length}+1`,
+      x: 0,
+      y: 0,
+      w: 1,
+      h: 1,
+    };
+    result["lg"].push(newLayout);
+    setResult(result);
   }
-
-  function generateLayout(numCols: number) {
-    return items.map((item, index) => {
-      const x = index % numCols;
-      const y = Math.floor(index / numCols);
-      return {
-        x,
-        y,
-        w: 1,
-        h: 1,
-        i: "" + item.id,
-        static: false,
-      };
-    });
-  }
-  let layouts = {
-    lg: generateLayout(cols["lg"]),
-    md: generateLayout(cols["md"]),
-    sm: generateLayout(cols["sm"]),
-    xs: generateLayout(cols["xs"]),
-  };
-
-  function removeItem(id: any) {
-    console.log("remove item", id);
-    setItems((p) => p.filter((i) => i.id !== id));
-  }
-
-  function generateItem() {
-    const newItem = { id: "" + Date.now(), txt: generateRandomWord() };
-    console.log("newItem", newItem);
-    setItems((prev: any) => [...prev, newItem]);
+  function deleteItem(k: string) {
+    const newLayout = result.lg.filter((i) => i.i !== k);
+    setResult({ lg: newLayout });
   }
 
   return (
-    <Layout>
-      <div className="w-full">
-        <div>
-          <div>breakPoint: {breakPoint}</div>
-          <button className="btn btn-primary" onClick={() => generateItem()}>
-            Add Item
-          </button>
-        </div>
-        <div className="my-10 bordered border-blue-500 border-2">
-          <ResponsiveReactGridLayout
-            className="react-grid-layout layout"
-            rowHeight={250}
-            layouts={layouts}
-            // onLayoutChange={(l: any) => setResults(l)}
-            onBreakpointChange={(b) => setBreakpoint(b)}
-            cols={cols}
-          >
-            {(layouts as any)?.[breakPoint].map((l: any) => {
-              const item = items.find((i) => i.id === l.i);
-              return (
-                <div
-                  className="bordered border-black border-2 p2 bg-gray-100 relative p-4 react-grid-item z-10"
-                  key={l.i}
-                  data-grid={l}
-                >
-                  <div>
-                    <p className="font-bold">{item?.id}</p>
-                    <p className="text">{item?.txt}</p>
-                    <p>{` x = ${l.x},y = ${l.y}`}</p>
-                  </div>
+    <div className='w-[90vw] mx-auto'>
+      <div>
+        <pre>
+          <small>{JSON.stringify(result)}</small>
+        </pre>
+        <p>breakpoint: {breakpoint}</p>
 
-                  <div className="absolute bottom-2 left-2 ">
-                    <button
-                      className="btn btn-error btn-md z-20"
-                      onClick={() => removeItem(l.i)}
-                    >
-                      remove Item
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </ResponsiveReactGridLayout>
-        </div>
+        <button className='btn btn-primary' onClick={() => addItem()}>
+          Add +
+        </button>
       </div>
-    </Layout>
+
+      <ResponsiveReactGridLayout
+        onDrop={(l: any) => setResult({ lg: l })}
+        onLayoutChange={(l: any, layouts: any) => {
+          console.log(l, layouts);
+        }}
+        onBreakpointChange={(b: any) => {
+          setBreakpoint(b);
+        }}
+        className='rg-wrapper'
+        layouts={result}
+        cols={cols}
+        margin={[10, 10]}
+        rowHeight={60}
+      >
+        {layout.map((item) => (
+          <div
+            className='border-primary border-2 rouded text-primary'
+            key={item.i}
+          >
+            {item.i}
+            <button
+              className='btn btn-error'
+              onClick={() => deleteItem(item.i)}
+            >
+              remove
+            </button>
+          </div>
+        ))}
+      </ResponsiveReactGridLayout>
+    </div>
   );
-}
+};
+
+export default TestGridPage;
