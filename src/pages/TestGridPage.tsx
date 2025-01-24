@@ -3,74 +3,89 @@ import GridLayout, { WidthProvider, Responsive } from "react-grid-layout";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const TestGridPage: React.FC = () => {
-  let layout = [
+  const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 };
+  const [layout, setLayout] = React.useState([
     { i: "item-0", x: 0, y: 0, w: 1, h: 1 },
     { i: "item-1", x: 1, y: 0, w: 2, h: 1 },
     { i: "item-2", x: 3, y: 0, w: 1, h: 1 },
 
     { i: "item-3", x: 0, y: 1, w: 1, h: 2 },
     { i: "item-4", x: 1, y: 1, w: 3, h: 2 },
-  ];
-
-  const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 };
-  const [result, setResult] = React.useState({ lg: layout });
-  const [breakpoint, setBreakpoint] = React.useState<string>("lg");
+  ]);
+  const [count, setCount] = React.useState(0);
+  const [breakpoint, setBreakpoint] = React.useState("lg");
 
   function addItem() {
-    const newLayout = {
-      i: `gen-${layout.length}+1`,
-      x: 0,
-      y: 0,
-      w: 1,
-      h: 1,
-    };
-    result["lg"].push(newLayout);
-    setResult(result);
+    const xMax = layout.reduce((acc, cur) => (cur.x > acc ? cur.x : acc), 0);
+    const yMax = layout.reduce((acc, cur) => (cur.y > acc ? cur.y : acc), 0);
+    setLayout([
+      ...layout,
+      {
+        i: `gen-${count + 1}`,
+        x: xMax,
+        y: yMax,
+        w: 1,
+        h: 1,
+      },
+    ]);
+    setCount((c) => c + 1);
   }
   function deleteItem(k: string) {
-    const newLayout = result.lg.filter((i) => i.i !== k);
-    setResult({ lg: newLayout });
+    console.log("delete", k);
+    setLayout((l) => l.filter((i) => i.i !== k));
   }
 
   return (
     <div className='w-[90vw] mx-auto'>
-      <div>
-        <pre>
-          <small>{JSON.stringify(result)}</small>
-        </pre>
-        <p>breakpoint: {breakpoint}</p>
-
-        <button className='btn btn-primary' onClick={() => addItem()}>
+      <div className='flex flex-wrap'>
+        <button
+          className='m-2 btn btn-xs btn-primary'
+          onClick={() => addItem()}
+        >
           Add +
         </button>
+        {layout
+          .sort((a, b) => {
+            if (a.y === b.y) {
+              return a.x - b.x;
+            }
+            return a.y - b.y;
+          })
+          .map((l) => (
+            <button
+              key={"delete" + l.i}
+              className='m-2 btn btn-xs btn-error'
+              onClick={() => deleteItem(l.i)}
+            >
+              {l.i}
+            </button>
+          ))}
       </div>
 
       <ResponsiveReactGridLayout
-        onDrop={(l: any) => setResult({ lg: l })}
-        onLayoutChange={(l: any, layouts: any) => {
-          console.log(l, layouts);
+        // onDrop={(l: any) => {
+        //   console.log("on drop", l);
+        // }}
+        onLayoutChange={(l: any) => {
+          console.log("layout change", l);
+          setLayout(l);
         }}
-        onBreakpointChange={(b: any) => {
-          setBreakpoint(b);
+        onBreakpointChange={(breakpoint, columns) => {
+          console.log("breakpoint", breakpoint);
+          console.log("columns", columns);
+          setBreakpoint(breakpoint);
         }}
-        className='rg-wrapper'
-        layouts={result}
+        className='react-grid-layout'
+        layouts={{
+          lg: layout,
+        }}
         cols={cols}
         margin={[10, 10]}
         rowHeight={60}
       >
         {layout.map((item) => (
-          <div
-            className='border-primary border-2 rouded text-primary'
-            key={item.i}
-          >
+          <div className='react-grid-item' key={item.i}>
             {item.i}
-            <button
-              className='btn btn-error'
-              onClick={() => deleteItem(item.i)}
-            >
-              remove
-            </button>
           </div>
         ))}
       </ResponsiveReactGridLayout>
