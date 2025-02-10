@@ -3,7 +3,6 @@ import PieChart from "./charts/PieChart";
 import GeoMapChart from "./charts/GeoMapChart";
 import { getPieValues, getBasicValues, getMapValues } from "../lib/utils";
 import { useEffect, useState, useRef } from "react";
-import { downloadPng } from "../lib/downloadUtils";
 import dayjs from "dayjs";
 
 function RenderChart(ds: any) {
@@ -41,9 +40,9 @@ function RenderChart(ds: any) {
   if (loading) return null;
   console.log("ds", ds);
   return (
-    <div className="w-full h-full max-height-full">
-      <div className="p-4">
-        {ds.name && <h4 className="text-xl font-bold">{ds.name}</h4>}
+    <div className='w-full h-full max-height-full'>
+      <div className='p-4'>
+        {ds.name && <h4 className='text-xl font-bold'>{ds.name}</h4>}
         {ds.description && (
           <p dangerouslySetInnerHTML={{ __html: `${ds.description}` }} />
         )}
@@ -54,8 +53,8 @@ function RenderChart(ds: any) {
           </small>
         )}
       </div>
-      <div className="p-4">
-        <div className="w-full min-height-[500px]  h-full max-height-full">
+      <div className='p-4'>
+        <div className='w-full min-height-[500px]  h-full max-height-full'>
           <div ref={wrapRef}>
             {ds && (
               <>
