@@ -12,6 +12,7 @@ import ShowChartPage from "./pages/ShowChartPage";
 import AuthPage from "./pages/AuthPage";
 import EmbedChartPage from "./pages/EmbedChartPage";
 import TestGridPage from "./pages/TestGridPage";
+import GeoMapUtilsPage from "./pages/GeoMapUtilsPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -27,26 +28,35 @@ function App() {
       path: "/enter",
       element: <AuthPage />,
     },
+    //load data page
     {
       path: "/load-data",
       element: <LoadDataPage />,
     },
+    //generate data page
     {
       path: "/generate-data",
       element: <GenerateDataPage />,
     },
-
+    //show chart page
     {
       path: "/chart/:id",
       element: <ShowChartPage />,
     },
+    //embed chart page
     {
       path: "/embed/:id",
       element: <EmbedChartPage />,
     },
+    //create dashboard page
     {
       path: "/grid",
       element: <TestGridPage />,
+    },
+    //create dashboard page
+    {
+      path: "/geo",
+      element: <GeoMapUtilsPage />,
     },
   ]);
 
