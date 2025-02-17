@@ -26,11 +26,22 @@ function DashboardsPage() {
 
   const navigate = useNavigate();
 
+  function createClickHandler() {
+    navigate(`create`);
+  }
+
   function editClickHandler(id: string) {
     if (!id) {
       throw new Error();
     }
     navigate(`${id}/edit`);
+  }
+
+  function viewClickHandler(id: string) {
+    if (!id) {
+      throw new Error();
+    }
+    navigate(`${id}/view`);
   }
 
   useEffect(() => {
@@ -57,10 +68,7 @@ function DashboardsPage() {
                     <div className="flex my-5 gap-4">
                       <div
                         className="btn btn-primary"
-                        onClick={() => {
-                          //send
-                          console.log("onAdd");
-                        }}
+                        onClick={createClickHandler}
                       >
                         + Create New dashboard
                       </div>
@@ -72,6 +80,7 @@ function DashboardsPage() {
                     handleEditDashboard={(item) => {
                       editClickHandler(item.id ?? "");
                     }}
+                    handleViewDashboard={viewClickHandler}
                   ></DashboardList>
                 </>
               )}

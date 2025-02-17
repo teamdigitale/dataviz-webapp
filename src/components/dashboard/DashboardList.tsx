@@ -5,12 +5,14 @@ type DashboardListProps = {
   list: FieldDataType[] | [];
   handleEditDashboard: (item: FieldDataType) => void;
   handleDeleteDashboard: (id: string) => void;
+  handleViewDashboard: (id: string) => void;
 };
 
 export default function DashboardList({
   list,
   handleDeleteDashboard,
   handleEditDashboard,
+  handleViewDashboard,
 }: DashboardListProps) {
   return (
     <div>
@@ -36,13 +38,20 @@ export default function DashboardList({
               )}
             </div>
             <button
+              className="btn btn-outline btn-success btn-sm"
+              onClick={() => handleViewDashboard(item.id ?? "")}
+            >
+              VIEW
+            </button>
+
+            <button
               className="btn btn-outline btn-primary btn-sm"
               onClick={() => handleEditDashboard(item)}
             >
               EDIT
             </button>
             <button
-              className="ml-4 btn btn-outline btn-error btn-sm"
+              className="btn btn-outline btn-error btn-sm"
               onClick={() => handleDeleteDashboard(item.id || "")}
             >
               DELETE
