@@ -5,7 +5,10 @@ import "./style/index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AboutPage from "./pages/About";
 import AuthPage from "./pages/AuthPage";
+import DashboardCreatePage from "./pages/DashboardCreatePage";
+import DashboardEditPage from "./pages/DashboardEditPage";
 import DashboardsPage from "./pages/DashboardsPage";
+import DashboardViewPage from "./pages/DashboardViewPage";
 import EmbedChartPage from "./pages/EmbedChartPage";
 import GenerateDataPage from "./pages/GenerateDataPage";
 import GeoMapUtilsPage from "./pages/GeoMapUtilsPage";
@@ -52,6 +55,18 @@ function App() {
     {
       path: "/grid",
       element: <TestGridPage />,
+    },
+    {
+      path: "/dashboards/create",
+      element: <DashboardCreatePage />,
+    },
+    {
+      path: "/dashboards/:id/edit",
+      element: <DashboardEditPage />,
+    },
+    {
+      path: "/dashboards/:id/view",
+      element: <DashboardViewPage />,
     },
     //list dashboard page
     {

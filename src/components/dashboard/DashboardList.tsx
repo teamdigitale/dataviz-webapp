@@ -3,14 +3,14 @@ import { FieldDataType } from "../../sharedTypes";
 
 type DashboardListProps = {
   list: FieldDataType[] | [];
-  handleLoadDashboard: (item: FieldDataType) => void;
+  handleEditDashboard: (item: FieldDataType) => void;
   handleDeleteDashboard: (id: string) => void;
 };
 
 export default function DashboardList({
   list,
   handleDeleteDashboard,
-  handleLoadDashboard,
+  handleEditDashboard,
 }: DashboardListProps) {
   return (
     <div>
@@ -37,7 +37,7 @@ export default function DashboardList({
             </div>
             <button
               className="btn btn-outline btn-primary btn-sm"
-              onClick={() => handleLoadDashboard(item)}
+              onClick={() => handleEditDashboard(item)}
             >
               EDIT
             </button>

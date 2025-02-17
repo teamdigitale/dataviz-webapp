@@ -46,3 +46,25 @@ export async function getDashboards() {
     return [];
   }
 }
+
+export async function findById(id: string) {
+  const token = auth.getAuth();
+  if (!token) return null;
+  const response = await fetch(`${SERVER_URL}/dashboards/${id}`, {
+    method: "GET",
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (response.status === 401) {
+    return auth.logout();
+  }
+  if (response.status === 200) {
+    const data = await response.json();
+    return data;
+  } else {
+    return [];
+  }
+}

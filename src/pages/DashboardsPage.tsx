@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Panel, PanelGroup } from "react-resizable-panels";
+import { useNavigate } from "react-router-dom";
 import DashboardList from "../components/dashboard/DashboardList";
 import Layout from "../components/layout";
 import Loading from "../components/layout/Loading";
@@ -21,6 +22,15 @@ function DashboardsPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  const navigate = useNavigate();
+
+  function editClickHandler(id: string) {
+    if (!id) {
+      throw new Error();
+    }
+    navigate(`${id}/edit`);
   }
 
   useEffect(() => {
@@ -59,7 +69,9 @@ function DashboardsPage() {
                   <DashboardList
                     list={list}
                     handleDeleteDashboard={() => {}}
-                    handleLoadDashboard={() => {}}
+                    handleEditDashboard={(item) => {
+                      editClickHandler(item.id ?? "");
+                    }}
                   ></DashboardList>
                 </>
               )}
