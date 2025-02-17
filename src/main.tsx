@@ -1,18 +1,18 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 
 import "./style/index.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage from "./pages/Home";
 import AboutPage from "./pages/About";
-import LoadDataPage from "./pages/LoadDataPage";
-import GenerateDataPage from "./pages/GenerateDataPage";
-import ShowChartPage from "./pages/ShowChartPage";
 import AuthPage from "./pages/AuthPage";
+import DashboardsPage from "./pages/DashboardsPage";
 import EmbedChartPage from "./pages/EmbedChartPage";
-import TestGridPage from "./pages/TestGridPage";
+import GenerateDataPage from "./pages/GenerateDataPage";
 import GeoMapUtilsPage from "./pages/GeoMapUtilsPage";
+import HomePage from "./pages/Home";
+import LoadDataPage from "./pages/LoadDataPage";
+import ShowChartPage from "./pages/ShowChartPage";
+import TestGridPage from "./pages/TestGridPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -52,6 +52,11 @@ function App() {
     {
       path: "/grid",
       element: <TestGridPage />,
+    },
+    //list dashboard page
+    {
+      path: "/dashboards",
+      element: <DashboardsPage />,
     },
     //create dashboard page
     {

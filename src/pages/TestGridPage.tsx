@@ -1,5 +1,8 @@
 import React from "react";
-import GridLayout, { WidthProvider, Responsive } from "react-grid-layout";
+import { Responsive, WidthProvider } from "react-grid-layout";
+import useSWR from "swr";
+import RenderChart from "../components/RenderChart";
+import { getChart } from "../lib/dashaboard-api";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const TestGridPage: React.FC = () => {
@@ -35,11 +38,17 @@ const TestGridPage: React.FC = () => {
     setLayout((l) => l.filter((i) => i.i !== k));
   }
 
+  const id = "cm74pz8p5000157p7l6z6esbe";
+  const { data, error, isLoading } = useSWR(`${id}`, getChart);
+
+  if (error) return <div>failed to load</div>;
+  if (isLoading) return <div>loading...</div>;
+
   return (
-    <div className='w-[90vw] mx-auto'>
-      <div className='flex flex-wrap'>
+    <div className="w-[90vw] mx-auto">
+      <div className="flex flex-wrap">
         <button
-          className='m-2 btn btn-xs btn-primary'
+          className="m-2 btn btn-xs btn-primary"
           onClick={() => addItem()}
         >
           Add +
@@ -54,7 +63,7 @@ const TestGridPage: React.FC = () => {
           .map((l) => (
             <button
               key={"delete" + l.i}
-              className='m-2 btn btn-xs btn-error'
+              className="m-2 btn btn-xs btn-error"
               onClick={() => deleteItem(l.i)}
             >
               {l.i}
@@ -75,7 +84,7 @@ const TestGridPage: React.FC = () => {
           console.log("columns", columns);
           setBreakpoint(breakpoint);
         }}
-        className='react-grid-layout'
+        className="react-grid-layout"
         layouts={{
           lg: layout,
         }}
@@ -84,7 +93,8 @@ const TestGridPage: React.FC = () => {
         rowHeight={60}
       >
         {layout.map((item) => (
-          <div className='react-grid-item' key={item.i}>
+          <div className="react-grid-item" key={item.i}>
+            {item.i === "item-4" && <RenderChart {...(data as any)} />}
             {item.i}
           </div>
         ))}
