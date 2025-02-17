@@ -33,10 +33,10 @@ function DashboardsPage() {
   return (
     <Layout>
       <PanelGroup direction="horizontal" className="w-full">
-        <Panel defaultSize={20} minSize={20} className="bg-base-100">
+        <Panel defaultSize={30} minSize={20} className="bg-base-100">
           <h1>Dashboards</h1>
           <div className="p-4">
-            <div className="container">
+            <div>
               {loading ? (
                 <Loading />
               ) : (
