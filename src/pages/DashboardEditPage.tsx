@@ -1,12 +1,28 @@
+import React from "react";
+import { Responsive, WidthProvider } from "react-grid-layout";
 import { Link, useParams } from "react-router-dom";
 import useSWR from "swr";
 import Layout from "../components/layout";
 import Loading from "../components/layout/Loading";
 import * as api from "../lib/dashaboard-api";
 
+const ResponsiveReactGridLayout = WidthProvider(Responsive);
+
 function DashboardEditPage() {
   const { id } = useParams();
   const { data, error, isLoading } = useSWR(`${id}`, api.findById);
+  const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 };
+
+  const [breakpoint, setBreakpoint] = React.useState("lg");
+  const [layout, setLayout] = React.useState([]);
+
+  React.useEffect(() => {
+    console.log("effect", data);
+    if (data) {
+      setLayout(data.slots.map((s: { settings: any }) => s.settings));
+    }
+  }, [isLoading]);
+
   return (
     <Layout>
       <div>
@@ -32,7 +48,43 @@ function DashboardEditPage() {
             <span>{error.message}</span>
           </div>
         )}
-        {data && JSON.stringify(data)}
+        {data && (
+          <div>
+            <h1 className="text-4xl font-bold">{data.name}</h1>
+            <h4 className="text-xl">{data.description}</h4>
+
+            <ResponsiveReactGridLayout
+              // onDrop={(l: any) => {
+              //   console.log("on drop", l);
+              // }}
+              onLayoutChange={(l: any) => {
+                console.log("layout change", l);
+                setLayout(l);
+              }}
+              onBreakpointChange={(breakpoint, columns) => {
+                console.log("breakpoint", breakpoint);
+                console.log("columns", columns);
+                setBreakpoint(breakpoint);
+              }}
+              className="react-grid-layout"
+              layouts={{
+                lg: layout,
+              }}
+              cols={cols}
+              margin={[10, 10]}
+              rowHeight={60}
+            >
+              {layout.map((item: { i: string }) => (
+                <div className="react-grid-item" key={item.i}>
+                  {/* {item.i === "item-4" && <RenderChart {...(data as any)} />} */}
+                  {item.i}
+                </div>
+              ))}
+            </ResponsiveReactGridLayout>
+
+            <span>{JSON.stringify(data)}</span>
+          </div>
+        )}
       </div>
     </Layout>
   );
