@@ -76,7 +76,6 @@ function DashboardEditPage() {
             >
               {layout.map((item: { i: string }) => (
                 <div className="react-grid-item" key={item.i}>
-                  {/* {item.i === "item-4" && <RenderChart {...(data as any)} />} */}
                   {item.i}
                 </div>
               ))}
