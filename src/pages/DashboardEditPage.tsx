@@ -7,11 +7,11 @@ import Loading from "../components/layout/Loading";
 import * as api from "../lib/dashaboard-api";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
+const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 } as const;
 
 function DashboardEditPage() {
   const { id } = useParams();
   const { data, error, isLoading } = useSWR(`${id}`, api.findById);
-  const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 };
 
   const [breakpoint, setBreakpoint] = React.useState("lg");
   const [layout, setLayout] = React.useState([]);
