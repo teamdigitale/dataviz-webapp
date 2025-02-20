@@ -6,6 +6,14 @@ import Layout from "../components/layout";
 import Loading from "../components/layout/Loading";
 import * as api from "../lib/dashaboard-api";
 
+type LayoutItem = {
+  i: `item-${number}`;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+};
+
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 } as const;
 
@@ -14,7 +22,10 @@ function DashboardEditPage() {
   const { data, error, isLoading } = useSWR(`${id}`, api.findById);
 
   const [breakpoint, setBreakpoint] = React.useState("lg");
-  const [layout, setLayout] = React.useState([]);
+  const [layout, setLayout] = React.useState<Array<LayoutItem>>([]);
+
+  function addItem() {}
+  function deleteItem(id: string) {}
 
   React.useEffect(() => {
     console.log("effect", data);
@@ -52,7 +63,30 @@ function DashboardEditPage() {
           <div>
             <h1 className="text-4xl font-bold">{data.name}</h1>
             <h4 className="text-xl">{data.description}</h4>
-
+            <div className="flex flex-wrap">
+              <button
+                className="m-2 btn btn-xs btn-primary"
+                onClick={() => addItem()}
+              >
+                Add +
+              </button>
+              {layout
+                .sort((a, b) => {
+                  if (a.y === b.y) {
+                    return a.x - b.x;
+                  }
+                  return a.y - b.y;
+                })
+                .map((l) => (
+                  <button
+                    key={"delete" + l.i}
+                    className="m-2 btn btn-xs btn-error"
+                    onClick={() => deleteItem(l.i)}
+                  >
+                    {l.i}
+                  </button>
+                ))}
+            </div>
             <ResponsiveReactGridLayout
               // onDrop={(l: any) => {
               //   console.log("on drop", l);
