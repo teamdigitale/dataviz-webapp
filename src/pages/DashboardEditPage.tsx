@@ -4,9 +4,10 @@ import { Link, useParams } from "react-router-dom";
 import useSWR from "swr";
 import Layout from "../components/layout";
 import Loading from "../components/layout/Loading";
+import RenderChart from "../components/RenderChart";
 import * as api from "../lib/dashaboard-api";
 
-type LayoutItem = {
+type TLayoutItem = {
   i: `item-${number}`;
   x: number;
   y: number;
@@ -22,7 +23,7 @@ function DashboardEditPage() {
   const { data, error, isLoading } = useSWR(`${id}`, api.findById);
 
   const [breakpoint, setBreakpoint] = React.useState("lg");
-  const [layout, setLayout] = React.useState<Array<LayoutItem>>([]);
+  const [layout, setLayout] = React.useState<Array<TLayoutItem>>([]);
 
   function addItem() {}
   function deleteItem(id: string) {}
@@ -108,9 +109,10 @@ function DashboardEditPage() {
               margin={[10, 10]}
               rowHeight={60}
             >
-              {layout.map((item: { i: string }) => (
+              {layout.map((item) => (
                 <div className="react-grid-item" key={item.i}>
                   {item.i}
+                  <RenderChart {...(item as any)} />
                 </div>
               ))}
             </ResponsiveReactGridLayout>
