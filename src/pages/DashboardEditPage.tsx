@@ -13,6 +13,7 @@ type TLayoutItem = {
   y: number;
   w: number;
   h: number;
+  chart: any;
 };
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -31,7 +32,12 @@ function DashboardEditPage() {
   React.useEffect(() => {
     console.log("effect", data);
     if (data) {
-      setLayout(data.slots.map((s: { settings: any }) => s.settings));
+      setLayout(
+        data.slots.map((s: { settings: TLayoutItem; chart: any }) => ({
+          ...s.settings,
+          chart: s.chart,
+        }))
+      );
     }
   }, [isLoading]);
 
@@ -112,7 +118,7 @@ function DashboardEditPage() {
               {layout.map((item) => (
                 <div className="react-grid-item" key={item.i}>
                   {item.i}
-                  <RenderChart {...(item as any)} />
+                  <RenderChart {...(item.chart as any)} />
                 </div>
               ))}
             </ResponsiveReactGridLayout>
