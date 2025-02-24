@@ -24,10 +24,12 @@ function RenderChart(props: any) {
   const [width, setWidth] = useState<number>(500);
   const isMobile = width <= 480 ? true : false;
 
-  // if (props.getPicture && echartInstance) {
-  //   const dataUrl = (echartInstance! satisfies EChartsType).getDataURL();
-  //   props.getPicture(dataUrl);
-  // }
+  useEffect(() => {
+    if (echartInstance && props.getPicture) {
+      const dataUrl = (echartInstance! satisfies EChartsType).getDataURL();
+      props.getPicture(dataUrl);
+    }
+  }, [echartInstance]);
 
   function setDimension() {
     const element: any = wrapRef.current;
@@ -102,17 +104,18 @@ function RenderChart(props: any) {
       </div>
       {/* {echartInstance && (
         <button
-          className="btn btn-primary btn-outline mt-4"
+          className='btn btn-primary btn-outline btn-sm mb-4'
           title={"Download PNG"}
           aria-label={"Download PNG"}
           onClick={() =>
-            downloadPng(
-              echartInstance,
-              props.name || `${props.chart}chart-pic-${Date.now()}`
-            )
+            // downloadPng(
+            //   echartInstance,
+            //   props.name || `${props.chart}chart-pic-${Date.now()}`
+            // )
+            props.getPicture(echartInstance.getDataURL())
           }
         >
-          {"Download"} PNG
+          SET PNG
         </button>
       )} */}
     </div>

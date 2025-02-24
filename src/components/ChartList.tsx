@@ -11,20 +11,40 @@ type ChartListProps = {
   handleDeleteChart: (id: string) => void;
 };
 
-// function setPicture(id: string, pic: string) {
-//   const newPic = { id, pic };
-//   setPicList((prev: []) => [...prev, newPic]);
-// }
-// const [picList, setPicList] = useState<any>([]);
+type picItem = { id: string; pic: string };
 
 export default function ChartList({
   list,
   handleLoadChart,
   handleDeleteChart,
 }: ChartListProps) {
+  const [picList, setPicList] = useState<picItem[]>([]);
   const [show, setShow] = useState<string | null>(null);
+
+  function setPicture(id: string, pic: string) {
+    if (pic) setPicList((prev: picItem[]) => [...prev, { id, pic }]);
+  }
   return (
     <div className=''>
+      <div>
+        {picList?.map((item) => {
+          return (
+            <div key={item.id}>
+              <img
+                src={item.pic}
+                alt='chart'
+                style={{
+                  minWidth: 80,
+                  minHeight: 80,
+                  maxWidth: 200,
+                  maxHeight: 200,
+                }}
+                className='m-2'
+              />
+            </div>
+          );
+        })}
+      </div>
       {list?.map((item) => {
         const updatedAt = (item as any).updatedAt || "";
         return (
@@ -95,17 +115,13 @@ export default function ChartList({
             <div>
               <RenderChart
                 {...(item as any)}
-                // getPicture={(pic: string) => setPicture(item.id + "", pic)}
+                getPicture={(pic: string) => setPicture(item.id + "", pic)}
               />
             </div>
           </div>
         );
       })}
-      {/* <div>
-        {picList.map((item: any) => {
-          return <img src={item.pic} alt='chart' className='w-32 h-32' />;
-        })}
-      </div> */}
+
       <Dialog
         toggle={show ? true : false}
         title='Embed This Chart'
