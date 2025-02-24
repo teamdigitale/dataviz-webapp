@@ -8,6 +8,7 @@ function PieChart({
   data,
   setEchartInstance,
   isMobile = false,
+  isFullH = false,
 }: ChartPropsType) {
   const refCanvas = useRef(null);
 
@@ -125,7 +126,9 @@ function PieChart({
         option={getOptions(data)}
         ref={refCanvas}
         style={{
-          height: chartHeight,
+          height: isFullH ? "100%" : chartHeight,
+          minHeight: isFullH ? "100%" : chartHeight,
+          maxHeight: "100%",
           width: "100%",
           maxWidth: "100%",
         }}

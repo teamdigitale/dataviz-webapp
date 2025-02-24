@@ -24,6 +24,10 @@ export default function Header() {
       link: "/home",
     },
     {
+      name: "Create Dashboard",
+      link: "/dashboards",
+    },
+    {
       name: "Manage Data",
       link: "",
       subMenu: [

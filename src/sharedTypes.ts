@@ -30,6 +30,7 @@ export type ChartPropsType = {
   data: FieldDataType;
   isMobile?: boolean;
   setEchartInstance: (i: any) => void;
+  isFullH: false;
 };
 
 export type ChartConfigType = {

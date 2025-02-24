@@ -27,21 +27,21 @@ function DashboardsPage() {
   const navigate = useNavigate();
 
   function createClickHandler() {
-    navigate(`create`);
+    navigate(`/dashboards/create`);
   }
 
   function editClickHandler(id: string) {
     if (!id) {
       throw new Error();
     }
-    navigate(`${id}/edit`);
+    navigate(`/dashboards/${id}/edit`);
   }
 
   function viewClickHandler(id: string) {
     if (!id) {
       throw new Error();
     }
-    navigate(`${id}/view`);
+    navigate(`/dashboards/${id}/view`);
   }
 
   useEffect(() => {
@@ -53,21 +53,21 @@ function DashboardsPage() {
 
   return (
     <Layout>
-      <PanelGroup direction="horizontal" className="w-full">
-        <Panel defaultSize={30} minSize={20} className="bg-base-100">
-          <div className="p-4">
+      <PanelGroup direction='horizontal' className='w-full'>
+        <Panel defaultSize={30} minSize={20} className='bg-base-100'>
+          <div className='p-4'>
             <div>
               {loading ? (
                 <Loading />
               ) : (
                 <>
-                  <h4 className="text-4xl font-bold">
+                  <h4 className='text-4xl font-bold'>
                     {list && list.length ? "My Dashboards" : "Welcome"}
                   </h4>
                   <div>
-                    <div className="flex my-5 gap-4">
+                    <div className='flex my-5 gap-4'>
                       <div
-                        className="btn btn-primary"
+                        className='btn btn-primary'
                         onClick={createClickHandler}
                       >
                         + Create New dashboard

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./style/index.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AboutPage from "./pages/About";
+import AboutPage from "./pages/AboutPage";
 import AuthPage from "./pages/AuthPage";
 import DashboardCreatePage from "./pages/DashboardCreatePage";
 import DashboardEditPage from "./pages/DashboardEditPage";

@@ -5,8 +5,9 @@ import { formatTooltip } from "../../lib/utils";
 
 function BasicChart({
   data,
-  isMobile = false,
   setEchartInstance,
+  isMobile = false,
+  isFullH = false,
 }: ChartPropsType) {
   const refCanvas = useRef<ReactEcharts>();
   useEffect(() => {
@@ -235,7 +236,9 @@ function BasicChart({
         ref={refCanvas as any}
         style={{
           width: "100%",
-          height: height,
+          height: isFullH ? "100%" : height,
+          minHeight: isFullH ? "100%" : height,
+          maxHeight: "100%",
           maxWidth: "100%",
           marginBottom: "30px",
         }}

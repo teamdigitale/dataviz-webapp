@@ -11,6 +11,7 @@ function GeoMapChart({
   id,
   setEchartInstance,
   isMobile = false,
+  isFullH = false,
 }: ChartPropsType) {
   const refCanvas = useRef(null);
   const [error, setError] = useState("");
@@ -162,9 +163,11 @@ function GeoMapChart({
             option={options}
             ref={refCanvas}
             style={{
-              minHeight: chartHeight,
+              height: isFullH ? "100%" : chartHeight,
+              minHeight: isFullH ? "100%" : chartHeight,
+              maxHeight: "100%",
+
               width: "100%",
-              height: "100%",
               maxWidth: "100%",
             }}
           />

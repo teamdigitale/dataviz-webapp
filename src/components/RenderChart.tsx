@@ -4,20 +4,30 @@ import GeoMapChart from "./charts/GeoMapChart";
 import { getPieValues, getBasicValues, getMapValues } from "../lib/utils";
 import { useEffect, useState, useRef } from "react";
 import dayjs from "dayjs";
+import type { EChartsType } from "echarts";
 
-function RenderChart(ds: any) {
+function RenderChart(props: any) {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-  }, [ds.config]);
+  }, [props.config]);
+
+  const { fullH } = props;
 
   const wrapRef = useRef(null);
-  const [echartInstance, setEchartInstance] = useState(null);
+  const [echartInstance, setEchartInstance] = useState<EChartsType | null>(
+    null
+  );
   const [width, setWidth] = useState<number>(500);
   const isMobile = width <= 480 ? true : false;
+
+  // if (props.getPicture && echartInstance) {
+  //   const dataUrl = (echartInstance! satisfies EChartsType).getDataURL();
+  //   props.getPicture(dataUrl);
+  // }
 
   function setDimension() {
     const element: any = wrapRef.current;
@@ -38,48 +48,51 @@ function RenderChart(ds: any) {
   }, [wrapRef]);
 
   if (loading) return null;
-  console.log("ds", ds);
+  // console.log("props", props);
   return (
     <div className='w-full h-full max-height-full'>
       <div className='p-4'>
-        {ds.name && <h4 className='text-xl font-bold'>{ds.name}</h4>}
-        {ds.description && (
-          <p dangerouslySetInnerHTML={{ __html: `${ds.description}` }} />
+        {props.name && <h4 className='text-xl font-bold'>{props.name}</h4>}
+        {props.description && (
+          <p dangerouslySetInnerHTML={{ __html: `${props.description}` }} />
         )}
-        {ds.updatedAt && (
+        {props.updatedAt && (
           <small>
             Ultimo aggiornamento:{" "}
-            {dayjs(ds.updatedAt).format("DD/MM/YYYY HH:mm")}
+            {dayjs(props.updatedAt).format("DD/MM/YYYY HH:mm")}
           </small>
         )}
       </div>
       <div className='p-4'>
         <div className='w-full min-height-[500px]  h-full max-height-full'>
           <div ref={wrapRef}>
-            {ds && (
+            {props && (
               <>
-                {(ds.chart === "bar" || ds.chart === "line") && (
+                {(props.chart === "bar" || props.chart === "line") && (
                   <BasicChart
-                    id={ds.id}
-                    data={getBasicValues(ds)}
+                    id={props.id}
+                    data={getBasicValues(props)}
                     isMobile={isMobile}
                     setEchartInstance={setEchartInstance}
+                    isFullH={fullH}
                   />
                 )}
-                {ds.chart === "pie" && (
+                {props.chart === "pie" && (
                   <PieChart
-                    id={ds.id}
-                    data={getPieValues(ds)}
+                    id={props.id}
+                    data={getPieValues(props)}
                     isMobile={isMobile}
                     setEchartInstance={setEchartInstance}
+                    isFullH={fullH}
                   />
                 )}
-                {ds.chart === "map" && (
+                {props.chart === "map" && (
                   <GeoMapChart
-                    id={ds.id}
-                    data={getMapValues(ds)}
+                    id={props.id}
+                    data={getMapValues(props)}
                     isMobile={isMobile}
                     setEchartInstance={setEchartInstance}
+                    isFullH={fullH}
                   />
                 )}
               </>
@@ -95,7 +108,7 @@ function RenderChart(ds: any) {
           onClick={() =>
             downloadPng(
               echartInstance,
-              ds.name || `${ds.chart}chart-pic-${Date.now()}`
+              props.name || `${props.chart}chart-pic-${Date.now()}`
             )
           }
         >

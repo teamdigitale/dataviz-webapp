@@ -33,34 +33,37 @@ function DashboardEditPage() {
     console.log("effect", data);
     if (data) {
       setLayout(
-        data.slots.map((s: { settings: TLayoutItem; chart: any }) => ({
-          ...s.settings,
-          chart: s.chart,
-        }))
+        data.slots.map((s: { settings: TLayoutItem; chart: any }) => {
+          console.log(s.settings);
+          return {
+            ...s.settings,
+            chart: s.chart,
+          };
+        })
       );
     }
-  }, [isLoading]);
+  }, [data]);
 
   return (
     <Layout>
       <div>
         <Link to={"/dashboards"}>Torna alla lista</Link>
       </div>
-      <div className="">
+      <div className=''>
         {isLoading && <Loading />}
         {error && (
-          <div role="alert" className="alert alert-error">
+          <div role='alert' className='alert alert-error'>
             <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 shrink-0 stroke-current"
-              fill="none"
-              viewBox="0 0 24 24"
+              xmlns='http://www.w3.org/2000/svg'
+              className='h-6 w-6 shrink-0 stroke-current'
+              fill='none'
+              viewBox='0 0 24 24'
             >
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth='2'
+                d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
               />
             </svg>
             <span>{error.message}</span>
@@ -68,15 +71,17 @@ function DashboardEditPage() {
         )}
         {data && (
           <div>
-            <h1 className="text-4xl font-bold">{data.name}</h1>
-            <h4 className="text-xl">{data.description}</h4>
-            <div className="flex flex-wrap">
+            <h1 className='text-4xl font-bold'>{data.name}</h1>
+            <h4 className='text-xl'>{data.description}</h4>
+            <div className='flex flex-wrap'>
               <button
-                className="m-2 btn btn-xs btn-primary"
+                className='m-2 btn btn-xs btn-primary'
                 onClick={() => addItem()}
               >
                 Add +
               </button>
+
+              <hr />
               {layout
                 .sort((a, b) => {
                   if (a.y === b.y) {
@@ -87,43 +92,50 @@ function DashboardEditPage() {
                 .map((l) => (
                   <button
                     key={"delete" + l.i}
-                    className="m-2 btn btn-xs btn-error"
+                    className='m-2 btn btn-xs btn-error'
                     onClick={() => deleteItem(l.i)}
                   >
                     {l.i}
                   </button>
                 ))}
             </div>
-            <ResponsiveReactGridLayout
-              // onDrop={(l: any) => {
-              //   console.log("on drop", l);
-              // }}
-              onLayoutChange={(l: any) => {
-                console.log("layout change", l);
-                setLayout(l);
-              }}
-              onBreakpointChange={(breakpoint, columns) => {
-                console.log("breakpoint", breakpoint);
-                console.log("columns", columns);
-                setBreakpoint(breakpoint);
-              }}
-              className="react-grid-layout"
-              layouts={{
-                lg: layout,
-              }}
-              cols={cols}
-              margin={[10, 10]}
-              rowHeight={60}
-            >
-              {layout.map((item) => (
-                <div className="react-grid-item" key={item.i}>
-                  {item.i}
-                  <RenderChart {...(item.chart as any)} />
-                </div>
-              ))}
-            </ResponsiveReactGridLayout>
-
-            <span>{JSON.stringify(data)}</span>
+            <div className='relative border min-h-[60vh]'>
+              <ResponsiveReactGridLayout
+                // onDrop={(l: any) => {
+                //   console.log("on drop", l);
+                // }}
+                // onLayoutChange={(l: any) => {
+                //   console.log("layout change", l);
+                //   setLayout(l);
+                // }}
+                onBreakpointChange={(breakpoint, columns) => {
+                  console.log("breakpoint", breakpoint);
+                  console.log("columns", columns);
+                  setBreakpoint(breakpoint);
+                }}
+                className='react-grid-layout'
+                layouts={{
+                  lg: layout,
+                }}
+                cols={cols}
+                margin={[10, 10]}
+                rowHeight={60}
+              >
+                {layout.map((item, index) => (
+                  <div
+                    className='react-grid-item overflow-hidden'
+                    key={item.i + "-" + index}
+                  >
+                    <RenderChart {...(item.chart as any)} fullH={true} />
+                  </div>
+                ))}
+              </ResponsiveReactGridLayout>
+            </div>
+            {/* <div className='overflow-y-scroll h-[250px]'>
+              <small>
+                <pre>{layout && JSON.stringify(layout, null, 2)}</pre>
+              </small>
+            </div> */}
           </div>
         )}
       </div>

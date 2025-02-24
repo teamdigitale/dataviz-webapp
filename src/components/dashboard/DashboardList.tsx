@@ -22,10 +22,10 @@ export default function DashboardList({
         return (
           <div
             key={item.id}
-            className="my-2 flex gap-2 items-center border p-2"
+            className='my-2 flex gap-2 items-center border p-2'
           >
-            <div className="grow flex flex-col">
-              <div className="text-lg">{item.name}</div>
+            <div className='grow flex flex-col'>
+              <div className='text-lg'>{item.name}</div>
               {createdAt && (
                 <small className={`text-xxs text-content opacity-70 pr-4`}>
                   {dayjs(createdAt).format("DD/MM/YYYY HH:mm")}
@@ -38,20 +38,19 @@ export default function DashboardList({
               )}
             </div>
             <button
-              className="btn btn-outline btn-success btn-sm"
+              className='btn btn-outline btn-success btn-sm'
               onClick={() => handleViewDashboard(item.id ?? "")}
             >
               VIEW
             </button>
-
             <button
-              className="btn btn-outline btn-primary btn-sm"
+              className='btn btn-outline btn-primary btn-sm'
               onClick={() => handleEditDashboard(item)}
             >
               EDIT
             </button>
             <button
-              className="btn btn-outline btn-error btn-sm"
+              className='btn btn-outline btn-error btn-sm'
               onClick={() => handleDeleteDashboard(item.id || "")}
             >
               DELETE
