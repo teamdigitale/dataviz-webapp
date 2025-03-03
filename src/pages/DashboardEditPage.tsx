@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import useSWR from "swr";
 import Layout from "../components/layout";
 import Loading from "../components/layout/Loading";
-import RenderChart from "../components/RenderChart";
+import RenderChart from "../components/RenderCellChart";
 import * as api from "../lib/dashaboard-api";
 
 type TLayoutItem = {
@@ -119,14 +119,14 @@ function DashboardEditPage() {
                 }}
                 cols={cols}
                 margin={[10, 10]}
-                rowHeight={60}
+                rowHeight={360}
               >
                 {layout.map((item, index) => (
                   <div
                     className='react-grid-item overflow-hidden'
                     key={item.i + "-" + index}
                   >
-                    <RenderChart {...(item.chart as any)} fullH={true} />
+                    <RenderChart {...(item.chart as any)} fullH={360} />
                   </div>
                 ))}
               </ResponsiveReactGridLayout>

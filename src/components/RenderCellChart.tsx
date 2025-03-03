@@ -53,54 +53,39 @@ function RenderChart(props: any) {
   // console.log("props", props);
   return (
     <div className='w-full h-full max-height-full'>
-      <div className='p-4'>
-        {props.name && <h4 className='text-xl font-bold'>{props.name}</h4>}
-        {props.description && (
-          <p dangerouslySetInnerHTML={{ __html: `${props.description}` }} />
-        )}
-        {props.updatedAt && (
-          <small>
-            {/* Ultimo aggiornamento:{" "} */}
-            {/* {dayjs(props.updatedAt).format("DD/MM/YYYY HH:mm")} */}
-            {fullH}
-          </small>
-        )}
-      </div>
-      <div className='p-4'>
-        <div className='w-full min-height-[500px]  h-full max-height-full'>
-          <div ref={wrapRef}>
-            {props && (
-              <>
-                {(props.chart === "bar" || props.chart === "line") && (
-                  <BasicChart
-                    id={props.id}
-                    data={getBasicValues(props)}
-                    isMobile={isMobile}
-                    setEchartInstance={setEchartInstance}
-                    isFullH={fullH}
-                  />
-                )}
-                {props.chart === "pie" && (
-                  <PieChart
-                    id={props.id}
-                    data={getPieValues(props)}
-                    isMobile={isMobile}
-                    setEchartInstance={setEchartInstance}
-                    isFullH={fullH}
-                  />
-                )}
-                {props.chart === "map" && (
-                  <GeoMapChart
-                    id={props.id}
-                    data={getMapValues(props)}
-                    isMobile={isMobile}
-                    setEchartInstance={setEchartInstance}
-                    isFullH={fullH}
-                  />
-                )}
-              </>
-            )}
-          </div>
+      <div className={`w-full min-height-[${fullH}]  h-full max-height-full`}>
+        <div ref={wrapRef}>
+          {props && (
+            <>
+              {(props.chart === "bar" || props.chart === "line") && (
+                <BasicChart
+                  id={props.id}
+                  data={getBasicValues(props)}
+                  isMobile={isMobile}
+                  setEchartInstance={setEchartInstance}
+                  isFullH={fullH}
+                />
+              )}
+              {props.chart === "pie" && (
+                <PieChart
+                  id={props.id}
+                  data={getPieValues(props)}
+                  isMobile={isMobile}
+                  setEchartInstance={setEchartInstance}
+                  isFullH={fullH}
+                />
+              )}
+              {props.chart === "map" && (
+                <GeoMapChart
+                  id={props.id}
+                  data={getMapValues(props)}
+                  isMobile={isMobile}
+                  setEchartInstance={setEchartInstance}
+                  isFullH={fullH}
+                />
+              )}
+            </>
+          )}
         </div>
       </div>
       {/* {echartInstance && (

@@ -127,7 +127,7 @@ function PieChart({
         ref={refCanvas}
         style={{
           height: isFullH ? "100%" : chartHeight,
-          minHeight: isFullH ? "100%" : chartHeight,
+          minHeight: isFullH ? chartHeight : "auto",
           maxHeight: "100%",
           width: "100%",
           maxWidth: "100%",

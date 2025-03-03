@@ -237,7 +237,7 @@ function BasicChart({
         style={{
           width: "100%",
           height: isFullH ? "100%" : height,
-          minHeight: isFullH ? "100%" : height,
+          minHeight: isFullH ? height : "auto",
           maxHeight: "100%",
           maxWidth: "100%",
           marginBottom: "30px",
