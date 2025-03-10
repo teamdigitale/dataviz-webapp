@@ -3,6 +3,7 @@ import { Responsive, WidthProvider } from "react-grid-layout";
 import { Link, useParams } from "react-router-dom";
 import useSWR from "swr";
 import Layout from "../components/layout";
+import Dialog from "../components/layout/Dialog";
 import Loading from "../components/layout/Loading";
 import RenderChart from "../components/RenderCellChart";
 import * as api from "../lib/dashaboard-api";
@@ -29,18 +30,24 @@ function DashboardEditPage() {
   });
   const [breakpoint, setBreakpoint] = React.useState("lg");
   const [layout, setLayout] = React.useState<Array<TLayoutItem>>([]);
+  const [show, setShow] = React.useState(false);
   const [updatedLayout, setUpdatedLayout] = React.useState<Array<TLayoutItem>>(
     []
   );
 
   const [charts, setCharts] = React.useState<Record<string, TChart>>({});
 
+  function addChart() {
+    console.log("addChart");
+  }
+
   function addItem() {
     const xMax = layout.reduce((acc, cur) => (cur.x > acc ? cur.x : acc), 0);
     const yMax = layout.reduce((acc, cur) => (cur.y > acc ? cur.y : acc), 0);
     const count = layout.length ?? 0;
+    const i = `item-${count}` as `item-${number}`;
     const l = {
-      i: `item-${count}` as `item-${number}`,
+      i,
       x: xMax,
       y: yMax,
       w: 1,
@@ -49,6 +56,7 @@ function DashboardEditPage() {
     const newLayout = [...layout, l];
     setLayout(newLayout);
     setUpdatedLayout(newLayout);
+    setShow(true);
   }
   function deleteItem(id: string) {
     console.log("delete", id);
@@ -196,7 +204,17 @@ function DashboardEditPage() {
                 {layout.map((item) => (
                   <div className="react-grid-item overflow-hidden" key={item.i}>
                     <p>{item.i}</p>
-                    <RenderChart {...(charts[item.i] as any)} fullH={360} />
+                    {charts[item.i] ? (
+                      <RenderChart {...(charts[item.i] as any)} fullH={360} />
+                    ) : (
+                      <button
+                        type="button"
+                        className="m-2 btn btn-xs btn-primary"
+                        onClick={() => addChart()}
+                      >
+                        Add Chart +
+                      </button>
+                    )}
                   </div>
                 ))}
               </ResponsiveReactGridLayout>
@@ -209,6 +227,17 @@ function DashboardEditPage() {
           </div>
         )}
       </div>
+      <Dialog
+        toggle={show}
+        title="Embed This Chart"
+        callback={() => setShow(false)}
+      >
+        <div className="mockup-code">
+          <pre data-prefix="">
+            <code>{show}</code>
+          </pre>
+        </div>
+      </Dialog>
     </Layout>
   );
 }
