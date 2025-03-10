@@ -6,6 +6,9 @@ import Layout from "../components/layout";
 import Loading from "../components/layout/Loading";
 import RenderChart from "../components/RenderCellChart";
 import * as api from "../lib/dashaboard-api";
+import { updateSlots } from "../lib/dashaboard-api";
+
+type TChart = any;
 
 type TLayoutItem = {
   i: `item-${number}`;
@@ -13,41 +16,82 @@ type TLayoutItem = {
   y: number;
   w: number;
   h: number;
-  chart: any;
+  chart: TChart;
 };
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 } as const;
 
 function DashboardEditPage() {
+  console.log("DashboardEdit");
   const { id } = useParams();
-  const { data, error, isLoading } = useSWR(`${id}`, api.findById);
-
+  const { data, error, isLoading, mutate } = useSWR(`${id}`, api.findById, {
+    revalidateOnFocus: false,
+  });
   const [breakpoint, setBreakpoint] = React.useState("lg");
   const [layout, setLayout] = React.useState<Array<TLayoutItem>>([]);
+  const [updatedLayout, setUpdatedLayout] = React.useState<Array<TLayoutItem>>(
+    []
+  );
+
+  const [charts, setCharts] = React.useState<Record<string, TChart>>({});
 
   function addItem() {}
   function deleteItem(id: string) {}
 
+  async function save() {
+    console.log(updatedLayout);
+    const body = {
+      slots: updatedLayout.map((l) => ({
+        chartId: charts[l.i].id,
+        settings: {
+          i: l.i,
+          w: l.w,
+          h: l.h,
+          x: l.x,
+          y: l.y,
+        },
+      })),
+    };
+    console.log(body);
+    const response = await updateSlots(id!, body);
+    console.log(response);
+
+    if (response) {
+      console.log("reload");
+      mutate();
+    }
+  }
+
   React.useEffect(() => {
     console.log("effect", data);
     if (data) {
-      setLayout(
-        data.slots.map((s: { settings: TLayoutItem; chart: any }) => {
+      const layout = data.slots.map(
+        (s: { settings: TLayoutItem; chart: TChart }) => {
           console.log(s.settings);
           return {
             ...s.settings,
             chart: s.chart,
           };
-        })
+        }
       );
+      const charts = layout.reduce((p: any, c: { i: any; chart: any }) => {
+        return { ...p, [c.i]: c.chart };
+      }, {});
+      setCharts(charts);
+      setLayout(layout);
     }
   }, [data]);
 
   return (
     <Layout>
-      <div>
-        <Link to={"/dashboards"}>Torna alla lista</Link>
+      <div className="flex justify-between items-center">
+        <Link to={"/dashboards"} className="text-blue-500 hover:underline">
+          Torna alla lista
+        </Link>
+        <button onClick={() => save()} className="btn btn-primary">
+          Salva
+        </button>
       </div>
       <div className="">
         {isLoading && <Loading />}
@@ -73,15 +117,15 @@ function DashboardEditPage() {
           <div>
             <h1 className="text-4xl font-bold">{data.name}</h1>
             <h4 className="text-xl">{data.description}</h4>
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap items-center">
               <button
+                type="button"
                 className="m-2 btn btn-xs btn-primary"
                 onClick={() => addItem()}
               >
                 Add +
               </button>
 
-              <hr />
               {layout
                 .sort((a, b) => {
                   if (a.y === b.y) {
@@ -101,12 +145,10 @@ function DashboardEditPage() {
             </div>
             <div className="relative border min-h-[60vh]">
               <ResponsiveReactGridLayout
-                // onDrop={(l: any) => {
-                //   console.log("on drop", l);
-                // }}
                 onLayoutChange={(l: any) => {
                   console.log("layout change", l);
-                  // setLayout(l);
+                  console.log(layout, l);
+                  setUpdatedLayout(l);
                 }}
                 onBreakpointChange={(breakpoint, columns) => {
                   console.log("breakpoint", breakpoint);
@@ -121,9 +163,10 @@ function DashboardEditPage() {
                 margin={[10, 10]}
                 rowHeight={360}
               >
-                {layout.map((item, index) => (
+                {layout.map((item) => (
                   <div className="react-grid-item overflow-hidden" key={item.i}>
-                    <RenderChart {...(item.chart as any)} fullH={360} />
+                    <p>{item.i}</p>
+                    <RenderChart {...(charts[item.i] as any)} fullH={360} />
                   </div>
                 ))}
               </ResponsiveReactGridLayout>
