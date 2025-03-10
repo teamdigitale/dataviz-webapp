@@ -16,7 +16,6 @@ type TLayoutItem = {
   y: number;
   w: number;
   h: number;
-  chart: TChart;
 };
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -36,8 +35,26 @@ function DashboardEditPage() {
 
   const [charts, setCharts] = React.useState<Record<string, TChart>>({});
 
-  function addItem() {}
-  function deleteItem(id: string) {}
+  function addItem() {
+    const xMax = layout.reduce((acc, cur) => (cur.x > acc ? cur.x : acc), 0);
+    const yMax = layout.reduce((acc, cur) => (cur.y > acc ? cur.y : acc), 0);
+    const count = layout.length ?? 0;
+    const l = {
+      i: `item-${count}` as `item-${number}`,
+      x: xMax,
+      y: yMax,
+      w: 1,
+      h: 1,
+    };
+    const newLayout = [...layout, l];
+    setLayout(newLayout);
+    setUpdatedLayout(newLayout);
+  }
+  function deleteItem(id: string) {
+    console.log("delete", id);
+    setLayout((l) => l.filter((i) => i.i !== id));
+    setUpdatedLayout((l) => l.filter((i) => i.i !== id));
+  }
 
   async function save() {
     console.log(updatedLayout);
