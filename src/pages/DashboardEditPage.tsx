@@ -79,6 +79,10 @@ function DashboardEditPage() {
     }
   }
 
+  function reset() {
+    reload();
+  }
+
   function reload() {
     console.log("reload");
     mutate();
@@ -111,8 +115,8 @@ function DashboardEditPage() {
           Torna alla lista
         </Link>
         <div className="ml-auto flex space-x-2">
-          <button onClick={() => reload()} className="btn btn-primary">
-            Reload
+          <button onClick={() => reset()} className="btn btn-primary">
+            Reset
           </button>
           <button onClick={() => save()} className="btn btn-primary">
             Salva
