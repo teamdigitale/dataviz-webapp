@@ -58,9 +58,13 @@ function DashboardEditPage() {
     console.log(response);
 
     if (response) {
-      console.log("reload");
-      mutate();
+      reload();
     }
+  }
+
+  function reload() {
+    console.log("reload");
+    mutate();
   }
 
   React.useEffect(() => {
@@ -89,9 +93,14 @@ function DashboardEditPage() {
         <Link to={"/dashboards"} className="text-blue-500 hover:underline">
           Torna alla lista
         </Link>
-        <button onClick={() => save()} className="btn btn-primary">
-          Salva
-        </button>
+        <div className="ml-auto flex space-x-2">
+          <button onClick={() => reload()} className="btn btn-primary">
+            Reload
+          </button>
+          <button onClick={() => save()} className="btn btn-primary">
+            Salva
+          </button>
+        </div>
       </div>
       <div className="">
         {isLoading && <Loading />}
