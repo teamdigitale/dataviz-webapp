@@ -68,3 +68,30 @@ export async function findById(id: string) {
     return [];
   }
 }
+
+export async function updateSlots(id: string, body: {
+  slots: {
+    chartId: string;
+    settings: {
+      x: number;
+      y: number;
+      w: number;
+      h: number;
+      i: string;
+    }
+  }[]
+}) {
+  const token = auth.getAuth();
+  if (!token) return null;
+
+  const response = await fetch(`${SERVER_URL}/dashboards/${id}/slots`, {
+    method: 'PUT',
+    body: JSON.stringify(body),
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${token}`,
+    }
+  });
+
+  return response.status === 200;
+}
