@@ -24,6 +24,28 @@ export async function getChart(id: string) {
     return [];
   }
 }
+export async function getCharts() {
+  const token = auth.getAuth();
+  if (!token) return null;
+  const response = await fetch(`${SERVER_URL}/charts`, {
+    method: "GET",
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (response.status === 401) {
+    return auth.logout();
+  }
+  if (response.status === 200) {
+    const data = await response.json();
+    return data;
+  } else {
+    return [];
+  }
+}
+
 /* List */
 export async function getDashboards() {
   const token = auth.getAuth();

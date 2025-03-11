@@ -19,6 +19,73 @@ type TLayoutItem = {
   h: number;
 };
 
+interface ChartSelectionProps {
+  charts: Record<string, TChart>;
+  onSelect: (chart: TChart) => void;
+}
+
+function ChartSelection(props: ChartSelectionProps) {
+  const [charts, setCharts] = React.useState<Array<TChart>>([]);
+  const [chart, setChart] = React.useState<TChart>();
+
+  const mergeCharts = (charts: Array<TChart>) => {
+    const idsToRemove = new Set(Object.values(props.charts).map((m) => m.id));
+    const filteredCharts = charts.filter((c) => !idsToRemove.has(c.id));
+    setCharts(filteredCharts);
+  };
+
+  async function fetchCharts() {
+    //setLoading(true);
+    try {
+      const data = await api.getCharts();
+      mergeCharts(data);
+    } catch (error) {
+    } finally {
+      //setLoading(false);
+    }
+  }
+
+  React.useEffect(() => {
+    fetchCharts();
+  }, []);
+
+  return (
+    <div>
+      {charts && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "start",
+          }}
+        >
+          <label style={{ width: "200px" }}>Select a chart type:</label>
+          <select
+            className="select select-primary my-2 p-2"
+            style={{ width: "100%" }}
+            value={chart}
+            onChange={(e) => {
+              const chartId = e.target.value;
+              setChart(chartId || "");
+              const chart = charts.find((c) => c.id === chartId);
+              props.onSelect(chart);
+            }}
+          >
+            <option value="">{`-seleziona un grafico-`}</option>
+            {charts.map((c, index) => {
+              return (
+                <option key={`${c.id}-${index}`} value={c.id}>
+                  {c.name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+      )}
+    </div>
+  );
+}
+
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 } as const;
 
@@ -28,17 +95,26 @@ function DashboardEditPage() {
   const { data, error, isLoading, mutate } = useSWR(`${id}`, api.findById, {
     revalidateOnFocus: false,
   });
+
   const [breakpoint, setBreakpoint] = React.useState("lg");
   const [layout, setLayout] = React.useState<Array<TLayoutItem>>([]);
   const [show, setShow] = React.useState(false);
+  const [lastCreated, setLastCreated] = React.useState<string>();
+  const [selectedChart, setSelectedChart] = React.useState<TChart>();
   const [updatedLayout, setUpdatedLayout] = React.useState<Array<TLayoutItem>>(
     []
   );
 
   const [charts, setCharts] = React.useState<Record<string, TChart>>({});
 
-  function addChart() {
+  function showAddModal(i: string) {
+    setShow(true);
+    setLastCreated(i);
+  }
+
+  function addChart(item: string) {
     console.log("addChart");
+    showAddModal(item);
   }
 
   function addItem() {
@@ -56,7 +132,7 @@ function DashboardEditPage() {
     const newLayout = [...layout, l];
     setLayout(newLayout);
     setUpdatedLayout(newLayout);
-    setShow(true);
+    showAddModal(i);
   }
   function deleteItem(id: string) {
     console.log("delete", id);
@@ -65,7 +141,6 @@ function DashboardEditPage() {
   }
 
   async function save() {
-    console.log(updatedLayout);
     const body = {
       slots: updatedLayout.map((l) => ({
         chartId: charts[l.i].id,
@@ -78,9 +153,7 @@ function DashboardEditPage() {
         },
       })),
     };
-    console.log(body);
     const response = await updateSlots(id!, body);
-    console.log(response);
 
     if (response) {
       reload();
@@ -101,7 +174,6 @@ function DashboardEditPage() {
     if (data) {
       const layout = data.slots.map(
         (s: { settings: TLayoutItem; chart: TChart }) => {
-          console.log(s.settings);
           return {
             ...s.settings,
             chart: s.chart,
@@ -185,7 +257,6 @@ function DashboardEditPage() {
               <ResponsiveReactGridLayout
                 onLayoutChange={(l: any) => {
                   console.log("layout change", l);
-                  console.log(layout, l);
                   setUpdatedLayout(l);
                 }}
                 onBreakpointChange={(breakpoint, columns) => {
@@ -204,13 +275,13 @@ function DashboardEditPage() {
                 {layout.map((item) => (
                   <div className="react-grid-item overflow-hidden" key={item.i}>
                     <p>{item.i}</p>
-                    {charts[item.i] ? (
+                    {charts && charts[item.i] ? (
                       <RenderChart {...(charts[item.i] as any)} fullH={360} />
                     ) : (
                       <button
                         type="button"
                         className="m-2 btn btn-xs btn-primary"
-                        onClick={() => addChart()}
+                        onClick={() => addChart(item.i)}
                       >
                         Add Chart +
                       </button>
@@ -227,17 +298,25 @@ function DashboardEditPage() {
           </div>
         )}
       </div>
-      <Dialog
-        toggle={show}
-        title="Embed This Chart"
-        callback={() => setShow(false)}
-      >
-        <div className="mockup-code">
-          <pre data-prefix="">
-            <code>{show}</code>
-          </pre>
-        </div>
-      </Dialog>
+      {show && (
+        <Dialog
+          toggle={show}
+          title="Select a chart"
+          callback={() => {
+            setCharts({ ...charts, [lastCreated!]: { ...selectedChart } });
+            setLastCreated(undefined);
+            setSelectedChart(undefined);
+            setShow(false);
+          }}
+        >
+          <ChartSelection
+            charts={charts}
+            onSelect={(item) => {
+              setSelectedChart(item);
+            }}
+          />
+        </Dialog>
+      )}
     </Layout>
   );
 }
