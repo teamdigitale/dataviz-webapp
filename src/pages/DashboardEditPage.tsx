@@ -35,8 +35,6 @@ interface DashboardEditState {
   charts: Record<string, TChart>;
   setBreakpoint: (breakpoint: string) => void;
   setLayout: (layout: TLayoutItem[]) => void;
-  setShow: (show: boolean) => void;
-  setLastCreated: (lastCreated?: string) => void;
   setSelectedChart: (selectedChart?: TChart) => void;
   setUpdatedLayout: (updatedLayout: TLayoutItem[]) => void;
   setCharts: (charts: Record<string, TChart>) => void;
@@ -61,8 +59,6 @@ const useDashboardEditStore = create<DashboardEditState>((set, get) => ({
 
   setBreakpoint: (breakpoint) => set({ breakpoint }),
   setLayout: (layout) => set({ layout }),
-  setShow: (show) => set({ show }),
-  setLastCreated: (lastCreated) => set({ lastCreated }),
   setSelectedChart: (selectedChart) => set({ selectedChart }),
   setUpdatedLayout: (updatedLayout) => set({ updatedLayout }),
   setCharts: (charts) => set({ charts }),
@@ -188,17 +184,12 @@ function DashboardEditPage() {
   });
 
   const {
-    breakpoint,
     layout,
     show,
-    lastCreated,
-    selectedChart,
     updatedLayout,
     charts,
     setBreakpoint,
     setLayout,
-    setShow,
-    setLastCreated,
     setSelectedChart,
     setUpdatedLayout,
     setCharts,
