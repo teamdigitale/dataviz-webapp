@@ -36,6 +36,7 @@ function DashboardViewPage() {
             ...s.settings,
             chart: s.chart,
             static: true,
+            resizeHandles: undefined,
           };
         }
       );

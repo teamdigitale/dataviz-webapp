@@ -4,6 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* https://github.com/react-grid-layout/react-grid-layout/issues/1329#issuecomment-1518921042 */
+.react-resizable-hide .react-resizable-handle {
+  display: none !important;
+}
+
 @layer base {
   html {
     font-family: "Titillium Web", system-ui, sans-serif;
@@ -11,9 +16,9 @@
 }
 
 @layer components {
-  .react-grid-layout-wrapper{
+  .react-grid-layout-wrapper {
     background-color: #f4f4f4;
-    border:1px solid red;
+    border: 1px solid red;
     margin: 40px auto;
   }
 
@@ -21,6 +26,7 @@
     position: relative;
     transition: height 200ms ease;
   }
+
   .react-grid-item {
     transition: all 200ms ease;
     transition-property: left, top;
@@ -67,6 +73,4 @@
     box-sizing: border-box;
     cursor: se-resize;
   }
-
-
 }
