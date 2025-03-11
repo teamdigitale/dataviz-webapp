@@ -49,8 +49,10 @@ function DashboardViewPage() {
 
   return (
     <Layout>
-      <div>
-        <Link to={"/dashboards"}>Torna alla lista</Link>
+      <div className="flex justify-between items-center">
+        <Link to={"/dashboards"} className="text-blue-500 hover:underline">
+          Torna alla lista
+        </Link>
       </div>
       <div className="">
         {isLoading && <Loading />}
