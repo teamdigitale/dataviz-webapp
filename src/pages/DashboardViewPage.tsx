@@ -17,7 +17,8 @@ const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 } as const;
 function DashboardViewPage() {
   const { id } = useParams();
   const { data, error, isLoading } = useSWR(`${id}`, api.findById);
-  const { onDataChange, layout, charts } = useDashboardViewStore();
+  const { onDataChange, layout, charts, name, description } =
+    useDashboardViewStore();
 
   React.useEffect(() => {
     console.log("effect", data);
@@ -36,7 +37,9 @@ function DashboardViewPage() {
         return { ...p, [c.i]: c.chart };
       }, {});
 
-      onDataChange({ charts, layout });
+      const { name, description } = data;
+
+      onDataChange({ charts, layout, name, description });
     }
   }, [data]);
 
@@ -69,8 +72,8 @@ function DashboardViewPage() {
         )}
         {data && (
           <div>
-            <h1 className="text-4xl font-bold">{data.name}</h1>
-            <h4 className="text-xl">{data.description}</h4>
+            <h1 className="text-4xl font-bold">{name}</h1>
+            <h4 className="text-xl">{description}</h4>
             <div className="relative border min-h-[60vh]">
               <ResponsiveReactGridLayout
                 className="react-grid-layout"

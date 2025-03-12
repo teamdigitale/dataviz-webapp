@@ -95,6 +95,8 @@ function DashboardEditPage() {
     show,
     updatedLayout,
     charts,
+    name,
+    description,
     setBreakpoint,
     setLayout,
     setSelectedChart,
@@ -156,7 +158,9 @@ function DashboardEditPage() {
         {}
       );
 
-      onDataChange({ charts, layout });
+      const { name, description } = data;
+
+      onDataChange({ charts, layout, name, description });
     }
   }, [data, setCharts, setLayout]);
 
@@ -183,8 +187,8 @@ function DashboardEditPage() {
       )}
       {data && (
         <>
-          <h1 className="text-4xl font-bold">{data.name}</h1>
-          <h4 className="text-xl">{data.description}</h4>
+          <h1 className="text-4xl font-bold">{name}</h1>
+          <h4 className="text-xl">{description}</h4>
           <div className="flex flex-wrap items-center">
             <button
               className="m-2 btn btn-xs btn-primary"

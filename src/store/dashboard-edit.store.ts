@@ -12,6 +12,8 @@ type TLayoutItem = {
 
 
 interface DashboardEditState {
+    name: string;
+    description: string;
     breakpoint: string;
     layout: TLayoutItem[];
     show: boolean;
@@ -29,12 +31,16 @@ interface DashboardEditState {
     showAddModal: (i: string) => void;
     closeAddModal: () => void;
     onDataChange: (data: {
+        name: string;
+        description: string;
         charts: Record<string, TChart>;
         layout: Array<TLayoutItem>;
     }) => void;
 }
 
 const useDashboardEditStore = create<DashboardEditState>((set, get) => ({
+    name: '',
+    description: '',
     breakpoint: "lg",
     layout: [],
     show: false,
@@ -76,11 +82,15 @@ const useDashboardEditStore = create<DashboardEditState>((set, get) => ({
     onDataChange: ({
         charts,
         layout,
+        name,
+        description
     }: {
         charts: Record<string, TChart>;
         layout: Array<TLayoutItem>;
+        name: string;
+        description: string
     }) => {
-        set({ charts, layout });
+        set({ charts, layout, name, description });
     },
     showAddModal: (i: string) => {
         set({ show: true, lastCreated: i });
