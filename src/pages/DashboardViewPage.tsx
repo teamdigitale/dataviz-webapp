@@ -6,26 +6,18 @@ import Layout from "../components/layout";
 import Loading from "../components/layout/Loading";
 import RenderChart from "../components/RenderCellChart";
 import * as api from "../lib/dashaboard-api";
+import useDashboardViewStore, {
+  TChart,
+  TLayoutItem,
+} from "../store/dashboard-view.store";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 } as const;
 
-type TChart = any;
-
-type TLayoutItem = {
-  i: `item-${number}`;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-};
-
 function DashboardViewPage() {
   const { id } = useParams();
   const { data, error, isLoading } = useSWR(`${id}`, api.findById);
-  const [charts, setCharts] = React.useState<Record<string, TChart>>({});
-
-  const [layout, setLayout] = React.useState<Array<TLayoutItem>>([]);
+  const { onDataChange, layout, charts } = useDashboardViewStore();
 
   React.useEffect(() => {
     console.log("effect", data);
@@ -43,8 +35,8 @@ function DashboardViewPage() {
       const charts = layout.reduce((p: any, c: { i: any; chart: any }) => {
         return { ...p, [c.i]: c.chart };
       }, {});
-      setCharts(charts);
-      setLayout(layout);
+
+      onDataChange({ charts, layout });
     }
   }, [data]);
 
@@ -81,15 +73,6 @@ function DashboardViewPage() {
             <h4 className="text-xl">{data.description}</h4>
             <div className="relative border min-h-[60vh]">
               <ResponsiveReactGridLayout
-                onLayoutChange={(l: any) => {
-                  // console.log("layout change", l);
-                  // setUpdatedLayout(l);
-                }}
-                onBreakpointChange={(breakpoint, columns) => {
-                  // console.log("breakpoint", breakpoint);
-                  // console.log("columns", columns);
-                  // setBreakpoint(breakpoint);
-                }}
                 className="react-grid-layout"
                 layouts={{
                   lg: layout,
@@ -110,11 +93,6 @@ function DashboardViewPage() {
             </div>
           </div>
         )}
-        {/* <div className="overflow-y-scroll h-[250px]">
-          <small>
-            <pre>{data && JSON.stringify(data, null, 2)}</pre>
-          </small>
-        </div> */}
       </div>
     </Layout>
   );
