@@ -29,20 +29,12 @@ interface DashboardEditSelectors {
 
 interface DashboardEditActions {
     setBreakpoint: (breakpoint: string) => void;
-    setLayout: (layout: TLayoutItem[]) => void;
     setSelectedChart: (selectedChart?: TChart) => void;
     setUpdatedLayout: (updatedLayout: TLayoutItem[]) => void;
-    setCharts: (charts: Record<string, TChart>) => void;
     addItem: () => void;
     deleteItem: (id: string) => void;
     showAddModal: (i: string) => void;
     closeAddModal: () => void;
-    onDataChange: (data: {
-        name: string;
-        description: string;
-        charts: Record<string, TChart>;
-        layout: Array<TLayoutItem>;
-    }) => void;
     fetchData: (id: string) => void;
     mutate: (id: string) => void;
 }
@@ -74,11 +66,8 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
     charts: {},
     isLoading: true,
     setBreakpoint: (breakpoint) => set({ breakpoint }),
-    setLayout: (layout) => set({ layout }),
     setSelectedChart: (selectedChart) => set({ selectedChart }),
     setUpdatedLayout: (updatedLayout) => set({ updatedLayout }),
-    setCharts: (charts) => set({ charts }),
-
     addItem: () => {
         const { layout } = get();
         const xMax = layout.reduce((acc, cur) => (cur.x > acc ? cur.x : acc), 0);
@@ -102,19 +91,6 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
             layout: layout.filter((i) => i.i !== id),
             updatedLayout: updatedLayout.filter((i) => i.i !== id),
         });
-    },
-    onDataChange: ({
-        charts,
-        layout,
-        name,
-        description
-    }: {
-        charts: Record<string, TChart>;
-        layout: Array<TLayoutItem>;
-        name: string;
-        description: string
-    }) => {
-        set({ charts, layout, name, description });
     },
     showAddModal: (i: string) => {
         set({ show: true, lastCreated: i });
@@ -146,8 +122,7 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
 
             const { name, description } = data;
 
-            get().onDataChange({ charts, layout, name, description });
-            set({ isLoading: false })
+            set({ charts, layout, name, description, isLoading: false });
         }
     },
     mutate: (id: string) => {
