@@ -57,11 +57,11 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
     setLayout: (layout) => set({ layout }),
     addItem: () => {
         const { layout } = get();
-        const xMax = layout.reduce((acc, cur) => (cur.x > acc ? cur.x : acc), 0);
+        const xMax = 0
         const yMax = layout.reduce((acc, cur) => (cur.y > acc ? cur.y : acc), 0);
         const count = layout.length ?? 0;
         const i = `item-${count}`;
-        const l = { i, x: xMax, y: yMax, w: 1, h: 1 };
+        const l = { i, x: xMax, y: yMax, w: 4, h: 1 };
         const newLayout = [...layout, l] as typeof layout;
 
         set({
