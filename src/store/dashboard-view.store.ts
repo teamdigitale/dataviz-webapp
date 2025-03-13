@@ -48,6 +48,8 @@ const useDashboardViewStore = create<DashboardViewState>((set, get) => ({
                     .map(
                         ({ settings }: { settings: TLayoutItem; }) => ({
                             ...settings,
+                            static: true,
+                            resizeHandlers: undefined
                         })
                     );
 
