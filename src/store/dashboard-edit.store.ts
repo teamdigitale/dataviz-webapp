@@ -20,7 +20,6 @@ interface DashboardEditSelectors {
     show: boolean;
     lastCreated?: string;
     selectedChart?: TChart;
-    updatedLayout: TLayoutItem[];
     charts: Record<string, TChart>;
     isLoading: boolean;
     error?: {
@@ -31,7 +30,7 @@ interface DashboardEditSelectors {
 interface DashboardEditActions {
     setBreakpoint: (breakpoint: string) => void;
     setSelectedChart: (selectedChart?: TChart) => void;
-    setUpdatedLayout: (updatedLayout: TLayoutItem[]) => void;
+    setLayout: (layout: TLayoutItem[]) => void;
     addItem: () => void;
     deleteItem: (id: string) => void;
     showAddModal: (i: string) => void;
@@ -43,19 +42,6 @@ interface DashboardEditActions {
 
 type DashboardEditState = DashboardEditSelectors & DashboardEditActions
 
-const initialState = {
-    name: '',
-    description: '',
-    breakpoint: "lg",
-    layout: [],
-    show: false,
-    lastCreated: undefined,
-    selectedChart: undefined,
-    updatedLayout: [],
-    charts: {},
-    isLoading: true,
-}
-
 const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
     name: '',
     description: '',
@@ -64,12 +50,11 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
     show: false,
     lastCreated: undefined,
     selectedChart: undefined,
-    updatedLayout: [],
     charts: {},
     isLoading: true,
     setBreakpoint: (breakpoint) => set({ breakpoint }),
     setSelectedChart: (selectedChart) => set({ selectedChart }),
-    setUpdatedLayout: (updatedLayout) => set({ updatedLayout }),
+    setLayout: (layout) => set({ layout }),
     addItem: () => {
         const { layout } = get();
         const xMax = layout.reduce((acc, cur) => (cur.x > acc ? cur.x : acc), 0);
@@ -83,15 +68,13 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
             show: true,
             lastCreated: i,
             layout: newLayout,
-            updatedLayout: layout,
         });
     },
     deleteItem: (id: string) => {
         console.log("delete", id);
-        const { layout, updatedLayout } = get();
+        const { layout } = get();
         set({
             layout: layout.filter((i) => i.i !== id),
-            updatedLayout: updatedLayout.filter((i) => i.i !== id),
         });
     },
     showAddModal: (i: string) => {
@@ -131,7 +114,6 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
                 description,
                 isLoading: false,
                 id,
-                updatedLayout: layout.map((l: any) => ({ ...l }))
             });
         }
     },
@@ -142,9 +124,9 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
         }
     },
     save: async () => {
-        const { updatedLayout, charts, id } = get()
+        const { layout, charts, id } = get()
         const body = {
-            slots: updatedLayout.map((l) => ({
+            slots: layout.map((l) => ({
                 chartId: charts[l.i]?.id,
                 settings: { i: l.i, w: l.w, h: l.h, x: l.x, y: l.y },
             })),

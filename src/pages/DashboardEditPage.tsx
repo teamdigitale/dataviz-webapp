@@ -6,10 +6,7 @@ import Dialog from "../components/layout/Dialog";
 import Loading from "../components/layout/Loading";
 import RenderChart from "../components/RenderCellChart";
 import * as api from "../lib/dashaboard-api";
-import useDashboardEditStore, {
-  TChart,
-  TLayoutItem,
-} from "../store/dashboard-edit.store";
+import useDashboardEditStore, { TChart } from "../store/dashboard-edit.store";
 
 interface ChartSelectionProps {
   charts: Record<string, TChart>;
@@ -88,7 +85,6 @@ function DashboardEditPage() {
   const {
     layout,
     show,
-    updatedLayout,
     charts,
     name,
     description,
@@ -96,7 +92,7 @@ function DashboardEditPage() {
     error,
     setBreakpoint,
     setSelectedChart,
-    setUpdatedLayout,
+    setLayout,
     addItem,
     deleteItem,
     showAddModal,
@@ -106,8 +102,7 @@ function DashboardEditPage() {
     save,
   } = useDashboardEditStore();
 
-  function addChart(item: string) {
-    console.log("addChart");
+  function addChartHandler(item: string) {
     showAddModal(item);
   }
 
@@ -180,10 +175,7 @@ function DashboardEditPage() {
           </div>
           <div className="relative border min-h-[60vh]">
             <ResponsiveReactGridLayout
-              onLayoutChange={(l) => {
-                console.log("setUpdatedLayout", l);
-                setUpdatedLayout(l as TLayoutItem[]);
-              }}
+              onLayoutChange={setLayout}
               onBreakpointChange={setBreakpoint}
               className="react-grid-layout"
               layouts={{ lg: layout }}
@@ -199,7 +191,7 @@ function DashboardEditPage() {
                   ) : (
                     <button
                       className="m-2 btn btn-xs btn-primary"
-                      onClick={() => addChart(item.i)}
+                      onClick={() => addChartHandler(item.i)}
                     >
                       Add Chart +
                     </button>
