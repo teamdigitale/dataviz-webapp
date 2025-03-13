@@ -6,20 +6,22 @@ import Dialog from "../components/layout/Dialog";
 import Loading from "../components/layout/Loading";
 import RenderChart from "../components/RenderCellChart";
 import * as api from "../lib/dashaboard-api";
-import useDashboardEditStore, { TChart } from "../store/dashboard-edit.store";
+import useDashboardEditStore, {
+  TChartRef,
+} from "../store/dashboard-edit.store";
 
 interface ChartSelectionProps {
-  charts: Record<string, TChart>;
-  onSelect: (chart?: TChart) => void;
+  charts: Record<string, TChartRef>;
+  onSelect: (chart?: TChartRef) => void;
 }
 
-interface ChartLookup extends TChart {
+interface ChartLookup extends TChartRef {
   name: string;
 }
 
 function ChartSelection(props: ChartSelectionProps) {
   const [charts, setCharts] = React.useState<Array<ChartLookup>>([]);
-  const [chart, setChart] = React.useState<TChart>();
+  const [chart, setChart] = React.useState<TChartRef>();
 
   const mergeCharts = (charts: Array<ChartLookup>) => {
     const idsToRemove = new Set(Object.values(props.charts).map((m) => m.id));

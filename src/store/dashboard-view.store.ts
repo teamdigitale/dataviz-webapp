@@ -1,6 +1,8 @@
 import { create } from "zustand";
+import * as api from "../lib/dashaboard-api";
+import { DashboardDetail } from "../lib/dashaboard-api";
 
-type TChart = any;
+type TChartRef = { id: string };
 
 type TLayoutItem = {
     i: `item-${number}`;
@@ -10,38 +12,67 @@ type TLayoutItem = {
     h: number;
 };
 
-interface DashboardViewState {
+interface DashboardViewActions {
+    load: (id: string) => void;
+}
+
+interface DashboardViewStateSelectors {
+    id?: string;
     name: string;
     description: string;
     layout: TLayoutItem[];
-    charts: Record<string, TChart>;
-
-    onDataChange: (data: {
-        name: string;
-        description: string;
-        charts: Record<string, TChart>;
-        layout: Array<TLayoutItem>;
-    }) => void;
+    charts: Record<string, TChartRef>;
+    isLoading: boolean;
+    loaded: boolean;
+    error?: {
+        message: string;
+    }
 }
+
+type DashboardViewState = DashboardViewActions & DashboardViewStateSelectors;
 
 const useDashboardViewStore = create<DashboardViewState>((set, get) => ({
     name: '',
     description: '',
+    isLoading: true,
+    loaded: false,
     layout: [],
     charts: {},
-    onDataChange: ({
-        charts,
-        layout,
-        name, description
-    }: {
-        name: string;
-        description: string;
-        charts: Record<string, TChart>;
-        layout: Array<TLayoutItem>;
-    }) => {
-        set({ charts, layout, name, description });
-    },
+    load: async (id: string) => {
+        try {
+            const data = await api.findById(id) as DashboardDetail;
+
+            if (data) {
+                const layout = data
+                    .slots
+                    .map(
+                        ({ settings }: { settings: TLayoutItem; }) => ({
+                            ...settings,
+                        })
+                    );
+
+                const charts = data
+                    .slots
+                    .reduce<Record<string, TChartRef>>((p, c) => ({ ...p, [c.settings.i]: c.chart }), {});
+
+                const { name, description } = data;
+
+                set({
+                    charts,
+                    layout,
+                    name,
+                    description,
+                    isLoading: false,
+                    loaded: true,
+                    id,
+                });
+            }
+
+        } catch (error) {
+            set({ error: { message: (error as Error).message }, isLoading: false })
+        }
+    }
 }))
 
-export type { TChart, TLayoutItem };
+export type { TChartRef as TChart, TLayoutItem };
 export default useDashboardViewStore;

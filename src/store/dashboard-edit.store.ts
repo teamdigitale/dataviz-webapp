@@ -2,7 +2,7 @@ import { create } from "zustand";
 import * as api from "../lib/dashaboard-api";
 import { DashboardDetail } from "../lib/dashaboard-api";
 
-type TChart = { id: string };
+type TChartRef = { id: string };
 
 type TLayoutItem = {
     i: `item-${number}`;
@@ -20,8 +20,8 @@ interface DashboardEditSelectors {
     layout: TLayoutItem[];
     show: boolean;
     lastCreated?: string;
-    selectedChart?: TChart;
-    charts: Record<string, TChart>;
+    selectedChart?: TChartRef;
+    charts: Record<string, TChartRef>;
     loaded: boolean;
     isLoading: boolean;
     error?: {
@@ -31,7 +31,7 @@ interface DashboardEditSelectors {
 
 interface DashboardEditActions {
     setBreakpoint: (breakpoint: string) => void;
-    setSelectedChart: (selectedChart?: TChart) => void;
+    setSelectedChart: (selectedChart?: TChartRef) => void;
     setLayout: (layout: TLayoutItem[]) => void;
     addItem: () => void;
     deleteItem: (id: string) => void;
@@ -108,7 +108,7 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
 
                 const charts = data
                     .slots
-                    .reduce<Record<string, TChart>>((p, c) => ({ ...p, [c.settings.i]: c.chart }), {});
+                    .reduce<Record<string, TChartRef>>((p, c) => ({ ...p, [c.settings.i]: c.chart }), {});
 
                 const { name, description } = data;
 
@@ -146,5 +146,5 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
     }
 }));
 
-export type { TChart, TLayoutItem };
+export type { TChartRef, TLayoutItem };
 export default useDashboardEditStore;

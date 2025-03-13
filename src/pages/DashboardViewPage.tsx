@@ -1,47 +1,24 @@
 import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { Link, useParams } from "react-router-dom";
-import useSWR from "swr";
 import Layout from "../components/layout";
 import Loading from "../components/layout/Loading";
 import RenderChart from "../components/RenderCellChart";
-import * as api from "../lib/dashaboard-api";
-import useDashboardViewStore, {
-  TChart,
-  TLayoutItem,
-} from "../store/dashboard-view.store";
+import useDashboardViewStore from "../store/dashboard-view.store";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 } as const;
 
 function DashboardViewPage() {
   const { id } = useParams();
-  const { data, error, isLoading } = useSWR(`${id}`, api.findById);
-  const { onDataChange, layout, charts, name, description } =
+  const { load, layout, charts, name, description, isLoading, loaded, error } =
     useDashboardViewStore();
 
   React.useEffect(() => {
-    console.log("effect", data);
-    if (data) {
-      const layout = data.slots.map(
-        (s: { settings: TLayoutItem; chart: TChart }) => {
-          return {
-            ...s.settings,
-            chart: s.chart,
-            static: true,
-            resizeHandles: undefined,
-          };
-        }
-      );
-      const charts = layout.reduce((p: any, c: { i: any; chart: any }) => {
-        return { ...p, [c.i]: c.chart };
-      }, {});
-
-      const { name, description } = data;
-
-      onDataChange({ charts, layout, name, description });
+    if (id) {
+      load(id);
     }
-  }, [data]);
+  }, [load]);
 
   return (
     <Layout>
@@ -70,7 +47,7 @@ function DashboardViewPage() {
             <span>{error.message}</span>
           </div>
         )}
-        {data && (
+        {loaded && (
           <div>
             <h1 className="text-4xl font-bold">{name}</h1>
             <h4 className="text-xl">{description}</h4>
