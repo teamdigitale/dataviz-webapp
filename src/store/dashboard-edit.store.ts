@@ -93,31 +93,36 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
         });
     },
     load: async (id: string) => {
-        const data = await api.findById(id)
+        try {
+            const data = await api.findById(id);
 
-        if (data) {
-            const layout = data.slots.map(
-                ({ settings, chart }: { settings: TLayoutItem; chart: TChart }) => ({
-                    ...settings,
-                    chart,
-                })
-            );
-            const charts = layout.reduce(
-                (p: any, c: { i: any; chart: any }) => ({ ...p, [c.i]: c.chart }),
-                {}
-            );
+            if (data) {
+                const layout = data.slots.map(
+                    ({ settings, chart }: { settings: TLayoutItem; chart: TChart }) => ({
+                        ...settings,
+                        chart,
+                    })
+                );
+                const charts = layout.reduce(
+                    (p: any, c: { i: any; chart: any }) => ({ ...p, [c.i]: c.chart }),
+                    {}
+                );
 
-            const { name, description } = data;
+                const { name, description } = data;
 
-            set({
-                charts,
-                layout,
-                name,
-                description,
-                isLoading: false,
-                loaded: true,
-                id,
-            });
+                set({
+                    charts,
+                    layout,
+                    name,
+                    description,
+                    isLoading: false,
+                    loaded: true,
+                    id,
+                });
+            }
+
+        } catch (error) {
+            set({ error: { message: (error as Error).message }, isLoading: false })
         }
     },
     reload: async () => {
