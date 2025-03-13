@@ -35,7 +35,7 @@ interface DashboardEditActions {
     deleteItem: (id: string) => void;
     showAddModal: (i: string) => void;
     closeAddModal: () => void;
-    fetchData: (id: string) => void;
+    load: (id: string) => void;
     mutate: (id: string) => void;
 }
 
@@ -105,7 +105,7 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
             selectedChart: undefined,
         });
     },
-    fetchData: async (id: string) => {
+    load: async (id: string) => {
         const data = await api.findById(id)
 
         if (data) {
@@ -126,7 +126,7 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
         }
     },
     mutate: (id: string) => {
-        get().fetchData(id)
+        get().load(id)
     }
 }));
 

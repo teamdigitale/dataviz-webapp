@@ -102,7 +102,7 @@ function DashboardEditPage() {
     deleteItem,
     showAddModal,
     closeAddModal,
-    fetchData,
+    load,
     mutate,
   } = useDashboardEditStore();
 
@@ -143,9 +143,9 @@ function DashboardEditPage() {
 
   React.useEffect(() => {
     if (id) {
-      fetchData(id);
+      load(id);
     }
-  }, [fetchData]);
+  }, [load]);
 
   return (
     <Layout>
