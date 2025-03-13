@@ -16,30 +16,30 @@ interface DashboardEditSelectors {
     id?: string;
     name: string;
     description: string;
-    breakpoint: string;
     layout: TLayoutItem[];
-    show: boolean;
-    lastCreated?: string;
-    selectedChart?: TChartRef;
     charts: Record<string, TChartRef>;
-    loaded: boolean;
     isLoading: boolean;
+    loaded: boolean;
     error?: {
         message: string
     }
+    breakpoint: string;
+    show: boolean;
+    lastCreated?: string;
+    selectedChart?: TChartRef;
 }
 
 interface DashboardEditActions {
-    setBreakpoint: (breakpoint: string) => void;
-    setSelectedChart: (selectedChart?: TChartRef) => void;
-    setLayout: (layout: TLayoutItem[]) => void;
+    load: (id: string) => void;
+    reload: () => void;
+    save: () => Promise<boolean>;
     addItem: () => void;
     deleteItem: (id: string) => void;
     showAddModal: (i: string) => void;
     closeAddModal: () => void;
-    load: (id: string) => void;
-    reload: () => void;
-    save: () => Promise<boolean>;
+    setBreakpoint: (breakpoint: string) => void;
+    setSelectedChart: (selectedChart?: TChartRef) => void;
+    setLayout: (layout: TLayoutItem[]) => void;
 }
 
 type DashboardEditState = DashboardEditSelectors & DashboardEditActions
