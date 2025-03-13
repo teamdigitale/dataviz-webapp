@@ -1,17 +1,13 @@
 import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { Link, useParams } from "react-router-dom";
-import useSWR from "swr";
 import Layout from "../components/layout";
 import Dialog from "../components/layout/Dialog";
 import Loading from "../components/layout/Loading";
 import RenderChart from "../components/RenderCellChart";
 import * as api from "../lib/dashaboard-api";
 import { updateSlots } from "../lib/dashaboard-api";
-import useDashboardEditStore, {
-  TChart,
-  TLayoutItem,
-} from "../store/dashboard-edit.store";
+import useDashboardEditStore, { TChart } from "../store/dashboard-edit.store";
 
 interface ChartSelectionProps {
   charts: Record<string, TChart>;
@@ -86,9 +82,9 @@ const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 } as const;
 function DashboardEditPage() {
   console.log("DashboardEdit");
   const { id } = useParams();
-  const { data, error, isLoading, mutate } = useSWR(`${id}`, api.findById, {
-    revalidateOnFocus: false,
-  });
+  // const { data, error, isLoading, mutate } = useSWR(`${id}`, api.findById, {
+  //   revalidateOnFocus: false,
+  // });
 
   const {
     layout,
@@ -97,6 +93,8 @@ function DashboardEditPage() {
     charts,
     name,
     description,
+    isLoading,
+    error,
     setBreakpoint,
     setLayout,
     setSelectedChart,
@@ -107,6 +105,8 @@ function DashboardEditPage() {
     showAddModal,
     closeAddModal,
     onDataChange,
+    fetchData,
+    mutate,
   } = useDashboardEditStore();
 
   function addChart(item: string) {
@@ -145,24 +145,10 @@ function DashboardEditPage() {
   }
 
   React.useEffect(() => {
-    console.log("effect", data);
-    if (data) {
-      const layout = data.slots.map(
-        ({ settings, chart }: { settings: TLayoutItem; chart: TChart }) => ({
-          ...settings,
-          chart,
-        })
-      );
-      const charts = layout.reduce(
-        (p: any, c: { i: any; chart: any }) => ({ ...p, [c.i]: c.chart }),
-        {}
-      );
-
-      const { name, description } = data;
-
-      onDataChange({ charts, layout, name, description });
+    if (id) {
+      fetchData(id);
     }
-  }, [data, setCharts, setLayout]);
+  }, [fetchData]);
 
   return (
     <Layout>
@@ -185,7 +171,7 @@ function DashboardEditPage() {
           {error.message}
         </div>
       )}
-      {data && (
+      {!isLoading && (
         <>
           <h1 className="text-4xl font-bold">{name}</h1>
           <h4 className="text-xl">{description}</h4>

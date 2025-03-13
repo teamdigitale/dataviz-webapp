@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import * as api from "../lib/dashaboard-api";
 
 type TChart = any;
 
@@ -10,8 +11,7 @@ type TLayoutItem = {
     h: number;
 };
 
-
-interface DashboardEditState {
+interface DashboardEditSelectors {
     name: string;
     description: string;
     breakpoint: string;
@@ -21,6 +21,13 @@ interface DashboardEditState {
     selectedChart?: TChart;
     updatedLayout: TLayoutItem[];
     charts: Record<string, TChart>;
+    isLoading: boolean;
+    error?: {
+        message: string
+    }
+}
+
+interface DashboardEditActions {
     setBreakpoint: (breakpoint: string) => void;
     setLayout: (layout: TLayoutItem[]) => void;
     setSelectedChart: (selectedChart?: TChart) => void;
@@ -36,9 +43,13 @@ interface DashboardEditState {
         charts: Record<string, TChart>;
         layout: Array<TLayoutItem>;
     }) => void;
+    fetchData: (id: string) => void;
+    mutate: (id: string) => void;
 }
 
-const useDashboardEditStore = create<DashboardEditState>((set, get) => ({
+type DashboardEditState = DashboardEditSelectors & DashboardEditActions
+
+const initialState = {
     name: '',
     description: '',
     breakpoint: "lg",
@@ -48,7 +59,20 @@ const useDashboardEditStore = create<DashboardEditState>((set, get) => ({
     selectedChart: undefined,
     updatedLayout: [],
     charts: {},
+    isLoading: true,
+}
 
+const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
+    name: '',
+    description: '',
+    breakpoint: "lg",
+    layout: [],
+    show: false,
+    lastCreated: undefined,
+    selectedChart: undefined,
+    updatedLayout: [],
+    charts: {},
+    isLoading: true,
     setBreakpoint: (breakpoint) => set({ breakpoint }),
     setLayout: (layout) => set({ layout }),
     setSelectedChart: (selectedChart) => set({ selectedChart }),
@@ -105,6 +129,30 @@ const useDashboardEditStore = create<DashboardEditState>((set, get) => ({
             selectedChart: undefined,
         });
     },
+    fetchData: async (id: string) => {
+        const data = await api.findById(id)
+
+        if (data) {
+            const layout = data.slots.map(
+                ({ settings, chart }: { settings: TLayoutItem; chart: TChart }) => ({
+                    ...settings,
+                    chart,
+                })
+            );
+            const charts = layout.reduce(
+                (p: any, c: { i: any; chart: any }) => ({ ...p, [c.i]: c.chart }),
+                {}
+            );
+
+            const { name, description } = data;
+
+            get().onDataChange({ charts, layout, name, description });
+            set({ isLoading: false })
+        }
+    },
+    mutate: (id: string) => {
+        get().fetchData(id)
+    }
 }));
 
 export type { TChart, TLayoutItem };
