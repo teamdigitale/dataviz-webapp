@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { FieldDataType, RemoteStoreStateType } from "../sharedTypes";
 
-const useDashboardsStoreState = create<RemoteStoreStateType>()((set) => ({
+const useDashboardsStoreState = create<RemoteStoreStateType>()((set, get) => ({
   list: [],
   addItem: (item: FieldDataType) => {
     set((state) => ({ list: [...state.list, item] }));
@@ -22,6 +22,6 @@ const useDashboardsStoreState = create<RemoteStoreStateType>()((set) => ({
     })),
   setList: (items: FieldDataType[]) => {
     set((state) => ({ list: [...items] }));
-  },
+  }
 }));
 export default useDashboardsStoreState;

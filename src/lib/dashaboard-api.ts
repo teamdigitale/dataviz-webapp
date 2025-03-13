@@ -2,6 +2,8 @@ import * as auth from "./auth";
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 let headers: HeadersInit | undefined = { "Content-Type": "application/json" };
 
+const DASHBOARD_API_PATH = `${SERVER_URL}/dashboards`
+
 export interface DashboardDetail {
   name: string;
   description: string;
@@ -67,7 +69,7 @@ export async function getCharts() {
 export async function getDashboards() {
   const token = auth.getAuth();
   if (!token) return null;
-  const response = await fetch(`${SERVER_URL}/dashboards`, {
+  const response = await fetch(DASHBOARD_API_PATH, {
     method: "GET",
     headers: {
       ...headers,
@@ -89,7 +91,7 @@ export async function getDashboards() {
 export async function findById(id: string) {
   const token = auth.getAuth();
   if (!token) return null;
-  const response = await fetch(`${SERVER_URL}/dashboards/${id}`, {
+  const response = await fetch(`${DASHBOARD_API_PATH}/${id}`, {
     method: "GET",
     headers: {
       ...headers,
@@ -123,7 +125,7 @@ export async function updateSlots(id: string, body: {
   const token = auth.getAuth();
   if (!token) return null;
 
-  const response = await fetch(`${SERVER_URL}/dashboards/${id}/slots`, {
+  const response = await fetch(`${DASHBOARD_API_PATH}/${id}/slots`, {
     method: 'PUT',
     body: JSON.stringify(body),
     headers: {
@@ -133,4 +135,20 @@ export async function updateSlots(id: string, body: {
   });
 
   return response.status === 200;
+};
+
+export async function deleteDashaboard(id: string) {
+  const token = auth.getAuth();
+  if (!token) return null;
+
+  const response = await fetch(`${DASHBOARD_API_PATH}/${id}`, {
+    method: 'DELETE',
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${token}`,
+    }
+  });
+
+  return response.status === 204
+
 }
