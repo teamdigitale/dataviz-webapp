@@ -1,5 +1,6 @@
 import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
+import { Panel, PanelGroup } from "react-resizable-panels";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../components/layout";
 import Dialog from "../components/layout/Dialog";
@@ -138,86 +139,95 @@ function DashboardEditPage() {
 
   return (
     <Layout>
-      <div className="flex justify-between items-center">
-        <Link to="/dashboards" className="text-blue-500 hover:underline">
-          Torna alla lista
-        </Link>
-        <div className="ml-auto flex space-x-2">
-          <button onClick={resetHandler} className="btn btn-primary">
-            Reset
-          </button>
-          <button onClick={saveHandler} className="btn btn-primary">
-            Salva
-          </button>
-        </div>
-      </div>
-      {isLoading && <Loading />}
-      {error && (
-        <div role="alert" className="alert alert-error">
-          {error.message}
-        </div>
-      )}
-      {loaded && (
-        <>
-          <h1 className="text-4xl font-bold">{name}</h1>
-          <h4 className="text-xl">{description}</h4>
-          <div className="flex flex-wrap items-center">
-            <button
-              className="m-2 btn btn-xs btn-primary"
-              onClick={addItemHandler}
-            >
-              Add +
-            </button>
-            {layout.map((l) => (
-              <button
-                key={l.i}
-                className="m-2 btn btn-xs btn-error"
-                onClick={() => deleteItemHandler(l.i)}
-              >
-                {l.i}
-              </button>
-            ))}
-          </div>
-          <div className="relative border min-h-[60vh]">
-            <ResponsiveReactGridLayout
-              onLayoutChange={setLayout}
-              onBreakpointChange={setBreakpoint}
-              className="react-grid-layout"
-              layouts={{ lg: layout }}
-              cols={cols}
-              margin={[10, 10]}
-              rowHeight={360}
-            >
-              {layout.map((item) => (
-                <div className="react-grid-item overflow-hidden" key={item.i}>
-                  <p>{item.i}</p>
-                  {charts[item.i] ? (
-                    <RenderChart {...charts[item.i]} fullH={360} />
-                  ) : (
+      <PanelGroup direction="horizontal" className="w-full">
+        <Panel defaultSize={30} minSize={20} className="bg-base-100">
+          <div className="p-4">
+            <div className="flex justify-between items-center">
+              <Link to="/dashboards" className="text-blue-500 hover:underline">
+                Torna alla lista
+              </Link>
+              <div className="ml-auto flex space-x-2">
+                <button onClick={resetHandler} className="btn btn-primary">
+                  Reset
+                </button>
+                <button onClick={saveHandler} className="btn btn-primary">
+                  Salva
+                </button>
+              </div>
+            </div>
+            {isLoading && <Loading />}
+            {error && (
+              <div role="alert" className="alert alert-error">
+                {error.message}
+              </div>
+            )}
+            {loaded && (
+              <>
+                <h1 className="text-4xl font-bold">{name}</h1>
+                <h4 className="text-xl">{description}</h4>
+                <div className="flex flex-wrap items-center">
+                  <button
+                    className="m-2 btn btn-xs btn-primary"
+                    onClick={addItemHandler}
+                  >
+                    Add +
+                  </button>
+                  {layout.map((l) => (
                     <button
-                      className="m-2 btn btn-xs btn-primary"
-                      onClick={() => addChartHandler(item.i)}
+                      key={l.i}
+                      className="m-2 btn btn-xs btn-error"
+                      onClick={() => deleteItemHandler(l.i)}
                     >
-                      Add Chart +
+                      {l.i}
                     </button>
-                  )}
+                  ))}
                 </div>
-              ))}
-            </ResponsiveReactGridLayout>
+                <div className="relative border min-h-[60vh]">
+                  <ResponsiveReactGridLayout
+                    onLayoutChange={setLayout}
+                    onBreakpointChange={setBreakpoint}
+                    className="react-grid-layout"
+                    layouts={{ lg: layout }}
+                    cols={cols}
+                    margin={[10, 10]}
+                    rowHeight={360}
+                  >
+                    {layout.map((item) => (
+                      <div
+                        className="react-grid-item overflow-hidden"
+                        key={item.i}
+                      >
+                        <p>{item.i}</p>
+                        {charts[item.i] ? (
+                          <RenderChart {...charts[item.i]} fullH={360} />
+                        ) : (
+                          <button
+                            className="m-2 btn btn-xs btn-primary"
+                            onClick={() => addChartHandler(item.i)}
+                          >
+                            Add Chart +
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </ResponsiveReactGridLayout>
+                </div>
+              </>
+            )}
+            {show && (
+              <Dialog
+                toggle={show}
+                title="Select a chart"
+                callback={() => {
+                  closeAddModal();
+                }}
+              >
+                <ChartSelection charts={charts} onSelect={setSelectedChart} />
+              </Dialog>
+            )}
           </div>
-        </>
-      )}
-      {show && (
-        <Dialog
-          toggle={show}
-          title="Select a chart"
-          callback={() => {
-            closeAddModal();
-          }}
-        >
-          <ChartSelection charts={charts} onSelect={setSelectedChart} />
-        </Dialog>
-      )}
+        </Panel>
+      </PanelGroup>
     </Layout>
   );
 }
