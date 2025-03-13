@@ -141,7 +141,7 @@ function DashboardEditPage() {
 
   function reload() {
     console.log("reload");
-    mutate();
+    mutate(id!);
   }
 
   React.useEffect(() => {
