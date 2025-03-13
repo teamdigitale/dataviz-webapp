@@ -90,6 +90,7 @@ function DashboardEditPage() {
     description,
     isLoading,
     error,
+    loaded,
     setBreakpoint,
     setSelectedChart,
     setLayout,
@@ -152,7 +153,7 @@ function DashboardEditPage() {
           {error.message}
         </div>
       )}
-      {!isLoading && (
+      {loaded && (
         <>
           <h1 className="text-4xl font-bold">{name}</h1>
           <h4 className="text-xl">{description}</h4>

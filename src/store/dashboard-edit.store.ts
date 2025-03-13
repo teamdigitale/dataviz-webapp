@@ -21,6 +21,7 @@ interface DashboardEditSelectors {
     lastCreated?: string;
     selectedChart?: TChart;
     charts: Record<string, TChart>;
+    loaded: boolean;
     isLoading: boolean;
     error?: {
         message: string
@@ -52,6 +53,7 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
     selectedChart: undefined,
     charts: {},
     isLoading: true,
+    loaded: false,
     setBreakpoint: (breakpoint) => set({ breakpoint }),
     setSelectedChart: (selectedChart) => set({ selectedChart }),
     setLayout: (layout) => set({ layout }),
@@ -113,6 +115,7 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
                 name,
                 description,
                 isLoading: false,
+                loaded: true,
                 id,
             });
         }
