@@ -10,27 +10,29 @@ import useDashboardEditStore, { TChart } from "../store/dashboard-edit.store";
 
 interface ChartSelectionProps {
   charts: Record<string, TChart>;
-  onSelect: (chart: TChart) => void;
+  onSelect: (chart?: TChart) => void;
+}
+
+interface ChartLookup extends TChart {
+  name: string;
 }
 
 function ChartSelection(props: ChartSelectionProps) {
-  const [charts, setCharts] = React.useState<Array<TChart>>([]);
+  const [charts, setCharts] = React.useState<Array<ChartLookup>>([]);
   const [chart, setChart] = React.useState<TChart>();
 
-  const mergeCharts = (charts: Array<TChart>) => {
+  const mergeCharts = (charts: Array<ChartLookup>) => {
     const idsToRemove = new Set(Object.values(props.charts).map((m) => m.id));
     const filteredCharts = charts.filter((c) => !idsToRemove.has(c.id));
     setCharts(filteredCharts);
   };
 
   async function fetchCharts() {
-    //setLoading(true);
     try {
       const data = await api.getCharts();
       mergeCharts(data);
     } catch (error) {
     } finally {
-      //setLoading(false);
     }
   }
 
@@ -52,10 +54,10 @@ function ChartSelection(props: ChartSelectionProps) {
           <select
             className="select select-primary my-2 p-2"
             style={{ width: "100%" }}
-            value={chart}
+            value={chart?.id}
             onChange={(e) => {
               const chartId = e.target.value;
-              setChart(chartId || "");
+              setChart({ id: chartId });
               const chart = charts.find((c) => c.id === chartId);
               props.onSelect(chart);
             }}

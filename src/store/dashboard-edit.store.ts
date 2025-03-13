@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import * as api from "../lib/dashaboard-api";
+import { DashboardDetail } from "../lib/dashaboard-api";
 
-type TChart = any;
+type TChart = { id: string };
 
 type TLayoutItem = {
     i: `item-${number}`;
@@ -86,7 +87,7 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
         const { charts, lastCreated, selectedChart } = get();
 
         set({
-            charts: { ...charts, [lastCreated as string]: selectedChart },
+            charts: { ...charts, [lastCreated as string]: selectedChart! },
             show: false,
             lastCreated: undefined,
             selectedChart: undefined,
@@ -94,19 +95,20 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
     },
     load: async (id: string) => {
         try {
-            const data = await api.findById(id);
+            const data = await api.findById(id) as DashboardDetail;
 
             if (data) {
-                const layout = data.slots.map(
-                    ({ settings, chart }: { settings: TLayoutItem; chart: TChart }) => ({
-                        ...settings,
-                        chart,
-                    })
-                );
-                const charts = layout.reduce(
-                    (p: any, c: { i: any; chart: any }) => ({ ...p, [c.i]: c.chart }),
-                    {}
-                );
+                const layout = data
+                    .slots
+                    .map(
+                        ({ settings }: { settings: TLayoutItem; }) => ({
+                            ...settings,
+                        })
+                    );
+
+                const charts = data
+                    .slots
+                    .reduce<Record<string, TChart>>((p, c) => ({ ...p, [c.settings.i]: c.chart }), {});
 
                 const { name, description } = data;
 

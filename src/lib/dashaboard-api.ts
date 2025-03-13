@@ -2,6 +2,23 @@ import * as auth from "./auth";
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 let headers: HeadersInit | undefined = { "Content-Type": "application/json" };
 
+export interface DashboardDetail {
+  name: string;
+  description: string;
+  slots: {
+    settings: {
+      i: `item-${number}`;
+      x: number;
+      y: number;
+      w: number;
+      h: number;
+    }
+    chart: {
+      id: string
+    }
+  }[]
+}
+
 /** Get a chart */
 export async function getChart(id: string) {
   const token = auth.getAuth();
@@ -85,10 +102,10 @@ export async function findById(id: string) {
   }
   if (response.status === 200) {
     const data = await response.json();
-    return data;
-  } else {
-    return [];
+    return data as DashboardDetail;
   }
+
+  throw new Error('Server error')
 }
 
 export async function updateSlots(id: string, body: {
