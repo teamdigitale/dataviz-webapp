@@ -16,7 +16,7 @@ interface DashboardViewActions {
     load: (id: string) => void;
 }
 
-interface DashboardViewStateSelectors {
+interface DashboardViewSelectors {
     id?: string;
     name: string;
     description: string;
@@ -29,7 +29,7 @@ interface DashboardViewStateSelectors {
     }
 }
 
-type DashboardViewState = DashboardViewActions & DashboardViewStateSelectors;
+type DashboardViewState = DashboardViewActions & DashboardViewSelectors;
 
 const useDashboardViewStore = create<DashboardViewState>((set, get) => ({
     name: '',
