@@ -38,6 +38,7 @@ interface DashboardEditActions {
     closeAddModal: () => void;
     load: (id: string) => void;
     reload: () => void;
+    save: () => Promise<boolean>;
 }
 
 type DashboardEditState = DashboardEditSelectors & DashboardEditActions
@@ -134,11 +135,22 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
             });
         }
     },
-    reload: () => {
+    reload: async () => {
         const { id, load } = get()
         if (id) {
-            load(id)
+            await load(id)
         }
+    },
+    save: async () => {
+        const { updatedLayout, charts, id } = get()
+        const body = {
+            slots: updatedLayout.map((l) => ({
+                chartId: charts[l.i]?.id,
+                settings: { i: l.i, w: l.w, h: l.h, x: l.x, y: l.y },
+            })),
+        };
+
+        return await api.updateSlots(id!, body).then(r => Boolean(r));
     }
 }));
 

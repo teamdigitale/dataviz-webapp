@@ -6,7 +6,6 @@ import Dialog from "../components/layout/Dialog";
 import Loading from "../components/layout/Loading";
 import RenderChart from "../components/RenderCellChart";
 import * as api from "../lib/dashaboard-api";
-import { updateSlots } from "../lib/dashaboard-api";
 import useDashboardEditStore, {
   TChart,
   TLayoutItem,
@@ -85,9 +84,6 @@ const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 } as const;
 function DashboardEditPage() {
   console.log("DashboardEdit");
   const { id } = useParams();
-  // const { data, error, isLoading, mutate } = useSWR(`${id}`, api.findById, {
-  //   revalidateOnFocus: false,
-  // });
 
   const {
     layout,
@@ -107,6 +103,7 @@ function DashboardEditPage() {
     closeAddModal,
     load,
     reload,
+    save,
   } = useDashboardEditStore();
 
   function addChart(item: string) {
@@ -123,13 +120,7 @@ function DashboardEditPage() {
   }
 
   async function saveHandler() {
-    const body = {
-      slots: updatedLayout.map((l) => ({
-        chartId: charts[l.i]?.id,
-        settings: { i: l.i, w: l.w, h: l.h, x: l.x, y: l.y },
-      })),
-    };
-    const response = await updateSlots(id!, body);
+    const response = await save();
     if (response) {
       reload();
     }
