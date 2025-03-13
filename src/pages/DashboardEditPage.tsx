@@ -7,7 +7,10 @@ import Loading from "../components/layout/Loading";
 import RenderChart from "../components/RenderCellChart";
 import * as api from "../lib/dashaboard-api";
 import { updateSlots } from "../lib/dashaboard-api";
-import useDashboardEditStore, { TChart } from "../store/dashboard-edit.store";
+import useDashboardEditStore, {
+  TChart,
+  TLayoutItem,
+} from "../store/dashboard-edit.store";
 
 interface ChartSelectionProps {
   charts: Record<string, TChart>;
@@ -103,7 +106,7 @@ function DashboardEditPage() {
     showAddModal,
     closeAddModal,
     load,
-    mutate,
+    reload,
   } = useDashboardEditStore();
 
   function addChart(item: string) {
@@ -134,11 +137,6 @@ function DashboardEditPage() {
 
   function resetHandler() {
     reload();
-  }
-
-  function reload() {
-    console.log("reload");
-    mutate(id!);
   }
 
   React.useEffect(() => {
@@ -191,7 +189,10 @@ function DashboardEditPage() {
           </div>
           <div className="relative border min-h-[60vh]">
             <ResponsiveReactGridLayout
-              onLayoutChange={setUpdatedLayout}
+              onLayoutChange={(l) => {
+                console.log("setUpdatedLayout", l);
+                setUpdatedLayout(l as TLayoutItem[]);
+              }}
               onBreakpointChange={setBreakpoint}
               className="react-grid-layout"
               layouts={{ lg: layout }}

@@ -12,6 +12,7 @@ type TLayoutItem = {
 };
 
 interface DashboardEditSelectors {
+    id?: string;
     name: string;
     description: string;
     breakpoint: string;
@@ -36,7 +37,7 @@ interface DashboardEditActions {
     showAddModal: (i: string) => void;
     closeAddModal: () => void;
     load: (id: string) => void;
-    mutate: (id: string) => void;
+    reload: () => void;
 }
 
 type DashboardEditState = DashboardEditSelectors & DashboardEditActions
@@ -122,11 +123,22 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
 
             const { name, description } = data;
 
-            set({ charts, layout, name, description, isLoading: false });
+            set({
+                charts,
+                layout,
+                name,
+                description,
+                isLoading: false,
+                id,
+                updatedLayout: layout.map((l: any) => ({ ...l }))
+            });
         }
     },
-    mutate: (id: string) => {
-        get().load(id)
+    reload: () => {
+        const { id, load } = get()
+        if (id) {
+            load(id)
+        }
     }
 }));
 
