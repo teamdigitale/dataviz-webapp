@@ -4,6 +4,13 @@ import { DashboardDetail } from "../lib/dashaboard-api";
 
 type TChartRef = { id: string };
 
+interface ChartLookup extends TChartRef {
+    name: string;
+    description: string;
+}
+
+type TChartMap = Record<string, ChartLookup>
+
 type TLayoutItem = {
     i: `item-${number}`;
     x: number;
@@ -17,7 +24,7 @@ interface DashboardEditSelectors {
     name: string;
     description: string;
     layout: TLayoutItem[];
-    charts: Record<string, TChartRef>;
+    charts: TChartMap;
     isLoading: boolean;
     loaded: boolean;
     error?: {
@@ -78,7 +85,7 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
         const { layout, charts } = get();
         set({
             layout: layout.filter((i) => i.i !== id),
-            charts: Object.keys(charts).reduce<Record<string, TChartRef>>((p, c) => {
+            charts: Object.keys(charts).reduce<TChartMap>((p, c) => {
                 if (c === id) {
                     return { ...p }
                 } else {
@@ -94,7 +101,7 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
         const { charts, lastCreated, selectedChart } = get();
 
         set({
-            charts: { ...charts, [lastCreated as string]: selectedChart! },
+            charts: { ...charts, [lastCreated as string]: selectedChart as ChartLookup },
             show: false,
             lastCreated: undefined,
             selectedChart: undefined,
@@ -115,7 +122,7 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
 
                 const charts = data
                     .slots
-                    .reduce<Record<string, TChartRef>>((p, c) => ({ ...p, [c.settings.i]: c.chart }), {});
+                    .reduce<TChartMap>((p, c) => ({ ...p, [c.settings.i]: c.chart as ChartLookup }), {});
 
                 const { name, description } = data;
 
@@ -153,5 +160,5 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
     }
 }));
 
-export type { TChartRef, TLayoutItem };
+export type { ChartLookup, TChartRef, TLayoutItem };
 export default useDashboardEditStore;

@@ -8,16 +8,13 @@ import Loading from "../components/layout/Loading";
 import RenderChart from "../components/RenderCellChart";
 import * as api from "../lib/dashaboard-api";
 import useDashboardEditStore, {
+  ChartLookup,
   TChartRef,
 } from "../store/dashboard-edit.store";
 
 interface ChartSelectionProps {
   charts: Record<string, TChartRef>;
   onSelect: (chart?: TChartRef) => void;
-}
-
-interface ChartLookup extends TChartRef {
-  name: string;
 }
 
 function ChartSelection(props: ChartSelectionProps) {
@@ -197,9 +194,10 @@ function DashboardEditPage() {
                         className="react-grid-item overflow-hidden"
                         key={item.i}
                       >
-                        <p>
-                          {item.i} {item.h}
-                        </p>
+                        {/* <h3>
+                          <b>{charts[item.i].name}</b>
+                        </h3>
+                        <p>{charts[item.i].description}</p> */}
                         {charts[item.i] ? (
                           <RenderChart
                             {...charts[item.i]}
