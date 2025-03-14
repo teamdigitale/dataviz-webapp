@@ -5,8 +5,6 @@ import { ErrorBoundary } from "react-error-boundary";
 import { formatTooltip } from "../../lib/utils";
 import { ChartPropsType, FieldDataType } from "../../sharedTypes";
 
-type THFactor = 1 | 2 | 3 | 4;
-
 function GeoMapChart({
   data,
   id,
@@ -14,7 +12,7 @@ function GeoMapChart({
   isMobile = false,
   isFullH = false,
   hFactor = 1,
-}: ChartPropsType & { hFactor: THFactor }) {
+}: ChartPropsType) {
   const refCanvas = useRef(null);
   const [error, setError] = useState("");
   const [geoData, setGeoData] = useState(null);

@@ -3,15 +3,13 @@ import { useEffect, useRef } from "react";
 import { formatTooltip } from "../../lib/utils";
 import { ChartPropsType, FieldDataType } from "../../sharedTypes";
 
-type THFactor = 1 | 2 | 3 | 4;
-
 function BasicChart({
   data,
   setEchartInstance,
   isMobile = false,
   isFullH = false,
   hFactor = 1,
-}: ChartPropsType & { hFactor: THFactor }) {
+}: ChartPropsType) {
   const refCanvas = useRef<ReactEcharts>();
   useEffect(() => {
     if (refCanvas.current) {

@@ -25,12 +25,15 @@ export type Step = {
   index: number;
 };
 
+type THFactor = 1 | 2 | 3 | 4;
+
 export type ChartPropsType = {
   id?: string;
   data: FieldDataType;
   isMobile?: boolean;
   setEchartInstance: (i: any) => void;
   isFullH: false;
+  hFactor: THFactor
 };
 
 export type ChartConfigType = {
