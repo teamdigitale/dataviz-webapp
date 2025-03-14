@@ -75,9 +75,16 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
     },
     deleteItem: (id: string) => {
         console.log("delete", id);
-        const { layout } = get();
+        const { layout, charts } = get();
         set({
             layout: layout.filter((i) => i.i !== id),
+            charts: Object.keys(charts).reduce<Record<string, TChartRef>>((p, c) => {
+                if (c === id) {
+                    return { ...p }
+                } else {
+                    return { ...p, [c]: charts[c] }
+                }
+            }, {})
         });
     },
     showAddModal: (i: string) => {
