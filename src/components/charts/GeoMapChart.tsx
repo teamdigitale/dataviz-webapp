@@ -1,10 +1,11 @@
+import * as echarts from "echarts";
 import ReactEcharts from "echarts-for-react";
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { formatTooltip } from "../../lib/utils";
 import { ChartPropsType, FieldDataType } from "../../sharedTypes";
-import ChartOptions from "../ChartOptions";
-import { ErrorBoundary } from "react-error-boundary";
-import * as echarts from "echarts";
+
+type THFactor = 1 | 2 | 3 | 4;
 
 function GeoMapChart({
   data,
@@ -12,7 +13,8 @@ function GeoMapChart({
   setEchartInstance,
   isMobile = false,
   isFullH = false,
-}: ChartPropsType) {
+  hFactor = 1,
+}: ChartPropsType & { hFactor: THFactor }) {
   const refCanvas = useRef(null);
   const [error, setError] = useState("");
   const [geoData, setGeoData] = useState(null);
@@ -149,12 +151,12 @@ function GeoMapChart({
     }
   }, [refCanvas.current, weDoNotHaveInstance]);
 
-  const chartHeight = data.config?.h || "500px";
-
+  const chartHeight = (data.config?.h || 500) * hFactor;
+  console.log("chartHeight", chartHeight);
   return (
     <ErrorBoundary fallback={<div>Errore nel rendering della mappa</div>}>
       <div key={id} id={"chart_" + id}>
-        {error && <div className='alert error'>{error}</div>}
+        {error && <div className="alert error">{error}</div>}
         {!geoData && <div>In attesa dei dati geo...</div>}
         {!options ? (
           <div>Loading...</div>
@@ -164,7 +166,7 @@ function GeoMapChart({
             ref={refCanvas}
             style={{
               height: isFullH ? "100%" : chartHeight,
-              minHeight: isFullH ? "100%" : chartHeight,
+              minHeight: isFullH ? chartHeight : "auto",
               maxHeight: "100%",
 
               width: "100%",

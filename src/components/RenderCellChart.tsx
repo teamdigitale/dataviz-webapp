@@ -83,6 +83,7 @@ function RenderChart(props: any) {
                   isMobile={isMobile}
                   setEchartInstance={setEchartInstance}
                   isFullH={fullH}
+                  hFactor={hFactor}
                 />
               )}
             </>
