@@ -3,13 +3,16 @@ import { useEffect, useRef } from "react";
 import { formatTooltip } from "../../lib/utils";
 import { ChartPropsType, FieldDataType } from "../../sharedTypes";
 
+type THFactor = 1 | 2 | 3 | 4;
+
 function PieChart({
   id,
   data,
   setEchartInstance,
   isMobile = false,
   isFullH = false,
-}: ChartPropsType) {
+  hFactor = 1,
+}: ChartPropsType & { hFactor: THFactor }) {
   const refCanvas = useRef(null);
 
   useEffect(() => {
@@ -113,7 +116,7 @@ function PieChart({
   }
 
   if (!data) return <div>...</div>;
-  let h = data.config?.h || 350;
+  let h = (data.config?.h || 350) * hFactor;
   const responsive =
     typeof data.config?.responsive === "undefined"
       ? true

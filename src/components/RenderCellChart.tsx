@@ -1,10 +1,9 @@
-import BasicChart from "./charts/BasicChart";
-import PieChart from "./charts/PieChart";
-import GeoMapChart from "./charts/GeoMapChart";
-import { getPieValues, getBasicValues, getMapValues } from "../lib/utils";
-import { useEffect, useState, useRef } from "react";
-import dayjs from "dayjs";
 import type { EChartsType } from "echarts";
+import { useEffect, useRef, useState } from "react";
+import { getBasicValues, getMapValues, getPieValues } from "../lib/utils";
+import BasicChart from "./charts/BasicChart";
+import GeoMapChart from "./charts/GeoMapChart";
+import PieChart from "./charts/PieChart";
 
 function RenderChart(props: any) {
   const [loading, setLoading] = useState(false);
@@ -15,7 +14,7 @@ function RenderChart(props: any) {
     }, 1000);
   }, [props.config]);
 
-  const { fullH } = props;
+  const { fullH, hFactor } = props;
 
   const wrapRef = useRef(null);
   const [echartInstance, setEchartInstance] = useState<EChartsType | null>(
@@ -52,7 +51,7 @@ function RenderChart(props: any) {
   if (loading) return null;
   // console.log("props", props);
   return (
-    <div className='w-full h-full max-height-full'>
+    <div className="w-full h-full max-height-full">
       <div className={`w-full min-height-[${fullH}]  h-full max-height-full`}>
         <div ref={wrapRef}>
           {props && (
@@ -64,6 +63,7 @@ function RenderChart(props: any) {
                   isMobile={isMobile}
                   setEchartInstance={setEchartInstance}
                   isFullH={fullH}
+                  hFactor={hFactor}
                 />
               )}
               {props.chart === "pie" && (
@@ -73,6 +73,7 @@ function RenderChart(props: any) {
                   isMobile={isMobile}
                   setEchartInstance={setEchartInstance}
                   isFullH={fullH}
+                  hFactor={hFactor}
                 />
               )}
               {props.chart === "map" && (
