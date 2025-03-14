@@ -78,6 +78,7 @@ function DashboardViewPage() {
                             <RenderChart
                               {...(charts[item.i] as any)}
                               fullH={360}
+                              hFactor={item.h}
                             />
                           )}
                         </div>
