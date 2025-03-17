@@ -33,7 +33,7 @@ export type ChartPropsType = {
   isMobile?: boolean;
   setEchartInstance: (i: any) => void;
   isFullH: false;
-  hFactor: THFactor
+  hFactor?: THFactor;
 };
 
 export type ChartConfigType = {
