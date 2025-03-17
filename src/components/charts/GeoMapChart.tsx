@@ -1,6 +1,7 @@
-import ReactEcharts from "echarts-for-react";
-import { useRef, useEffect, useState } from "react";
 import * as echarts from "echarts";
+import ReactEcharts from "echarts-for-react";
+import { useEffect, useRef, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { formatTooltip } from "../../lib/utils";
 import { ChartPropsType, FieldDataType } from "../../sharedTypes";
 
@@ -9,9 +10,13 @@ function GeoMapChart({
   id,
   setEchartInstance,
   isMobile = false,
+  isFullH = false,
+  hFactor = 1,
 }: ChartPropsType) {
   const refCanvas = useRef(null);
+  const [error, setError] = useState("");
   const [geoData, setGeoData] = useState(null);
+  const [options, setOptions] = useState(null);
   const [weDoNotHaveInstance, setWeDoNotHaveInstance] = useState(true);
 
   function getOptions(data: FieldDataType, geoData: any) {
@@ -109,52 +114,66 @@ function GeoMapChart({
   }
 
   async function getGeoData() {
-    if (data) {
-      const config = data.config;
-      const url = config?.geoJsonUrl || "";
-      if (url) {
-        try {
-          const response = await fetch(url);
-          const raw = await response.json();
-          setGeoData(raw);
-        } catch (error) {
-          console.log(error);
-          setGeoData(null);
-        }
+    const config = data.config;
+    const url = config?.geoJsonUrl || "";
+    if (url) {
+      try {
+        const response = await fetch(url);
+        const raw = await response.json();
+        setGeoData(raw);
+      } catch (error) {
+        console.log(error);
+        setError("Errore recupero dati GEO JSON");
       }
     }
   }
 
   useEffect(() => {
-    getGeoData();
+    if (data) {
+      getGeoData();
+    }
   }, [data]);
 
   useEffect(() => {
-    if (refCanvas.current && weDoNotHaveInstance) {
+    if (geoData) {
+      const options: any = getOptions(data, geoData);
+      setOptions(options);
+    }
+  }, [geoData]);
+
+  useEffect(() => {
+    if (refCanvas?.current && weDoNotHaveInstance) {
       const echartInstance = (refCanvas.current as any).getEchartsInstance();
       setEchartInstance(echartInstance);
       setWeDoNotHaveInstance(false);
     }
-  });
+  }, [refCanvas.current, weDoNotHaveInstance]);
 
-  const chartHeight = data.config?.h || "500px";
-  const options = data && geoData ? getOptions(data, geoData) : null;
+  const chartHeight = (data.config?.h || 500) * hFactor;
+  console.log("chartHeight", chartHeight);
   return (
-    <div key={id} id={"chart_" + id}>
-      {!data && <div>Loading...</div>}
-      {!geoData && <div>In attesa dei dati geo...</div>}
-      {options && (
-        <ReactEcharts
-          option={options}
-          ref={refCanvas}
-          style={{
-            width: "100%",
-            height: chartHeight,
-            maxWidth: "100%",
-          }}
-        />
-      )}
-    </div>
+    <ErrorBoundary fallback={<div>Errore nel rendering della mappa</div>}>
+      <div key={id} id={"chart_" + id}>
+        {error && <div className="alert error">{error}</div>}
+        {!geoData && <div>In attesa dei dati geo...</div>}
+        {!options ? (
+          <div>Loading...</div>
+        ) : (
+          <ReactEcharts
+            option={options}
+            ref={refCanvas}
+            style={{
+              height: isFullH ? "100%" : chartHeight,
+              minHeight: isFullH ? chartHeight : "auto",
+              maxHeight: "100%",
+
+              width: "100%",
+              maxWidth: "100%",
+            }}
+          />
+        )}
+      </div>
+    </ErrorBoundary>
   );
 }
 

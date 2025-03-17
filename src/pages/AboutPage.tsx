@@ -1,6 +1,16 @@
+import { useEffect } from "react";
 import Layout from "../components/layout";
+import * as auth from "../lib/auth";
 
 export default function Landing() {
+  useEffect(() => {
+    if (auth.isAuth()) {
+      setTimeout(() => {
+        window.location.href = "/home";
+      }, 3000);
+    }
+  }, []);
+
   const faqs = [
     {
       id: 1,
@@ -55,85 +65,85 @@ export default function Landing() {
 
   return (
     <Layout>
-      <div className="">
-        <div className="relative isolate pt-14">
+      <div className=''>
+        <div className='relative isolate pt-14'>
           <svg
-            aria-hidden="true"
-            className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+            aria-hidden='true'
+            className='absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]'
           >
             <defs>
               <pattern
-                x="50%"
+                x='50%'
                 y={-1}
-                id="83fd4e5a-9d52-42fc-97b6-718e5d7ee527"
+                id='83fd4e5a-9d52-42fc-97b6-718e5d7ee527'
                 width={200}
                 height={200}
-                patternUnits="userSpaceOnUse"
+                patternUnits='userSpaceOnUse'
               >
-                <path d="M100 200V.5M.5 .5H200" fill="none" />
+                <path d='M100 200V.5M.5 .5H200' fill='none' />
               </pattern>
             </defs>
-            <svg x="50%" y={-1} className="overflow-visible fill-gray-50">
+            <svg x='50%' y={-1} className='overflow-visible fill-gray-50'>
               <path
-                d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M-300.5 600h201v201h-201Z"
+                d='M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M-300.5 600h201v201h-201Z'
                 strokeWidth={0}
               />
             </svg>
             <rect
-              fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)"
-              width="100%"
-              height="100%"
+              fill='url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)'
+              width='100%'
+              height='100%'
               strokeWidth={0}
             />
           </svg>
-          <div className="mx-auto max-w-6xl pb-32  lg:pb-56  ">
-            <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-              <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+          <div className='mx-auto max-w-6xl pb-32  lg:pb-56  '>
+            <div className='hidden sm:mb-8 sm:flex sm:justify-center'>
+              <div className='relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20'>
                 This project is in heavy design/development.{" "}
-                <a href="#" className="font-semibold text-primary">
-                  <span aria-hidden="true" className="absolute inset-0" />
-                  Get Involved <span aria-hidden="true">&rarr;</span>
+                <a href='#' className='font-semibold text-primary'>
+                  <span aria-hidden='true' className='absolute inset-0' />
+                  Get Involved <span aria-hidden='true'>&rarr;</span>
                 </a>
               </div>
             </div>
-            <div className="text-center">
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            <div className='text-center'>
+              <h1 className='text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl'>
                 Transform Data Into Stunning Visuals with Dataviz
               </h1>
-              <p className="mt-6 text-lg leading-8 text-gray-600">
+              <p className='mt-6 text-lg leading-8 text-gray-600'>
                 Effortlessly convert your CSV data into beautiful, interactive
                 charts with Dataviz. Whether you're a data analyst, business
                 professional, or content creator, Dataviz offers an intuitive
                 interface to bring your numbers to life.
               </p>
-              <div className="mt-10 flex items-center justify-center gap-x-6">
-                <a href="/enter" className="btn btn-primary">
+              <div className='mt-10 flex items-center justify-center gap-x-6'>
+                <a href='/enter' className='btn btn-primary'>
                   Get started
                 </a>
               </div>
             </div>
           </div>
-          <div className="mx-auto max-w-6xl pb-32  lg:pb-56">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <div className="mx-auto max-w-4xl lg:mx-0">
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <div className='mx-auto max-w-6xl pb-32  lg:pb-56'>
+            <div className='mx-auto max-w-7xl px-6 lg:px-8'>
+              <div className='mx-auto max-w-4xl lg:mx-0'>
+                <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
                   Everything you need
                 </h2>
-                <p className="mt-6 text-lg leading-8 text-gray-600">
+                <p className='mt-6 text-lg leading-8 text-gray-600'>
                   Start Visualizing Your Data with Dataviz Today Dataviz makes
                   data visualization quick, simple, and powerful. Try it and see
                   how easily you can create, edit, and publish stunning charts
                   in minutes.
                 </p>
               </div>
-              <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 text-base leading-7 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+              <dl className='mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 text-base leading-7 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3'>
                 {features.map((feature) => (
                   <div key={feature.name}>
-                    <dt className="font-semibold text-gray-900">
+                    <dt className='font-semibold text-gray-900'>
                       {feature.name}
                     </dt>
                     <dd
-                      className="mt-1 text-gray-600"
+                      className='mt-1 text-gray-600'
                       dangerouslySetInnerHTML={{
                         __html: `${feature.description}`,
                       }}
@@ -144,9 +154,9 @@ export default function Landing() {
             </div>
           </div>
 
-          <div className="bg-primary px-10 sm:mx-auto w-full py-12">
-            <div className="rounded-md mx-auto max-w-6xl p-12 prose bg-base-100">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <div className='bg-primary px-10 sm:mx-auto w-full py-12'>
+            <div className='rounded-md mx-auto max-w-6xl p-12 prose bg-base-100'>
+              <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
                 Quick Start Guide: Creating Your First Chart with Dataviz
               </h2>
               <p>
@@ -155,7 +165,7 @@ export default function Landing() {
                 sample data or generating your own, these steps will get you
                 started.
               </p>
-              <h3 className="h3">Step 1: Click on "Create New Chart"</h3>
+              <h3 className='h3'>Step 1: Click on "Create New Chart"</h3>
               <ul>
                 <li>Begin by logging into your Dataviz account.</li>
                 <li>
@@ -249,33 +259,33 @@ export default function Landing() {
             </div>
           </div>
 
-          <div className="space-y-2 mx-auto max-w-4xl pb-32 sm:pb-48 lg:pb-56">
-            <h2 className="text-4xl font-bold">FAQS</h2>
+          <div className='space-y-2 mx-auto max-w-4xl pb-32 sm:pb-48 lg:pb-56'>
+            <h2 className='text-4xl font-bold'>FAQS</h2>
             {faqs.map((faq) => (
               <details
-                className="group [&_summary::-webkit-details-marker]:hidden"
+                className='group [&_summary::-webkit-details-marker]:hidden'
                 key={faq.id}
               >
-                <summary className="flex cursor-pointer items-center justify-between gap-1.5 rounded-lg  p-4  bg-accent text-accent-content">
-                  <h2 className="font-medium">{faq.question}</h2>
+                <summary className='flex cursor-pointer items-center justify-between gap-1.5 rounded-lg  p-4  bg-accent text-accent-content'>
+                  <h2 className='font-medium'>{faq.question}</h2>
 
                   <svg
-                    className="size-5 shrink-0 transition duration-300 group-open:-rotate-180"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+                    className='size-5 shrink-0 transition duration-300 group-open:-rotate-180'
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
+                      d='M19 9l-7 7-7-7'
                     />
                   </svg>
                 </summary>
 
-                <p className="mt-4 px-4 leading-relaxed text-content">
+                <p className='mt-4 px-4 leading-relaxed text-content'>
                   {faq.answer}
                 </p>
               </details>

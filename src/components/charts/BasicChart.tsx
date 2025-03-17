@@ -1,12 +1,14 @@
-import { useRef, useEffect } from "react";
 import ReactEcharts from "echarts-for-react";
-import { ChartPropsType, FieldDataType } from "../../sharedTypes";
+import { useEffect, useRef } from "react";
 import { formatTooltip } from "../../lib/utils";
+import { ChartPropsType, FieldDataType } from "../../sharedTypes";
 
 function BasicChart({
   data,
-  isMobile = false,
   setEchartInstance,
+  isMobile = false,
+  isFullH = false,
+  hFactor = 1,
 }: ChartPropsType) {
   const refCanvas = useRef<ReactEcharts>();
   useEffect(() => {
@@ -227,7 +229,7 @@ function BasicChart({
   // }, [data, refCanvas]);
 
   const config: any = data.config || null;
-  const height = config?.h || 500;
+  const height = (config?.h || 500) * hFactor;
   return (
     <div style={{ textAlign: "left" }}>
       <ReactEcharts
@@ -235,7 +237,9 @@ function BasicChart({
         ref={refCanvas as any}
         style={{
           width: "100%",
-          height: height,
+          height: isFullH ? "100%" : height,
+          minHeight: isFullH ? height : "auto",
+          maxHeight: "100%",
           maxWidth: "100%",
           marginBottom: "30px",
         }}
