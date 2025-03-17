@@ -1,13 +1,15 @@
-import React, { useRef, useEffect } from "react";
 import ReactEcharts from "echarts-for-react";
-import { ChartPropsType, FieldDataType } from "../../sharedTypes";
+import { useEffect, useRef } from "react";
 import { formatTooltip } from "../../lib/utils";
+import { ChartPropsType, FieldDataType } from "../../sharedTypes";
 
 function PieChart({
   id,
   data,
   setEchartInstance,
   isMobile = false,
+  isFullH = false,
+  hFactor = 1,
 }: ChartPropsType) {
   const refCanvas = useRef(null);
 
@@ -112,20 +114,24 @@ function PieChart({
   }
 
   if (!data) return <div>...</div>;
-  let h = data.config?.h || 350;
+  let h = (data.config?.h || 350) * hFactor;
   const responsive =
     typeof data.config?.responsive === "undefined"
       ? true
       : data.config.responsive;
   const chartHeight = responsive && isMobile ? (h / 100) * 80 : h;
-
+  const height = isFullH ? "100%" : chartHeight;
+  const minHeight = isFullH ? chartHeight : "auto";
+  console.log(height, minHeight);
   return (
     <div key={id} id={"chart_" + id}>
       <ReactEcharts
         option={getOptions(data)}
         ref={refCanvas}
         style={{
-          height: chartHeight,
+          height,
+          minHeight,
+          maxHeight: "100%",
           width: "100%",
           maxWidth: "100%",
         }}
