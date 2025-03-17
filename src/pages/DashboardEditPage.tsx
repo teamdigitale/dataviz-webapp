@@ -84,7 +84,6 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 } as const;
 
 function DashboardEditPage() {
-  console.log("DashboardEdit");
   const { id } = useParams();
 
   const {
