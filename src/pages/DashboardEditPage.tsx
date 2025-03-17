@@ -144,7 +144,7 @@ function DashboardEditPage() {
           <div className="p-4">
             <div className="flex justify-between items-center">
               <Link to="/dashboards" className="text-blue-500 hover:underline">
-                Torna alla lista
+                &lt; Torna alla lista
               </Link>
               <div className="ml-auto flex space-x-2">
                 <button onClick={resetHandler} className="btn btn-primary">

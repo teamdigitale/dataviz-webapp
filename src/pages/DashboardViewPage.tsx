@@ -34,7 +34,7 @@ function DashboardViewPage() {
                 to={"/dashboards"}
                 className="text-blue-500 hover:underline"
               >
-                Torna alla lista
+                &lt; Torna alla lista
               </Link>
             </div>
             <div className="">
