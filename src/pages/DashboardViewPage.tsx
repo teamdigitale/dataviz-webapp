@@ -7,6 +7,9 @@ import Loading from "../components/layout/Loading";
 import RenderChart from "../components/RenderCellChart";
 import useDashboardViewStore from "../store/dashboard-view.store";
 
+const ROW_HEIGHT = 360;
+const WIDGET_HEIGHT = 48;
+
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 } as const;
 
@@ -66,18 +69,23 @@ function DashboardViewPage() {
                       }}
                       cols={cols}
                       margin={[10, 10]}
-                      rowHeight={360}
+                      rowHeight={ROW_HEIGHT + WIDGET_HEIGHT}
                     >
                       {layout.map((item) => (
                         <div
                           className="react-grid-item overflow-hidden"
                           key={item.i}
                         >
-                          <p>{item.i}</p>
+                          <div>
+                            <h3>
+                              <b>{charts[item.i].name}</b>
+                            </h3>
+                            <p>{charts[item.i].description}</p>
+                          </div>
                           {charts && charts[item.i] && (
                             <RenderChart
                               {...(charts[item.i] as any)}
-                              fullH={360}
+                              fullH={ROW_HEIGHT}
                               hFactor={item.h}
                             />
                           )}

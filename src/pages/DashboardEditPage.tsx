@@ -12,6 +12,9 @@ import useDashboardEditStore, {
   TChartRef,
 } from "../store/dashboard-edit.store";
 
+const ROW_HEIGHT = 360;
+const WIDGET_HEIGHT = 48;
+
 interface ChartSelectionProps {
   charts: Record<string, TChartRef>;
   onSelect: (chart?: TChartRef) => void;
@@ -187,21 +190,23 @@ function DashboardEditPage() {
                     layouts={{ lg: layout }}
                     cols={cols}
                     margin={[10, 10]}
-                    rowHeight={360}
+                    rowHeight={ROW_HEIGHT + WIDGET_HEIGHT}
                   >
                     {layout.map((item) => (
                       <div
                         className="react-grid-item overflow-hidden"
                         key={item.i}
                       >
-                        {/* <h3>
-                          <b>{charts[item.i].name}</b>
-                        </h3>
-                        <p>{charts[item.i].description}</p> */}
+                        <div>
+                          <h3>
+                            <b>{charts[item.i].name}</b>
+                          </h3>
+                          <p>{charts[item.i].description}</p>
+                        </div>
                         {charts[item.i] ? (
                           <RenderChart
                             {...charts[item.i]}
-                            fullH={true}
+                            fullH={ROW_HEIGHT}
                             hFactor={item.h}
                           />
                         ) : (

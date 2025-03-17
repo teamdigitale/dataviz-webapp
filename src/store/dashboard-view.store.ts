@@ -4,6 +4,13 @@ import { DashboardDetail } from "../lib/dashaboard-api";
 
 type TChartRef = { id: string };
 
+interface ChartLookup extends TChartRef {
+    name: string;
+    description: string;
+}
+
+type TChartMap = Record<string, ChartLookup>;
+
 type TLayoutItem = {
     i: `item-${number}`;
     x: number;
@@ -21,7 +28,7 @@ interface DashboardViewSelectors {
     name: string;
     description: string;
     layout: TLayoutItem[];
-    charts: Record<string, TChartRef>;
+    charts: TChartMap;
     isLoading: boolean;
     loaded: boolean;
     error?: {
@@ -55,7 +62,7 @@ const useDashboardViewStore = create<DashboardViewState>((set, get) => ({
 
                 const charts = data
                     .slots
-                    .reduce<Record<string, TChartRef>>((p, c) => ({ ...p, [c.settings.i]: c.chart }), {});
+                    .reduce<TChartMap>((p, c) => ({ ...p, [c.settings.i]: c.chart as ChartLookup }), {});
 
                 const { name, description } = data;
 
