@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import DashboardList from "../components/dashboard/DashboardList";
 import Layout from "../components/layout";
 import ConfirmDialog from "../components/layout/ConfirmDialog";
+import GenericDialog from "../components/layout/GenericDialog";
 import Loading from "../components/layout/Loading";
 import * as auth from "../lib/auth";
 import * as api from "../lib/dashaboard-api";
@@ -14,6 +15,7 @@ function DashboardsPage() {
   const { list, setList } = useDashboardsStoreState((state) => state);
 
   const [loading, setLoading] = useState(true);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<FieldDataType>();
 
@@ -31,7 +33,8 @@ function DashboardsPage() {
   const navigate = useNavigate();
 
   function createClickHandler() {
-    navigate(`/dashboards/create`);
+    setShowCreateModal(true);
+    //navigate(`/dashboards/create`);
   }
 
   function editClickHandler(id: string) {
@@ -84,6 +87,18 @@ function DashboardsPage() {
     setSelectedItem(undefined);
   }
 
+  function createModalConfirmHandler() {
+    closeCreateModal();
+  }
+
+  function createModalCancelHandler() {
+    closeCreateModal();
+  }
+
+  function closeCreateModal() {
+    setShowCreateModal(false);
+  }
+
   useEffect(() => {
     if (!auth.isAuth()) {
       window.location.href = "/enter";
@@ -125,6 +140,20 @@ function DashboardsPage() {
                 </>
               )}
             </div>
+            {showCreateModal && (
+              <GenericDialog
+                toggle={showCreateModal}
+                title="Aggiungi Dashboard"
+                confirmCb={() => {
+                  createModalConfirmHandler();
+                }}
+                cancelCb={() => {
+                  createModalCancelHandler;
+                }}
+              >
+                <h1>Hola</h1>
+              </GenericDialog>
+            )}
             {showDeleteModal && (
               <ConfirmDialog
                 toggle={showDeleteModal}
