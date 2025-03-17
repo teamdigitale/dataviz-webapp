@@ -17,6 +17,10 @@ function DashboardsPage() {
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [newDashboard, setNewDashboard] = useState<{
+    name: string;
+    description: string;
+  }>();
   const [selectedItem, setSelectedItem] = useState<FieldDataType>();
 
   async function fetchDashboards() {
@@ -30,18 +34,21 @@ function DashboardsPage() {
     }
   }
 
+  async function createDashboard(payload: {
+    name: string;
+    description: string;
+  }) {
+    return await api.createDashboard(payload);
+  }
+
   const navigate = useNavigate();
 
   function createClickHandler() {
     setShowCreateModal(true);
-    //navigate(`/dashboards/create`);
   }
 
   function editClickHandler(id: string) {
-    if (!id) {
-      throw new Error();
-    }
-    navigate(`/dashboards/${id}/edit`);
+    navigateToEdit(id);
   }
 
   function viewClickHandler(id: string) {
@@ -87,8 +94,19 @@ function DashboardsPage() {
     setSelectedItem(undefined);
   }
 
-  function createModalConfirmHandler() {
+  async function createModalConfirmHandler(payload: {
+    name: string;
+    description: string;
+  }) {
+    const response = await createDashboard(payload);
+
+    if (!response) {
+      return;
+    }
+    const { id } = response;
     closeCreateModal();
+    setNewDashboard(undefined);
+    navigateToEdit(id);
   }
 
   function createModalCancelHandler() {
@@ -97,6 +115,13 @@ function DashboardsPage() {
 
   function closeCreateModal() {
     setShowCreateModal(false);
+  }
+
+  function navigateToEdit(id?: string) {
+    if (!id) {
+      throw new Error();
+    }
+    navigate(`/dashboards/${id}/edit`);
   }
 
   useEffect(() => {
@@ -145,13 +170,46 @@ function DashboardsPage() {
                 toggle={showCreateModal}
                 title="Aggiungi Dashboard"
                 confirmCb={() => {
-                  createModalConfirmHandler();
+                  if (!newDashboard) {
+                    return;
+                  }
+                  createModalConfirmHandler(newDashboard);
                 }}
                 cancelCb={() => {
                   createModalCancelHandler;
                 }}
               >
                 <h1>Hola</h1>
+                <div className="p-4 my-5">
+                  <label className="name">Nome</label>
+                  <input
+                    className="input w-full"
+                    type="text"
+                    name="name"
+                    onChange={(e) => {
+                      const name = e.target.value;
+                      const oldValue =
+                        newDashboard ??
+                        ({} as { name: string; description: string });
+                      setNewDashboard({ ...oldValue, name });
+                    }}
+                  />
+                </div>
+                <div className="p-4 my-5">
+                  <label className="name">Descrizione</label>
+                  <input
+                    className="input w-full"
+                    type="text"
+                    name="description"
+                    onChange={(e) => {
+                      const description = e.target.value;
+                      const oldValue =
+                        newDashboard ??
+                        ({} as { name: string; description: string });
+                      setNewDashboard({ ...oldValue, description });
+                    }}
+                  />
+                </div>
               </GenericDialog>
             )}
             {showDeleteModal && (

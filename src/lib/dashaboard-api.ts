@@ -152,3 +152,23 @@ export async function deleteDashaboard(id: string) {
   return response.status === 204
 
 }
+
+export async function createDashboard(payload: { name: string, description: string }) {
+  const token = auth.getAuth();
+  if (!token) return null;
+
+  const body = JSON.stringify(payload);
+
+  const response = await fetch(`${DASHBOARD_API_PATH}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${token}`,
+    },
+    body
+  });
+
+  const { id } = await response.json();
+
+  return { id } as { id: string }
+}
