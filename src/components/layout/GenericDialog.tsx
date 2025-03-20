@@ -4,6 +4,10 @@ interface GenericDialogProps {
   title: string;
   children: ReactNode;
   toggle: boolean;
+  labels?: {
+    cancel?: string;
+    confirm?: string;
+  };
   confirmCb: () => void;
   cancelCb: () => void;
 }
@@ -14,6 +18,10 @@ export default function GenericDialog({
   toggle,
   confirmCb,
   cancelCb,
+  labels = {
+    confirm: "Si",
+    cancel: "No",
+  },
 }: GenericDialogProps) {
   const ref = useRef<HTMLDialogElement>(null);
 
@@ -34,10 +42,10 @@ export default function GenericDialog({
         <div>{children}</div>
         <div className="modal-action">
           <button className="btn btn-outline" onClick={() => cancelCb()}>
-            No
+            {labels.cancel}
           </button>
           <button className="btn btn-primary" onClick={() => confirmCb()}>
-            Si
+            {labels.confirm}
           </button>
         </div>
       </div>
