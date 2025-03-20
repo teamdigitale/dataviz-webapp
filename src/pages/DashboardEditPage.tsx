@@ -199,9 +199,12 @@ function DashboardEditPage() {
                         {charts[item.i] ? (
                           <>
                             <div>
-                              <h3>
+                              <div className="flex justify-between">
                                 <b>{charts[item.i].name}</b>
-                              </h3>
+                                <span className="text-right rounded-md bg-red-700 py-0.5 px-2.5 border border-transparent text-sm text-white transition-all shadow-sm">
+                                  {item.i}
+                                </span>
+                              </div>
                               <p>{charts[item.i].description}</p>
                             </div>
                             <RenderChart
