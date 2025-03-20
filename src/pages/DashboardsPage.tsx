@@ -150,7 +150,7 @@ function DashboardsPage() {
                         className="btn btn-primary"
                         onClick={createClickHandler}
                       >
-                        + Create New dashboard
+                        + Aggiungi dashboard
                       </div>
                     </div>
                   </div>
@@ -169,6 +169,7 @@ function DashboardsPage() {
               <GenericDialog
                 toggle={showCreateModal}
                 title="Aggiungi Dashboard"
+                labels={{ confirm: "Aggiungi", cancel: "Annulla" }}
                 confirmCb={() => {
                   if (!newDashboard) {
                     return;

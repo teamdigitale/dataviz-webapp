@@ -3,16 +3,17 @@ import * as api from "../lib/dashaboard-api";
 import { DashboardDetail } from "../lib/dashaboard-api";
 
 type TChartRef = { id: string };
+type TItem = `item-${number}`
 
 interface ChartLookup extends TChartRef {
     name: string;
     description: string;
 }
 
-type TChartMap = Record<string, ChartLookup>
+type TChartMap = Record<TItem, ChartLookup>
 
 type TLayoutItem = {
-    i: `item-${number}`;
+    i: TItem;
     x: number;
     y: number;
     w: number;
@@ -51,6 +52,20 @@ interface DashboardEditActions {
 
 type DashboardEditState = DashboardEditSelectors & DashboardEditActions
 
+function* itemGenerator(layout: Array<TLayoutItem>): Generator<TItem, never, void> {
+    let index = 0;
+    const itemsAlreadyUsed = new Set<TItem>(layout.map(l => l.i));
+
+    while (true) {
+        const item = `item-${index}` as TItem;
+        if (!itemsAlreadyUsed.has(item)) {
+            itemsAlreadyUsed.add(item);
+            yield item;
+        }
+        index++;
+    }
+}
+
 const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
     name: '',
     description: '',
@@ -69,8 +84,8 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
         const { layout } = get();
         const xMax = 0
         const yMax = layout.reduce((acc, cur) => (cur.y > acc ? cur.y : acc), 0);
-        const count = layout.length ?? 0;
-        const i = `item-${count}`;
+        const generator = itemGenerator(layout)
+        const i = generator.next().value;
         const l = { i, x: xMax, y: yMax, w: 4, h: 1 };
         const newLayout = [...layout, l] as typeof layout;
 
@@ -85,7 +100,7 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
         const { layout, charts } = get();
         set({
             layout: layout.filter((i) => i.i !== id),
-            charts: Object.keys(charts).reduce<TChartMap>((p, c) => {
+            charts: (Object.keys(charts) as Array<TItem>).reduce<TChartMap>((p, c) => {
                 if (c === id) {
                     return { ...p }
                 } else {
