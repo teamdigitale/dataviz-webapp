@@ -52,6 +52,22 @@ interface DashboardEditActions {
 
 type DashboardEditState = DashboardEditSelectors & DashboardEditActions
 
+const generateItemValue = (layout: Array<TLayoutItem>): TItem => {
+    if (layout.length === 0) {
+        return `item-0` as TItem
+    }
+
+    const itemsAlreadyUsed = new Set<TItem>(layout.map(l => l.i))
+
+    const count = layout.length ?? 0;
+    const itemsGenerated = new Set<TItem>(Array.from(new Array(count), (_, index) => `item-${index}` as TItem))
+
+    const difference = itemsGenerated.difference(itemsAlreadyUsed);
+    const differenceList = difference.values().toArray()
+
+    return differenceList.length ? differenceList[0] : `item-${count}`
+}
+
 const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
     name: '',
     description: '',
@@ -70,11 +86,10 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
         const { layout } = get();
         const xMax = 0
         const yMax = layout.reduce((acc, cur) => (cur.y > acc ? cur.y : acc), 0);
-        const count = layout.length ?? 0;
-        const i = `item-${count}`;
+        const i = generateItemValue(layout);
         const l = { i, x: xMax, y: yMax, w: 4, h: 1 };
         const newLayout = [...layout, l] as typeof layout;
-
+        console.log(generateItemValue(layout))
         set({
             show: true,
             lastCreated: i,
