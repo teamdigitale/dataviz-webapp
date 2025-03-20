@@ -89,7 +89,7 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
         const i = generateItemValue(layout);
         const l = { i, x: xMax, y: yMax, w: 4, h: 1 };
         const newLayout = [...layout, l] as typeof layout;
-        console.log(generateItemValue(layout))
+        console.log(i)
         set({
             show: true,
             lastCreated: i,
