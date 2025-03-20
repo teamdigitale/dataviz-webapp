@@ -196,18 +196,20 @@ function DashboardEditPage() {
                         className="react-grid-item overflow-hidden"
                         key={item.i}
                       >
-                        <div>
-                          <h3>
-                            <b>{charts[item.i].name}</b>
-                          </h3>
-                          <p>{charts[item.i].description}</p>
-                        </div>
                         {charts[item.i] ? (
-                          <RenderChart
-                            {...charts[item.i]}
-                            fullH={ROW_HEIGHT}
-                            hFactor={item.h}
-                          />
+                          <>
+                            <div>
+                              <h3>
+                                <b>{charts[item.i].name}</b>
+                              </h3>
+                              <p>{charts[item.i].description}</p>
+                            </div>
+                            <RenderChart
+                              {...charts[item.i]}
+                              fullH={ROW_HEIGHT}
+                              hFactor={item.h}
+                            />
+                          </>
                         ) : (
                           <button
                             className="m-2 btn btn-xs btn-primary"
