@@ -52,20 +52,18 @@ interface DashboardEditActions {
 
 type DashboardEditState = DashboardEditSelectors & DashboardEditActions
 
-const generateItemValue = (layout: Array<TLayoutItem>): TItem => {
-    if (layout.length === 0) {
-        return `item-0` as TItem
+function* itemGenerator(layout: Array<TLayoutItem>): Generator<TItem, never, void> {
+    let index = 0;
+    const itemsAlreadyUsed = new Set<TItem>(layout.map(l => l.i));
+
+    while (true) {
+        const item = `item-${index}` as TItem;
+        if (!itemsAlreadyUsed.has(item)) {
+            itemsAlreadyUsed.add(item);
+            yield item;
+        }
+        index++;
     }
-
-    const itemsAlreadyUsed = new Set<TItem>(layout.map(l => l.i))
-
-    const count = layout.length ?? 0;
-    const itemsGenerated = new Set<TItem>(Array.from(new Array(count), (_, index) => `item-${index}` as TItem))
-
-    const difference = itemsGenerated.difference(itemsAlreadyUsed);
-    const differenceList = difference.values().toArray()
-
-    return differenceList.length ? differenceList[0] : `item-${count}`
 }
 
 const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
@@ -86,10 +84,11 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
         const { layout } = get();
         const xMax = 0
         const yMax = layout.reduce((acc, cur) => (cur.y > acc ? cur.y : acc), 0);
-        const i = generateItemValue(layout);
+        const generator = itemGenerator(layout)
+        const i = generator.next().value;
         const l = { i, x: xMax, y: yMax, w: 4, h: 1 };
         const newLayout = [...layout, l] as typeof layout;
-        console.log(i)
+
         set({
             show: true,
             lastCreated: i,
