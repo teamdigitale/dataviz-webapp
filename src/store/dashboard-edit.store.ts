@@ -3,16 +3,17 @@ import * as api from "../lib/dashaboard-api";
 import { DashboardDetail } from "../lib/dashaboard-api";
 
 type TChartRef = { id: string };
+type TItem = `item-${number}`
 
 interface ChartLookup extends TChartRef {
     name: string;
     description: string;
 }
 
-type TChartMap = Record<string, ChartLookup>
+type TChartMap = Record<TItem, ChartLookup>
 
 type TLayoutItem = {
-    i: `item-${number}`;
+    i: TItem;
     x: number;
     y: number;
     w: number;
@@ -85,7 +86,7 @@ const useDashboardEditStore = create<DashboardEditState>()((set, get) => ({
         const { layout, charts } = get();
         set({
             layout: layout.filter((i) => i.i !== id),
-            charts: Object.keys(charts).reduce<TChartMap>((p, c) => {
+            charts: (Object.keys(charts) as Array<TItem>).reduce<TChartMap>((p, c) => {
                 if (c === id) {
                     return { ...p }
                 } else {
