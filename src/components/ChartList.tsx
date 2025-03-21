@@ -25,9 +25,9 @@ export default function ChartList({
     if (pic) setPicList((prev: picItem[]) => [...prev, { id, pic }]);
   }
   return (
-    <div className=''>
+    <div className='flex flex-col gap-2'>
       <div>
-        {picList?.map((item) => {
+        {/* {picList?.map((item) => {
           return (
             <div key={item.id}>
               <img
@@ -43,17 +43,26 @@ export default function ChartList({
               />
             </div>
           );
-        })}
+        })} */}
       </div>
       {list?.map((item) => {
         const updatedAt = (item as any).updatedAt || "";
+        const pic = picList.find((i) => i.id === item.id);
         return (
           <div className='w-full'>
-            <div
-              key={item.id}
-              className='my-2 flex gap-2 items-center border p-2'
-            >
-              <div className='grow flex flex-col'>
+            <div key={item.id} className='my-2 flex gap-2 border p-2'>
+              {/* {pic && (
+                <img
+                  src={pic.pic}
+                  alt='chart'
+                  style={{
+                    width: 160,
+                    height: 160,
+                  }}
+                  className='m-2'
+                />
+              )} */}
+              <div className='grow flex flex-col justify-start'>
                 <div className='text-lg'>{item.name}</div>
                 <span>
                   {updatedAt && (
@@ -77,16 +86,21 @@ export default function ChartList({
                     {item.isRemote ? "remote" : ""}
                   </small>
                 </span>
+                <div className='max-w-[40%]'>
+                  <RenderChart
+                    {...(item as any)}
+                    getPicture={(pic: string) => setPicture(item.id + "", pic)}
+                  />
+                </div>
               </div>
+              <button
+                className='mr-8 btn btn-outline btn-error btn-sm'
+                onClick={() => handleDeleteChart(item.id || "")}
+              >
+                DELETE
+              </button>
               {item.publish && (
                 <>
-                  <a
-                    className='btn btn-outline btn-success btn-sm'
-                    target='_blank'
-                    href={`/chart/${item.id}`}
-                  >
-                    VIEW
-                  </a>
                   <button
                     className='btn btn-outline  btn-sm'
                     onClick={() =>
@@ -97,6 +111,13 @@ export default function ChartList({
                   >
                     EMBED
                   </button>
+                  <a
+                    className='btn btn-outline btn-success btn-sm'
+                    target='_blank'
+                    href={`/chart/${item.id}`}
+                  >
+                    VIEW
+                  </a>
                 </>
               )}
               <button
@@ -105,18 +126,6 @@ export default function ChartList({
               >
                 EDIT
               </button>
-              <button
-                className='ml-4 btn btn-outline btn-error btn-sm'
-                onClick={() => handleDeleteChart(item.id || "")}
-              >
-                DELETE
-              </button>
-            </div>
-            <div>
-              <RenderChart
-                {...(item as any)}
-                getPicture={(pic: string) => setPicture(item.id + "", pic)}
-              />
             </div>
           </div>
         );

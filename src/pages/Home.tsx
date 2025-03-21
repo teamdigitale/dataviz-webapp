@@ -115,7 +115,11 @@ function Home() {
 
   function handleDeleteChart(id?: string) {
     if (!id) return;
-    console.log("delete chart", id);
+    console.log("delete chart?", id);
+
+    const sure = confirm("Are you sure you want to delete this chart?");
+    if (!sure) return;
+
     return api
       .deleteChart(id)
       .then(() => fetchCharts())
@@ -138,8 +142,8 @@ function Home() {
 
   return (
     <Layout>
-      <PanelGroup direction="horizontal" className="w-full">
-        <Panel defaultSize={10} minSize={10} className="bg-base-100">
+      <PanelGroup direction='horizontal' className='w-full'>
+        <Panel defaultSize={10} minSize={10} className='bg-base-100'>
           <Steps
             hasData={data ? true : false}
             listLen={list.length ?? 0}
@@ -147,16 +151,16 @@ function Home() {
             send={send}
           />
         </Panel>
-        <PanelResizeHandle className="bg-primary w-1" />
-        <Panel minSize={20} className="bg-base-100">
-          <div className="p-4">
+        <PanelResizeHandle className='bg-primary w-1' />
+        <Panel minSize={20} className='bg-base-100'>
+          <div className='p-4'>
             {state.matches("idle") && (
-              <div className="container">
+              <div className='container'>
                 {loading ? (
                   <Loading />
                 ) : (
                   <>
-                    <h4 className="text-4xl font-bold">
+                    <h4 className='text-4xl font-bold'>
                       {list && list.length ? "My Charts" : "Welcome"}
                     </h4>
 
@@ -164,10 +168,10 @@ function Home() {
                       <QuickstartInfo />
                     )}
                     <div>
-                      <div className="flex my-5 gap-4">
+                      <div className='flex my-5 gap-4'>
                         {!data && (
                           <div
-                            className="btn btn-primary"
+                            className='btn btn-primary'
                             onClick={() => send({ type: "INPUT" })}
                           >
                             + Create New chart
@@ -175,7 +179,7 @@ function Home() {
                         )}
                         {data && (
                           <div
-                            className="btn btn-primary"
+                            className='btn btn-primary'
                             onClick={() => send({ type: "CONFIG" })}
                           >
                             Congfigure chart
@@ -183,7 +187,7 @@ function Home() {
                         )}
                         {data && (
                           <div
-                            className="btn btn-outline btn-primary"
+                            className='btn btn-outline btn-primary'
                             onClick={() => {
                               send({ type: "IDLE" });
                               resetItem();
@@ -205,8 +209,8 @@ function Home() {
             )}
 
             {state.matches("input") && (
-              <div className="container">
-                <h4 className="text-4xl font-bold">Upload your data</h4>
+              <div className='container'>
+                <h4 className='text-4xl font-bold'>Upload your data</h4>
                 <CSVUpload setData={(d: any) => handleUpload(d)} />
                 <LoadJsonSource
                   currentValue={remoteUrl}
@@ -216,8 +220,8 @@ function Home() {
             )}
 
             {state.matches("config") && (
-              <div className="container">
-                <h4 className="text-4xl font-bold">Configure Chart</h4>
+              <div className='container'>
+                <h4 className='text-4xl font-bold'>Configure Chart</h4>
                 <SelectChart setChart={setChart} chart={chart} />
                 <ChartOptions
                   config={config}
@@ -228,8 +232,8 @@ function Home() {
               </div>
             )}
             {state.matches("done") && (
-              <div className="container">
-                <h4 className="text-4xl font-bold">Save Chart</h4>
+              <div className='container'>
+                <h4 className='text-4xl font-bold'>Save Chart</h4>
                 Give a name to your chart and save it
                 <ChartSave
                   item={{
@@ -251,9 +255,9 @@ function Home() {
         </Panel>
         {haveData && (
           <>
-            <PanelResizeHandle className="bg-primary w-1" />
+            <PanelResizeHandle className='bg-primary w-1' />
             <Panel defaultSize={30} minSize={20}>
-              <div className="p-4">
+              <div className='p-4'>
                 <DataTable
                   data={data}
                   reset={reset}
@@ -266,9 +270,9 @@ function Home() {
                   <>
                     <RenderChart chart={chart} data={data} config={config} />
                     {config && chart && (
-                      <div className="w-full flex justify-end">
+                      <div className='w-full flex justify-end'>
                         <button
-                          className="my-5 btn btn-primary"
+                          className='my-5 btn btn-primary'
                           onClick={() => send({ type: "DONE" })}
                         >
                           SAVE / EXPORT
