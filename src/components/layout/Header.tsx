@@ -109,7 +109,7 @@ export default function Header() {
                 <li key={`menu-${item.name}`}>
                   <details>
                     <summary>{item.name}</summary>
-                    <ul className='w-[125px] bg-base-100 text-primary z-10'>
+                    <ul className='min-w-[160px] bg-base-100 text-primary z-10'>
                       {item.subMenu.map((subItem, subIndex) => {
                         return (
                           <li
