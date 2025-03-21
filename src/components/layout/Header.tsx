@@ -20,27 +20,27 @@ export default function Header() {
       link: "/",
     },
     {
-      name: "Create Chart",
+      name: "My Charts",
       link: "/home",
     },
+    // {
+    //   name: "Create Dashboard",
+    //   link: "/dashboards",
+    // },
     {
-      name: "Create Dashboard",
-      link: "/dashboards",
-    },
-    {
-      name: "Manage Data",
+      name: "Tools",
       link: "",
       subMenu: [
         {
-          name: "Generate",
+          name: "Generate Data",
           link: "/generate-data",
         },
         {
-          name: "Load Remote",
+          name: "Load Remote Data",
           link: "/load-data",
         },
         {
-          name: "Check GeoJSon",
+          name: "Check GeoJSon File",
           link: "/geo",
         },
       ],
