@@ -23,10 +23,10 @@ export default function Header() {
       name: "My Charts",
       link: "/home",
     },
-    // {
-    //   name: "Create Dashboard",
-    //   link: "/dashboards",
-    // },
+    {
+      name: "My Dashboards",
+      link: "/dashboards",
+    },
     {
       name: "Tools",
       link: "",
