@@ -177,39 +177,40 @@ function DashboardsPage() {
                   createModalConfirmHandler(newDashboard);
                 }}
                 cancelCb={() => {
-                  createModalCancelHandler;
+                  createModalCancelHandler();
                 }}
               >
-                <h1>Hola</h1>
-                <div className="p-4 my-5">
-                  <label className="name">Nome</label>
-                  <input
-                    className="input w-full"
-                    type="text"
-                    name="name"
-                    onChange={(e) => {
-                      const name = e.target.value;
-                      const oldValue =
-                        newDashboard ??
-                        ({} as { name: string; description: string });
-                      setNewDashboard({ ...oldValue, name });
-                    }}
-                  />
-                </div>
-                <div className="p-4 my-5">
-                  <label className="name">Descrizione</label>
-                  <input
-                    className="input w-full"
-                    type="text"
-                    name="description"
-                    onChange={(e) => {
-                      const description = e.target.value;
-                      const oldValue =
-                        newDashboard ??
-                        ({} as { name: string; description: string });
-                      setNewDashboard({ ...oldValue, description });
-                    }}
-                  />
+                <div className="bg-base-200">
+                  <div className="p-4 my-5">
+                    <label className="name">Nome</label>
+                    <input
+                      className="input w-full"
+                      type="text"
+                      name="name"
+                      onChange={(e) => {
+                        const name = e.target.value;
+                        const oldValue =
+                          newDashboard ??
+                          ({} as { name: string; description: string });
+                        setNewDashboard({ ...oldValue, name });
+                      }}
+                    />
+                  </div>
+                  <div className="p-4 my-5">
+                    <label className="name">Descrizione</label>
+                    <input
+                      className="input w-full"
+                      type="text"
+                      name="description"
+                      onChange={(e) => {
+                        const description = e.target.value;
+                        const oldValue =
+                          newDashboard ??
+                          ({} as { name: string; description: string });
+                        setNewDashboard({ ...oldValue, description });
+                      }}
+                    />
+                  </div>
                 </div>
               </GenericDialog>
             )}
