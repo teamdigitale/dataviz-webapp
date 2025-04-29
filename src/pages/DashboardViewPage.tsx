@@ -8,8 +8,7 @@ import RenderChart from "../components/RenderCellChart";
 import useDashboardViewStore from "../store/dashboard-view.store";
 
 const ROW_HEIGHT = 360;
-const WIDGET_HEIGHT = 60;
-const ch = `min-h-[${WIDGET_HEIGHT}px]`;
+const WIDGET_HEIGHT = 48;
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const cols = { lg: 4, md: 2, sm: 1, xs: 1, xxs: 1 } as const;
@@ -62,7 +61,7 @@ function DashboardViewPage() {
                 <div>
                   <h1 className='text-4xl font-bold'>{name}</h1>
                   <h4 className='text-xl'>{description}</h4>
-                  <div className='relative border min-h-[60vh] '>
+                  <div className='relative border min-h-[60vh]'>
                     <ResponsiveReactGridLayout
                       className='react-grid-layout'
                       layouts={{
@@ -77,24 +76,11 @@ function DashboardViewPage() {
                           className='react-grid-item overflow-hidden'
                           key={item.i}
                         >
-                          <div className={`${ch}`}>
-                            <h3 className='bg-primary text-primary-content p-2'>
-                              <b>
-                                {WIDGET_HEIGHT} {charts[item.i].name}
-                              </b>
+                          <div>
+                            <h3>
+                              <b>{charts[item.i].name}</b>
                             </h3>
-
-                            {/* <div role='tablist' className='btn tabs tabs-lift'>
-                              <a role='tab' className='tab'>
-                                description
-                              </a>
-                              <a role='tab' className='tab'>
-                                source
-                              </a>
-                              <a role='tab' className='tab'>
-                                info
-                              </a>
-                            </div> */}
+                            <p>{charts[item.i].description}</p>
                           </div>
                           {charts && charts[item.i] && (
                             <RenderChart
