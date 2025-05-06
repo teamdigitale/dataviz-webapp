@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { log } from "../lib/utils";
-import Papa from "papaparse";
+import { log } from "../../lib/utils";
 
 const PLACEHOLDER_URL = "";
 
@@ -43,16 +42,17 @@ function LoadSource({
       }}
     >
       {loading && <p>Loading...</p>}
-      <div className="bg-base-200 p-4 my-5">
-        <label className="label">Url</label>
+      <div className='bg-base-200 p-4 my-5'>
+        <label className='label'>Url</label>
         <input
-          className="input w-full"
-          type="text"
+          className='input w-full'
+          type='text'
           value={url}
+          placeholder='https://example.com/data.json'
           onChange={(e) => setUrl(e.target.value)}
         />
       </div>
-      <button className="btn btn-primary" onClick={() => getData()}>
+      <button className='btn btn-primary' onClick={() => getData()}>
         USE REMOTE DATA
       </button>
     </div>

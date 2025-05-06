@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { generateItems, fillArray, transposeData } from '../lib/utils';
+import { useState } from "react";
+import { generateItems, fillArray, transposeData } from "../lib/utils";
 
 function GenerateRandomData({ setData }: { setData: (data: any) => void }) {
   const [rows, setRows] = useState(3);
@@ -10,8 +10,8 @@ function GenerateRandomData({ setData }: { setData: (data: any) => void }) {
   const [multiplier, setMultiplier] = useState(1);
 
   function generate() {
-    const rowLabels = generateItems('SERIE', rows);
-    const colLabels = ['_', ...generateItems('T', cols)];
+    const rowLabels = generateItems("SERIE", rows);
+    const colLabels = ["_", ...generateItems("T", cols)];
 
     let matrix = [];
     matrix[0] = colLabels;
@@ -25,72 +25,72 @@ function GenerateRandomData({ setData }: { setData: (data: any) => void }) {
   }
 
   return (
-    <div className="mt-5">
-      <div className="rounded-md grid grid-cols-2 lg:grid-cols-3 gap-1 bg-base-200 p-4">
+    <div className='mt-5'>
+      <div className='rounded-md grid grid-cols-2 lg:grid-cols-3 gap-1 bg-base-200 p-4'>
         <div>
-          <label className="label">ROWS:</label>
+          <label className='label'>ROWS:</label>
           <input
-            className="input"
-            type="number"
-            placeholder="rows"
+            className='input'
+            type='number'
+            placeholder='rows'
             value={rows}
             onChange={(e) => setRows(Number.parseInt(e.target.value))}
           />
         </div>
         <div>
-          <label className="label">COLS</label>
+          <label className='label'>COLS</label>
           <input
-            className="input"
-            type="number"
-            placeholder="Cols"
+            className='input'
+            type='number'
+            placeholder='Cols'
             value={cols}
             onChange={(e) => setCols(Number.parseInt(e.target.value))}
           />
         </div>
         <div>
-          <label className="label"> Range Min:</label>
+          <label className='label'> Range Min:</label>
           <input
-            className="input"
-            type="number"
-            placeholder="min"
+            className='input'
+            type='number'
+            placeholder='min'
             value={min}
             onChange={(e) => setMin(Number.parseInt(e.target.value))}
           />
         </div>
         <div>
-          <label className="label">Range Max:</label>
+          <label className='label'>Range Max:</label>
           <input
-            className="input"
-            type="number"
-            placeholder="Max"
+            className='input'
+            type='number'
+            placeholder='Max'
             value={max}
             onChange={(e) => setMax(Number.parseInt(e.target.value))}
           />
         </div>
         <div>
-          <label className="label">Offset</label>
+          <label className='label'>Offset</label>
           <input
-            className="input"
-            type="number"
-            placeholder="offset"
+            className='input'
+            type='number'
+            placeholder='offset'
             value={offset}
             onChange={(e) => setOffset(Number.parseInt(e.target.value))}
           />
         </div>
         <div>
-          <label className="label">Multiplier</label>
+          <label className='label'>Multiplier</label>
           <input
-            className="input"
-            type="number"
+            className='input'
+            type='number'
             step={0.5}
-            placeholder="multiplier"
+            placeholder='multiplier'
             value={multiplier}
             onChange={(e) => setMultiplier(Number.parseFloat(e.target.value))}
           />
         </div>
       </div>
 
-      <button className="my-5 btn btn-primary" onClick={() => generate()}>
+      <button className='my-5 btn btn-primary' onClick={() => generate()}>
         GENERATE
       </button>
     </div>

@@ -6,7 +6,6 @@ import { getAvailablePalettes, getPalette, transposeData } from "../lib/utils";
 import Layout from "../components/layout";
 import DataTable from "../components/DataTable";
 import RenderChart from "../components/RenderChart";
-import CSVUpload from "../components/CSVUpload";
 import SelectChart from "../components/SelectChart";
 import ChartOptions from "../components/ChartOptions";
 import ChartSave from "../components/ChartSave";
@@ -22,7 +21,7 @@ import { dataToCSV, downloadCSV } from "../lib/downloadUtils";
 import * as auth from "../lib/auth";
 import * as api from "../lib/api";
 import { FieldDataType } from "../sharedTypes";
-import LoadJsonSource from "../components/LoadJsonSource";
+import ChooseLoader from "../components/load-data/ChooseLoader";
 
 function Home() {
   const [state, send] = useMachine(stepMachine);
@@ -211,10 +210,10 @@ function Home() {
             {state.matches("input") && (
               <div className='container'>
                 <h4 className='text-4xl font-bold'>Upload your data</h4>
-                <CSVUpload setData={(d: any) => handleUpload(d)} />
-                <LoadJsonSource
-                  currentValue={remoteUrl}
-                  setData={(d: any) => handleSetRemoteData(d)}
+                <ChooseLoader
+                  handleUpload={handleUpload}
+                  remoteUrl={remoteUrl}
+                  handleSetRemoteData={handleSetRemoteData}
                 />
               </div>
             )}

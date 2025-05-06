@@ -44,16 +44,16 @@ function LoadSource({ setRawData }: { setRawData: Function }) {
       }}
     >
       {loading && <p>Loading...</p>}
-      <div className="bg-base-200 p-4 my-5">
-        <label className="label">Url</label>
+      <div className='bg-base-200 p-4 my-5'>
+        <label className='label'>Url</label>
         <input
-          className="input w-full"
-          type="text"
+          className='input w-full'
+          type='text'
           value={url}
           onChange={(e) => setUrl(e.target.value)}
         />
       </div>
-      <button className="btn btn-primary" onClick={() => getData()}>
+      <button className='btn btn-primary' onClick={() => getData()}>
         fetch data
       </button>
     </div>

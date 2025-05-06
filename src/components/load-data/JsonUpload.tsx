@@ -1,9 +1,9 @@
 import { useState, useTransition } from "react";
-import Papa from "papaparse";
-import DataTable from "./DataTable";
+import DataTable from "../DataTable";
 
-import { log, transposeData, moveDataColumn } from "../lib/utils";
-import { MatrixType } from "../sharedTypes";
+import { log, transposeData, moveDataColumn } from "../../lib/utils";
+import { MatrixType } from "../../sharedTypes";
+import { validateStructure } from "../../lib/validate";
 
 type selectOptionType = {
   value: string;
@@ -30,25 +30,53 @@ function cleanupData(matrix: MatrixType) {
   });
 }
 
-function UploadCSV({ setData }: { setData: Function }) {
+function UploadJSON({ setData }: { setData: Function }) {
   const [_, startTransition] = useTransition();
   const [rawData, setRawData] = useState<any>(null);
   const [category, setCategory] = useState<selectOptionType | null>(null);
   const [series, setSeries] = useState<selectOptionType[] | []>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  let fileReader: FileReader | undefined;
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    startTransition(() => {
+      setSeries([]);
+      setCategory(null);
+      setRawData(null);
+      setError(null);
+    });
+    if (fileReader) {
+      fileReader.abort();
+    }
+    uploadFile(e);
+  }
 
   function uploadFile(event: any) {
-    let file = event.target.files[0];
-
-    Papa.parse(file, {
-      header: false,
-      skipEmptyLines: true,
-      complete: (results: any) => {
-        const { data } = results;
+    let file = event.target?.files[0];
+    fileReader = new FileReader();
+    fileReader.readAsText(file);
+    fileReader.onloadend = (e) => {
+      // log("RESULTS DATA", text);
+      const text = e.target?.result;
+      if (!text) {
+        setError("File is empty");
+        return;
+      }
+      let data: undefined | MatrixType;
+      try {
+        data = validateStructure(JSON.parse(text as string));
+      } catch (error) {
+        setError((error as Error).message);
+        return;
+      }
+      if (data) {
+        // const data = JSON.parse(text as string);
         log("RESULTS DATA", data);
         const c = getFirstOfMAtrix(data);
         const category = { value: c, label: c };
         log("CATEGORY", category);
-        const cols = getCols(data[0]);
+        const cols = getCols(data[0] as [string]);
         log("COLS", cols);
         const series = cols.filter((i) => !isSameObject(i, category));
         log("SERIES", series);
@@ -58,8 +86,8 @@ function UploadCSV({ setData }: { setData: Function }) {
           setCategory(category);
           setSeries(series);
         });
-      },
-    });
+      }
+    };
   }
 
   function isSameObject(a: object, b: object) {
@@ -68,7 +96,7 @@ function UploadCSV({ setData }: { setData: Function }) {
   function getFirstOfMAtrix(matrix: any) {
     return matrix[0][0]?.trim();
   }
-  function getCols(cols: string[]) {
+  function getCols(cols: [string]) {
     return cols.map((c: string) => {
       const col = c.trim();
       return { value: col, label: col };
@@ -110,20 +138,21 @@ function UploadCSV({ setData }: { setData: Function }) {
   }
 
   return (
-    <div className="">
-      <div className="form-control">
-        <label className="label">Load CSV:</label>
+    <div className='bg-base-200 p-4 my-5'>
+      <div className='form-control'>
+        <label className='label'>Load JSON:</label>
         <input
-          className="file-input file-input-bordered file-input-primary  w-full max-w-2xl"
-          type="file"
-          name="file"
-          accept=".csv"
-          onChange={(e) => uploadFile(e)}
+          className='file-input file-input-bordered file-input-primary  w-full max-w-2xl'
+          type='file'
+          name='file'
+          accept='.json'
+          onChange={(e) => handleFileChange(e)}
         />
       </div>
+      {error && <div className='error'>{error}</div>}
       {rawData && (
-        <div className="">
-          <div className="">
+        <div className=''>
+          <div className=''>
             <DataTable
               data={rawData}
               transpose={() => transpose()}
@@ -131,13 +160,13 @@ function UploadCSV({ setData }: { setData: Function }) {
               download={() => {}}
             />
           </div>
-          <div className="bg-base-200 p-5">
+          <div className='bg-base-200 p-5'>
             <div>
-              <label className="label">Seleziona la colonna categoria:</label>
+              <label className='label'>Seleziona la colonna categoria:</label>
               <select
-                className="select select-primary max-w-lg"
-                name="category"
-                id="category"
+                className='select select-primary max-w-lg'
+                name='category'
+                id='category'
                 // label="category"
                 // hint="Selezione la colonna categoria"
                 value={category?.value}
@@ -152,11 +181,11 @@ function UploadCSV({ setData }: { setData: Function }) {
             </div>
             {category && (
               <div>
-                <label className="label">Seleziona una o più serie:</label>
+                <label className='label'>Seleziona una o più serie:</label>
                 <select
-                  className="select select-primary max-w-lg"
-                  name="series"
-                  id="series"
+                  className='select select-primary max-w-lg'
+                  name='series'
+                  id='series'
                   // label="series"
                   // hint="Seleziona una o più serie"
                   multiple={true}
@@ -177,10 +206,10 @@ function UploadCSV({ setData }: { setData: Function }) {
                 </select>
               </div>
             )}
-            <div className="my-4">
+            <div className='my-4'>
               {series && category?.value && series.length > 0 && (
                 <button
-                  className="btn btn-primary"
+                  className='btn btn-primary'
                   onClick={() => {
                     setData(cleanupData(filterData()));
                   }}
@@ -196,4 +225,4 @@ function UploadCSV({ setData }: { setData: Function }) {
   );
 }
 
-export default UploadCSV;
+export default UploadJSON;

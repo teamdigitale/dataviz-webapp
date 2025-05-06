@@ -3,6 +3,7 @@ type DataTableProps = {
   reset?: () => void;
   transpose: () => void;
   download?: () => void;
+  downloadJSON?: () => void;
 };
 
 export default function DataTable({
@@ -10,6 +11,7 @@ export default function DataTable({
   reset,
   transpose,
   download,
+  downloadJSON,
 }: DataTableProps): JSX.Element {
   let max = 100;
 
@@ -21,12 +23,12 @@ export default function DataTable({
       {data && data[0] && (
         <div>
           <p>{`${data.length} rows, ${data[0].length} columns`}</p>
-          <div className="my-4">
+          <div className='my-4'>
             {transpose && (
-              <span className="">
+              <span className=''>
                 <button
-                  className="btn"
-                  type="button"
+                  className='btn'
+                  type='button'
                   onClick={() => transpose()}
                 >
                   Traspose
@@ -34,35 +36,46 @@ export default function DataTable({
               </span>
             )}
             {reset && (
-              <span className="mx-3">
-                <button className="btn" type="button" onClick={() => reset()}>
+              <span className='mx-3'>
+                <button className='btn' type='button' onClick={() => reset()}>
                   Reset
                 </button>
               </span>
             )}
             {download && (
-              <span className="mx-3">
+              <span className='mx-3'>
                 <button
-                  className="btn"
-                  type="button"
+                  className='btn'
+                  type='button'
                   onClick={() => download()}
                 >
-                  download
+                  download CSV data
+                </button>
+              </span>
+            )}
+            {downloadJSON && (
+              <span className='mx-3'>
+                <button
+                  className='btn'
+                  type='button'
+                  onClick={() => downloadJSON()}
+                >
+                  download JSON data
                 </button>
               </span>
             )}
           </div>
           <div
             style={{
-              maxWidth: '700px',
-              maxHeight: '350px',
-              overflowX: 'scroll',
-              overflowY: 'scroll',
+              maxWidth: "700px",
+              maxHeight: "350px",
+              overflowX: "scroll",
+              overflowY: "scroll",
             }}
           >
             <table
               className={`table border ${
-                isBig(data.length, data[0].length) ? 'table-xs' : ''
+                isBig(data.length, data[0].length) ? "table-xs" : ""
               }`}
             >
               <thead>
@@ -82,7 +95,7 @@ export default function DataTable({
                         (cell: string | number, ii: number) => (
                           <td
                             key={`cell-${ii}`}
-                            className={`px-2 ${ii === 0 ? 'font-bold' : ''}`}
+                            className={`px-2 ${ii === 0 ? "font-bold" : ""}`}
                           >
                             {cell}
                           </td>

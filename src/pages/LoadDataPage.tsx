@@ -3,7 +3,7 @@ import { getAvailablePalettes, getPalette, transposeData } from "../lib/utils";
 import DataTable from "../components/DataTable";
 
 import useStoreState from "../lib/storeState";
-import LoadSource from "../components/LoadSource";
+import LoadSource from "../components/LoadCSVSource";
 import { downloadCSV, dataToCSV } from "../lib/downloadUtils";
 import Layout from "../components/layout";
 
@@ -44,13 +44,13 @@ function Home() {
     <Layout>
       <div>
         <>
-          <h4 className="text-4xl">Load remote data</h4>
-          <div className="my-4">
+          <h4 className='text-4xl'>Load remote data</h4>
+          <div className='my-4'>
             Here some Open Data sources of real data you can use here: <br />
             <a
-              target="_blank"
-              href="https://www.dati.gov.it/view-dataset?groups=governo&organization=pcm-dipartimento-trasformazione-digitale"
-              className="link link-primary"
+              target='_blank'
+              href='https://www.dati.gov.it/view-dataset?groups=governo&organization=pcm-dipartimento-trasformazione-digitale'
+              className='link link-primary'
             >
               Dati Italia, Governo e servizi pubblici
             </a>

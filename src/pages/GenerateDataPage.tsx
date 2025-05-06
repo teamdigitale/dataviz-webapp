@@ -4,7 +4,7 @@ import DataTable from "../components/DataTable";
 
 import useStoreState from "../lib/storeState";
 import GenerateRandomData from "../components/GenerateRandomData";
-import { downloadCSV, dataToCSV } from "../lib/downloadUtils";
+import { downloadCSV, dataToCSV, downloadJSON } from "../lib/downloadUtils";
 import Layout from "../components/layout";
 
 function Home() {
@@ -44,7 +44,7 @@ function Home() {
     <Layout>
       <div>
         <>
-          <h4 className="text-4xl font-bold">Generate data</h4>
+          <h4 className='text-4xl font-bold'>Generate data</h4>
           <GenerateRandomData setData={setRawData} />
         </>
 
@@ -56,6 +56,12 @@ function Home() {
               transpose={transpose}
               download={() => {
                 downloadCSV(dataToCSV(rawData), "generated-data-" + Date.now());
+              }}
+              downloadJSON={() => {
+                downloadJSON(
+                  JSON.stringify(rawData, null, 2),
+                  "generated-data-" + Date.now()
+                );
               }}
             />
           </div>

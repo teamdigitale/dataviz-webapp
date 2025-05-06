@@ -18,12 +18,12 @@ export default function ChartList({
   handleLoadChart,
   handleDeleteChart,
 }: ChartListProps) {
-  const [picList, setPicList] = useState<picItem[]>([]);
+  // const [picList, setPicList] = useState<picItem[]>([]);
   const [show, setShow] = useState<string | null>(null);
 
-  function setPicture(id: string, pic: string) {
-    if (pic) setPicList((prev: picItem[]) => [...prev, { id, pic }]);
-  }
+  // function setPicture(id: string, pic: string) {
+  //   if (pic) setPicList((prev: picItem[]) => [...prev, { id, pic }]);
+  // }
   return (
     <div className='flex flex-col gap-2'>
       <div>
@@ -47,7 +47,7 @@ export default function ChartList({
       </div>
       {list?.map((item) => {
         const updatedAt = (item as any).updatedAt || "";
-        const pic = picList.find((i) => i.id === item.id);
+        // const pic = picList.find((i) => i.id === item.id);
         return (
           <div className='w-full'>
             <div key={item.id} className='my-2 flex gap-2 border p-2'>
@@ -86,12 +86,12 @@ export default function ChartList({
                     {item.isRemote ? "remote" : ""}
                   </small>
                 </span>
-                <div className='max-w-[40%]'>
+                {/* <div className='max-w-[40%]'>
                   <RenderChart
                     {...(item as any)}
                     getPicture={(pic: string) => setPicture(item.id + "", pic)}
                   />
-                </div>
+                </div> */}
               </div>
               <button
                 className='mr-8 btn btn-outline btn-error btn-sm'
