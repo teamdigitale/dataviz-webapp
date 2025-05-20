@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { FieldDataType } from "../../sharedTypes";
+import { FieldDataType } from "../../types";
 
 type DashboardListProps = {
   list: FieldDataType[] | [];

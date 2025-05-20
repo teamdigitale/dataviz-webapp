@@ -86,6 +86,8 @@ export interface StoreStateType {
   remoteUrl: null | string;
   isRemote: boolean;
   id: null | string;
+  preview: string;
+  setPreview: (value: string) => void;
   setId: (value: string) => void;
   setName: (value: string) => void;
   setConfig: (value: object) => void;

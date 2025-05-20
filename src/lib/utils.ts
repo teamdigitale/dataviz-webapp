@@ -1,5 +1,5 @@
 import { palettes } from "../lib/constants";
-import { ChartConfigType, FieldDataType } from "../sharedTypes";
+import { ChartConfigType, FieldDataType } from "../types";
 
 export function isNumeric(s: string) {
   /^[+-]?\d+(\.\d+)?$/.test(s);

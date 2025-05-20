@@ -3,7 +3,7 @@ import Papa from "papaparse";
 import DataTable from "../DataTable";
 
 import { log, transposeData, moveDataColumn } from "../../lib/utils";
-import { MatrixType } from "../../sharedTypes";
+import { MatrixType } from "../../types";
 
 type selectOptionType = {
   value: string;

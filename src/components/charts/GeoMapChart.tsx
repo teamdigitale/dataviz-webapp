@@ -3,7 +3,7 @@ import ReactEcharts from "echarts-for-react";
 import { useEffect, useRef, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { formatTooltip } from "../../lib/utils";
-import { ChartPropsType, FieldDataType } from "../../sharedTypes";
+import { ChartPropsType, FieldDataType } from "../../types";
 
 function GeoMapChart({
   data,
@@ -154,7 +154,7 @@ function GeoMapChart({
   return (
     <ErrorBoundary fallback={<div>Errore nel rendering della mappa</div>}>
       <div key={id} id={"chart_" + id}>
-        {error && <div className="alert error">{error}</div>}
+        {error && <div className='alert error'>{error}</div>}
         {!geoData && <div>In attesa dei dati geo...</div>}
         {!options ? (
           <div>Loading...</div>

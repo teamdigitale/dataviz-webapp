@@ -9,7 +9,7 @@ import Loading from "../components/layout/Loading";
 import * as auth from "../lib/auth";
 import * as api from "../lib/dashaboard-api";
 import useDashboardsStoreState from "../lib/dashboardListStore";
-import { FieldDataType } from "../sharedTypes";
+import { FieldDataType } from "../types";
 
 function DashboardsPage() {
   const { list, setList } = useDashboardsStoreState((state) => state);
@@ -133,21 +133,21 @@ function DashboardsPage() {
 
   return (
     <Layout>
-      <PanelGroup direction="horizontal" className="w-full">
-        <Panel defaultSize={30} minSize={20} className="bg-base-100">
-          <div className="p-4">
+      <PanelGroup direction='horizontal' className='w-full'>
+        <Panel defaultSize={30} minSize={20} className='bg-base-100'>
+          <div className='p-4'>
             <div>
               {loading ? (
                 <Loading />
               ) : (
                 <>
-                  <h4 className="text-4xl font-bold">
+                  <h4 className='text-4xl font-bold'>
                     {list && list.length ? "My Dashboards" : "Welcome"}
                   </h4>
                   <div>
-                    <div className="flex my-5 gap-4">
+                    <div className='flex my-5 gap-4'>
                       <div
-                        className="btn btn-primary"
+                        className='btn btn-primary'
                         onClick={createClickHandler}
                       >
                         + Aggiungi dashboard
@@ -168,7 +168,7 @@ function DashboardsPage() {
             {showCreateModal && (
               <GenericDialog
                 toggle={showCreateModal}
-                title="Aggiungi Dashboard"
+                title='Aggiungi Dashboard'
                 labels={{ confirm: "Aggiungi", cancel: "Annulla" }}
                 confirmCb={() => {
                   if (!newDashboard) {
@@ -180,13 +180,13 @@ function DashboardsPage() {
                   createModalCancelHandler();
                 }}
               >
-                <div className="bg-base-200">
-                  <div className="p-4 my-5">
-                    <label className="name">Nome</label>
+                <div className='bg-base-200'>
+                  <div className='p-4 my-5'>
+                    <label className='name'>Nome</label>
                     <input
-                      className="input w-full"
-                      type="text"
-                      name="name"
+                      className='input w-full'
+                      type='text'
+                      name='name'
                       onChange={(e) => {
                         const name = e.target.value;
                         const oldValue =
@@ -196,12 +196,12 @@ function DashboardsPage() {
                       }}
                     />
                   </div>
-                  <div className="p-4 my-5">
-                    <label className="name">Descrizione</label>
+                  <div className='p-4 my-5'>
+                    <label className='name'>Descrizione</label>
                     <input
-                      className="input w-full"
-                      type="text"
-                      name="description"
+                      className='input w-full'
+                      type='text'
+                      name='description'
                       onChange={(e) => {
                         const description = e.target.value;
                         const oldValue =
@@ -217,7 +217,7 @@ function DashboardsPage() {
             {showDeleteModal && (
               <ConfirmDialog
                 toggle={showDeleteModal}
-                title="Cancellazione Dashboard"
+                title='Cancellazione Dashboard'
                 message={`Vuoi cancellare la dashboard ${selectedItem?.name}?`}
                 confirmCb={dialogConfirmModalHandler}
                 cancelCb={dialogCancelModalHandler}

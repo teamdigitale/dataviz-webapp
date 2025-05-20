@@ -1,9 +1,9 @@
 import { useState } from "react";
 import dayjs from "dayjs";
 
-import { FieldDataType } from "../sharedTypes";
+import { FieldDataType } from "../types";
 import Dialog from "./layout/Dialog";
-import RenderChart from "./RenderChart";
+// import RenderChart from "./RenderChart";
 
 type ChartListProps = {
   list: FieldDataType[] | [];

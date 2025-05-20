@@ -2,7 +2,7 @@ import { useState, useTransition } from "react";
 import DataTable from "../DataTable";
 
 import { log, transposeData, moveDataColumn } from "../../lib/utils";
-import { MatrixType } from "../../sharedTypes";
+import { MatrixType } from "../../types";
 import { validateStructure } from "../../lib/validate";
 
 type selectOptionType = {

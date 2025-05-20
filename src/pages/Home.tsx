@@ -20,7 +20,7 @@ import stepMachine from "../lib/stepMachine";
 import { dataToCSV, downloadCSV } from "../lib/downloadUtils";
 import * as auth from "../lib/auth";
 import * as api from "../lib/api";
-import { FieldDataType } from "../sharedTypes";
+import { FieldDataType } from "../types";
 import ChooseLoader from "../components/load-data/ChooseLoader";
 
 function Home() {
@@ -35,7 +35,9 @@ function Home() {
     publish,
     isRemote,
     remoteUrl,
+    preview,
 
+    setPreview,
     setConfig,
     setChart,
     setData,
@@ -151,7 +153,7 @@ function Home() {
           />
         </Panel>
         <PanelResizeHandle className='bg-primary w-1' />
-        <Panel minSize={20} className='bg-base-100'>
+        <Panel defaultSize={30} minSize={30} className='bg-base-100'>
           <div className='p-4'>
             {state.matches("idle") && (
               <div className='container'>
@@ -245,6 +247,7 @@ function Home() {
                     data,
                     remoteUrl,
                     isRemote,
+                    preview,
                   }}
                   handleSave={() => handleSaveChart()}
                 />
@@ -252,10 +255,10 @@ function Home() {
             )}
           </div>
         </Panel>
-        {haveData && (
-          <>
-            <PanelResizeHandle className='bg-primary w-1' />
-            <Panel defaultSize={30} minSize={20}>
+        <PanelResizeHandle className='bg-primary w-1' />
+        <Panel defaultSize={60} minSize={40}>
+          {haveData && (
+            <>
               <div className='p-4'>
                 <DataTable
                   data={data}
@@ -267,7 +270,12 @@ function Home() {
                 />
                 {chart && (
                   <>
-                    <RenderChart chart={chart} data={data} config={config} />
+                    <RenderChart
+                      chart={chart}
+                      data={data}
+                      config={config}
+                      getPicture={(pic: string) => setPreview(pic)}
+                    />
                     {config && chart && (
                       <div className='w-full flex justify-end'>
                         <button
@@ -281,9 +289,9 @@ function Home() {
                   </>
                 )}
               </div>
-            </Panel>
-          </>
-        )}
+            </>
+          )}
+        </Panel>
       </PanelGroup>
     </Layout>
   );

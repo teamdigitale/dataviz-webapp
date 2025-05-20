@@ -1,7 +1,7 @@
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useRef } from "react";
 import { formatTooltip } from "../../lib/utils";
-import { ChartPropsType, FieldDataType } from "../../sharedTypes";
+import { ChartPropsType, FieldDataType } from "../../types";
 
 function PieChart({
   id,

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { defaultConfig } from "./constants";
-import { MatrixType, StoreStateType } from "../sharedTypes";
+import { MatrixType, StoreStateType } from "../types";
 // import { persist } from "zustand/middleware";
 // import { immer } from 'zustand/middleware/immer';
 
@@ -16,7 +16,9 @@ const useStoreState = create<StoreStateType>()(
     remoteUrl: null,
     isRemote: false,
     name: "",
+    preview: "",
     id: null,
+    setPreview: (value: string) => set(() => ({ preview: value })),
     setId: (value: string) => set(() => ({ id: value })),
     setName: (value: string) => set(() => ({ name: value })),
     setConfig: (value: object) => set(() => ({ config: value })),
@@ -37,6 +39,7 @@ const useStoreState = create<StoreStateType>()(
         remoteUrl: value.remoteUrl,
         isRemote: value.isRemote,
         id: value.id,
+        preview: value.preview,
       })),
     resetItem: () =>
       set(() => ({
@@ -48,6 +51,7 @@ const useStoreState = create<StoreStateType>()(
         config: defaultConfig,
         rawData: null,
         publish: true,
+        preview: "",
         // remoteUrl: null,
         // isRemote: false,
       })),
