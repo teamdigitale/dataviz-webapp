@@ -11,7 +11,7 @@ function PieChart({
   isFullH = false,
   hFactor = 1,
 }: ChartPropsType) {
-  const refCanvas = useRef<ReactEcharts>();
+  const refCanvas = useRef<ReactEcharts>(null);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     setTimeout(() => {

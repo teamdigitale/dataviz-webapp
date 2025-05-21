@@ -13,7 +13,7 @@ function GeoMapChart({
   isFullH = false,
   hFactor = 1,
 }: ChartPropsType) {
-  const refCanvas = useRef<ReactEcharts>();
+  const refCanvas = useRef<ReactEcharts>(null);
   const [error, setError] = useState("");
   const [geoData, setGeoData] = useState(null);
   const [options, setOptions] = useState(null);
