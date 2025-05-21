@@ -17,6 +17,7 @@ export type FieldDataType = {
   publish?: boolean;
   remoteUrl?: string;
   isRemote?: boolean;
+  preview?: string;
 };
 
 export type Step = {

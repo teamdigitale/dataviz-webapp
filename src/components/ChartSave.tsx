@@ -35,6 +35,7 @@ function ChartSave({ item, handleSave }: any) {
       data: item.data,
       isRemote: item.isRemote,
       remoteUrl: item.remoteUrl,
+      preview: item.preview,
     };
     console.log("Save chart", JSON.stringify(payload, null, 2));
     return api.upsertChart(payload, id);
@@ -54,7 +55,7 @@ function ChartSave({ item, handleSave }: any) {
   console.log("errors", errors);
   return (
     <div className='my-5 bg-base-200 p-4 rounded-box'>
-      {item.preview && <img src={item.preview} />}
+      {item.preview && <img width='150' src={item.preview} />}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <input type='hidden' {...register("id", { required: false })} />
