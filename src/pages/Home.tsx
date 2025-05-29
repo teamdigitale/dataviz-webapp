@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useMachine } from "@xstate/react";
+import { RenderChart, DataTable, type FieldDataType } from "dataviz-components";
 
 import { getAvailablePalettes, getPalette, transposeData } from "../lib/utils";
 import Layout from "../components/layout";
-import DataTable from "../components/DataTable";
-import RenderChart from "../components/RenderChart";
+// import RenderChart from "../components/RenderChart";
 import SelectChart from "../components/SelectChart";
 import ChartOptions from "../components/ChartOptions";
 import ChartSave from "../components/ChartSave";
@@ -20,7 +20,6 @@ import stepMachine from "../lib/stepMachine";
 import { dataToCSV, downloadCSV } from "../lib/downloadUtils";
 import * as auth from "../lib/auth";
 import * as api from "../lib/api";
-import { FieldDataType } from "../types";
 import ChooseLoader from "../components/load-data/ChooseLoader";
 
 function Home() {

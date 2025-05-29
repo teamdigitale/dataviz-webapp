@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import RenderChart from "../../components/RenderChart";
+import { RenderChart } from "dataviz-components";
 import * as api from "../../lib/api";
 import Layout from "../../components/layout";
 import Loading from "../../components/layout/Loading";

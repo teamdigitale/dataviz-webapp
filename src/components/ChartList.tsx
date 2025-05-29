@@ -1,7 +1,7 @@
 import { useState } from "react";
 import dayjs from "dayjs";
+import { type FieldDataType } from "dataviz-components";
 
-import { FieldDataType } from "../types";
 import Dialog from "./layout/Dialog";
 // import RenderChart from "./RenderChart";
 

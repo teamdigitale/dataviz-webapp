@@ -4,7 +4,8 @@ import { Panel, PanelGroup } from "react-resizable-panels";
 import { Link, useParams } from "react-router-dom";
 import Layout from "../../components/layout";
 import Loading from "../../components/layout/Loading";
-import RenderChart from "../../components/RenderCellChart";
+// import RenderChart from "../../components/RenderCellChart";
+import { RenderChart } from "dataviz-components";
 import useDashboardViewStore from "../../store/dashboard-view.store";
 
 const ROW_HEIGHT = 360;
@@ -85,7 +86,7 @@ function DashboardViewPage() {
                           {charts && charts[item.i] && (
                             <RenderChart
                               {...(charts[item.i] as any)}
-                              fullH={ROW_HEIGHT}
+                              rowHeight={ROW_HEIGHT}
                               hFactor={item.h}
                             />
                           )}

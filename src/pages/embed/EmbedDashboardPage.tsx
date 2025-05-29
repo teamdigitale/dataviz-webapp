@@ -3,7 +3,8 @@ import { Responsive, WidthProvider } from "react-grid-layout";
 import { Panel, PanelGroup } from "react-resizable-panels";
 import { Link, useParams } from "react-router-dom";
 import Loading from "../../components/layout/Loading";
-import RenderChart from "../../components/RenderCellChart";
+// import RenderChart from "../../components/RenderCellChart";
+import { RenderChart } from "dataviz-components";
 import useDashboardViewStore from "../../store/dashboard-view.store";
 
 const ROW_HEIGHT = 360;

@@ -5,7 +5,8 @@ import { Link, useParams } from "react-router-dom";
 import Layout from "../../components/layout";
 import Dialog from "../../components/layout/Dialog";
 import Loading from "../../components/layout/Loading";
-import RenderChart from "../../components/RenderCellChart";
+// import RenderChart from "../../components/RenderCellChart";
+import { RenderChart } from "dataviz-components";
 import * as api from "../../lib/dashaboard-api";
 import useDashboardEditStore, {
   ChartLookup,
@@ -208,8 +209,8 @@ function DashboardEditPage() {
                               <p>{charts[item.i].description}</p>
                             </div>
                             <RenderChart
-                              {...charts[item.i]}
-                              fullH={ROW_HEIGHT}
+                              {...(charts[item.i] as any)}
+                              // rowHeight={ROW_HEIGHT}
                               hFactor={item.h}
                             />
                           </>
