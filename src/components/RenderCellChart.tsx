@@ -51,8 +51,8 @@ function RenderChart(props: any) {
   if (loading) return null;
   // console.log("props", props);
   return (
-    <div className="w-full h-full max-height-full">
-      <div className={`w-full min-height-[${fullH}]  h-full max-height-full`}>
+    <div className='w-full h-full max-height-full'>
+      <div className={`w-full h-full max-height-full`}>
         <div ref={wrapRef}>
           {props && (
             <>

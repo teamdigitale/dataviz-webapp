@@ -184,9 +184,8 @@ function GeoMapChart({
             ref={refCanvas}
             style={{
               height: isFullH ? "100%" : chartHeight,
-              minHeight: isFullH ? chartHeight : "auto",
+              minHeight: isFullH ? "100%" : chartHeight,
               maxHeight: "100%",
-
               width: "100%",
               maxWidth: "100%",
             }}
