@@ -1,17 +1,17 @@
 import { createBrowserRouter } from "react-router-dom";
 import AboutPage from "./pages/AboutPage";
 import AuthPage from "./pages/AuthPage";
-import DashboardCreatePage from "./pages/DashboardCreatePage";
-import DashboardEditPage from "./pages/DashboardEditPage";
-import DashboardsPage from "./pages/DashboardsPage";
-import DashboardViewPage from "./pages/DashboardViewPage";
-import EmbedChartPage from "./pages/EmbedChartPage";
-import GenerateDataPage from "./pages/GenerateDataPage";
-import GeoMapUtilsPage from "./pages/GeoMapUtilsPage";
+import DashboardCreatePage from "./pages/dashboard/DashboardCreatePage";
+import DashboardEditPage from "./pages/dashboard/DashboardEditPage";
+import DashboardsPage from "./pages/dashboard/DashboardListPage";
+import DashboardViewPage from "./pages/show/ShowDashboardPage";
+import EmbedChartPage from "./pages/embed/EmbedChartPage";
+import EmbedDashboardPage from "./pages/embed/EmbedDashboardPage";
+import GenerateDataPage from "./pages/utility/GenerateDataPage";
+import GeoMapUtilsPage from "./pages/utility/GeoMapUtilsPage";
 import HomePage from "./pages/Home";
-import LoadDataPage from "./pages/LoadDataPage";
-import ShowChartPage from "./pages/ShowChartPage";
-import TestGridPage from "./pages/TestGridPage";
+import LoadDataPage from "./pages/utility/LoadRemoteDataPage";
+import ShowChartPage from "./pages/show/ShowChartPage";
 
 const router = createBrowserRouter([
   {
@@ -46,11 +46,6 @@ const router = createBrowserRouter([
     path: "/embed/:id",
     element: <EmbedChartPage />,
   },
-  //create dashboard page
-  {
-    path: "/grid",
-    element: <TestGridPage />,
-  },
   {
     path: "/dashboards/create",
     element: <DashboardCreatePage />,
@@ -62,6 +57,10 @@ const router = createBrowserRouter([
   {
     path: "/dashboards/:id/view",
     element: <DashboardViewPage />,
+  },
+  {
+    path: "/dashboards/:id/embed",
+    element: <EmbedDashboardPage />,
   },
   //list dashboard page
   {

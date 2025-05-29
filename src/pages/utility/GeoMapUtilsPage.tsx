@@ -1,6 +1,5 @@
-import { useParams } from "react-router-dom";
-import Layout from "../components/layout";
-import CheckGeo from "../components/CheckGeo";
+import Layout from "../../components/layout";
+import CheckGeo from "../../components/CheckGeo";
 
 function GeoMapUtilsPage() {
   return (

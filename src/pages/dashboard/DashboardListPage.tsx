@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { Panel, PanelGroup } from "react-resizable-panels";
 import { useNavigate } from "react-router-dom";
-import DashboardList from "../components/dashboard/DashboardList";
-import Layout from "../components/layout";
-import ConfirmDialog from "../components/layout/ConfirmDialog";
-import GenericDialog from "../components/layout/GenericDialog";
-import Loading from "../components/layout/Loading";
-import * as auth from "../lib/auth";
-import * as api from "../lib/dashaboard-api";
-import useDashboardsStoreState from "../lib/dashboardListStore";
-import { FieldDataType } from "../types";
+import DashboardList from "../../components/dashboard/DashboardList";
+import Layout from "../../components/layout";
+import ConfirmDialog from "../../components/layout/ConfirmDialog";
+import GenericDialog from "../../components/layout/GenericDialog";
+import Loading from "../../components/layout/Loading";
+import * as auth from "../../lib/auth";
+import * as api from "../../lib/dashaboard-api";
+import useDashboardsStoreState from "../../lib/dashboardListStore";
+import { FieldDataType } from "../../types";
 
 function DashboardsPage() {
   const { list, setList } = useDashboardsStoreState((state) => state);

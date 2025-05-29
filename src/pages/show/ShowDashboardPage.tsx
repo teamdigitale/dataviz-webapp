@@ -2,10 +2,10 @@ import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { Panel, PanelGroup } from "react-resizable-panels";
 import { Link, useParams } from "react-router-dom";
-import Layout from "../components/layout";
-import Loading from "../components/layout/Loading";
-import RenderChart from "../components/RenderCellChart";
-import useDashboardViewStore from "../store/dashboard-view.store";
+import Layout from "../../components/layout";
+import Loading from "../../components/layout/Loading";
+import RenderChart from "../../components/RenderCellChart";
+import useDashboardViewStore from "../../store/dashboard-view.store";
 
 const ROW_HEIGHT = 360;
 const WIDGET_HEIGHT = 48;

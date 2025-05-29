@@ -2,15 +2,15 @@ import React from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { Panel, PanelGroup } from "react-resizable-panels";
 import { Link, useParams } from "react-router-dom";
-import Layout from "../components/layout";
-import Dialog from "../components/layout/Dialog";
-import Loading from "../components/layout/Loading";
-import RenderChart from "../components/RenderCellChart";
-import * as api from "../lib/dashaboard-api";
+import Layout from "../../components/layout";
+import Dialog from "../../components/layout/Dialog";
+import Loading from "../../components/layout/Loading";
+import RenderChart from "../../components/RenderCellChart";
+import * as api from "../../lib/dashaboard-api";
 import useDashboardEditStore, {
   ChartLookup,
   TChartRef,
-} from "../store/dashboard-edit.store";
+} from "../../store/dashboard-edit.store";
 
 const ROW_HEIGHT = 360;
 const WIDGET_HEIGHT = 48;
@@ -55,7 +55,7 @@ function ChartSelection(props: ChartSelectionProps) {
         >
           <label style={{ width: "200px" }}>Select a chart type:</label>
           <select
-            className="select select-primary my-2 p-2"
+            className='select select-primary my-2 p-2'
             style={{ width: "100%" }}
             value={chart?.id}
             onChange={(e) => {
@@ -65,7 +65,7 @@ function ChartSelection(props: ChartSelectionProps) {
               props.onSelect(chart);
             }}
           >
-            <option value="">{`-seleziona un grafico-`}</option>
+            <option value=''>{`-seleziona un grafico-`}</option>
             {charts.map((c, index) => {
               return (
                 <option key={`${c.id}-${index}`} value={c.id}>
@@ -138,35 +138,35 @@ function DashboardEditPage() {
 
   return (
     <Layout>
-      <PanelGroup direction="horizontal" className="w-full">
-        <Panel defaultSize={30} minSize={20} className="bg-base-100">
-          <div className="p-4">
-            <div className="flex justify-between items-center">
-              <Link to="/dashboards" className="text-blue-500 hover:underline">
+      <PanelGroup direction='horizontal' className='w-full'>
+        <Panel defaultSize={30} minSize={20} className='bg-base-100'>
+          <div className='p-4'>
+            <div className='flex justify-between items-center'>
+              <Link to='/dashboards' className='text-blue-500 hover:underline'>
                 &lt; Torna alla lista
               </Link>
-              <div className="ml-auto flex space-x-2">
-                <button onClick={resetHandler} className="btn btn-primary">
+              <div className='ml-auto flex space-x-2'>
+                <button onClick={resetHandler} className='btn btn-primary'>
                   Reset
                 </button>
-                <button onClick={saveHandler} className="btn btn-primary">
+                <button onClick={saveHandler} className='btn btn-primary'>
                   Salva
                 </button>
               </div>
             </div>
             {isLoading && <Loading />}
             {error && (
-              <div role="alert" className="alert alert-error">
+              <div role='alert' className='alert alert-error'>
                 {error.message}
               </div>
             )}
             {loaded && (
               <>
-                <h1 className="text-4xl font-bold">{name}</h1>
-                <h4 className="text-xl">{description}</h4>
-                <div className="flex flex-wrap items-center">
+                <h1 className='text-4xl font-bold'>{name}</h1>
+                <h4 className='text-xl'>{description}</h4>
+                <div className='flex flex-wrap items-center'>
                   <button
-                    className="m-2 btn btn-xs btn-primary"
+                    className='m-2 btn btn-xs btn-primary'
                     onClick={addItemHandler}
                   >
                     Add +
@@ -174,18 +174,18 @@ function DashboardEditPage() {
                   {layout.map((l) => (
                     <button
                       key={l.i}
-                      className="m-2 btn btn-xs btn-error"
+                      className='m-2 btn btn-xs btn-error'
                       onClick={() => deleteItemHandler(l.i)}
                     >
                       {l.i}
                     </button>
                   ))}
                 </div>
-                <div className="relative border min-h-[60vh]">
+                <div className='relative border min-h-[60vh]'>
                   <ResponsiveReactGridLayout
                     onLayoutChange={setLayout}
                     onBreakpointChange={setBreakpoint}
-                    className="react-grid-layout"
+                    className='react-grid-layout'
                     layouts={{ lg: layout }}
                     cols={cols}
                     margin={[10, 10]}
@@ -193,15 +193,15 @@ function DashboardEditPage() {
                   >
                     {layout.map((item) => (
                       <div
-                        className="react-grid-item overflow-hidden"
+                        className='react-grid-item overflow-hidden'
                         key={item.i}
                       >
                         {charts[item.i] ? (
                           <>
                             <div>
-                              <div className="flex justify-between">
+                              <div className='flex justify-between'>
                                 <b>{charts[item.i].name}</b>
-                                <span className="text-right rounded-md bg-red-700 py-0.5 px-2.5 border border-transparent text-sm text-white transition-all shadow-sm">
+                                <span className='text-right rounded-md bg-red-700 py-0.5 px-2.5 border border-transparent text-sm text-white transition-all shadow-sm'>
                                   {item.i}
                                 </span>
                               </div>
@@ -215,7 +215,7 @@ function DashboardEditPage() {
                           </>
                         ) : (
                           <button
-                            className="m-2 btn btn-xs btn-primary"
+                            className='m-2 btn btn-xs btn-primary'
                             onClick={() => addChartHandler(item.i)}
                           >
                             Add Chart +
@@ -230,7 +230,7 @@ function DashboardEditPage() {
             {show && (
               <Dialog
                 toggle={show}
-                title="Select a chart"
+                title='Select a chart'
                 callback={() => {
                   closeAddModal();
                 }}

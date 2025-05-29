@@ -1,11 +1,14 @@
 import { useEffect } from "react";
-import { getAvailablePalettes, getPalette, transposeData } from "../lib/utils";
-import DataTable from "../components/DataTable";
-
-import useStoreState from "../lib/storeState";
-import GenerateRandomData from "../components/GenerateRandomData";
-import { downloadCSV, dataToCSV, downloadJSON } from "../lib/downloadUtils";
-import Layout from "../components/layout";
+import {
+  getAvailablePalettes,
+  getPalette,
+  transposeData,
+} from "../../lib/utils";
+import Layout from "../../components/layout";
+import DataTable from "../../components/DataTable";
+import useStoreState from "../../lib/storeState";
+import GenerateRandomData from "../../components/GenerateRandomData";
+import { downloadCSV, dataToCSV, downloadJSON } from "../../lib/downloadUtils";
 
 function Home() {
   const { config, setConfig, rawData, setRawData, resetItem, setData } =
