@@ -6,7 +6,6 @@ import { getAvailablePalettes, getPalette, transposeData } from "../lib/utils";
 import Layout from "../components/layout";
 import DataTable from "../components/DataTable";
 import RenderChart from "../components/RenderChart";
-import CSVUpload from "../components/CSVUpload";
 import SelectChart from "../components/SelectChart";
 import ChartOptions from "../components/ChartOptions";
 import ChartSave from "../components/ChartSave";
@@ -21,8 +20,8 @@ import stepMachine from "../lib/stepMachine";
 import { dataToCSV, downloadCSV } from "../lib/downloadUtils";
 import * as auth from "../lib/auth";
 import * as api from "../lib/api";
-import { FieldDataType } from "../sharedTypes";
-import LoadJsonSource from "../components/LoadJsonSource";
+import { FieldDataType } from "../types";
+import ChooseLoader from "../components/load-data/ChooseLoader";
 
 function Home() {
   const [state, send] = useMachine(stepMachine);
@@ -36,7 +35,9 @@ function Home() {
     publish,
     isRemote,
     remoteUrl,
+    preview,
 
+    setPreview,
     setConfig,
     setChart,
     setData,
@@ -152,7 +153,7 @@ function Home() {
           />
         </Panel>
         <PanelResizeHandle className='bg-primary w-1' />
-        <Panel minSize={20} className='bg-base-100'>
+        <Panel defaultSize={30} minSize={30} className='bg-base-100'>
           <div className='p-4'>
             {state.matches("idle") && (
               <div className='container'>
@@ -211,10 +212,10 @@ function Home() {
             {state.matches("input") && (
               <div className='container'>
                 <h4 className='text-4xl font-bold'>Upload your data</h4>
-                <CSVUpload setData={(d: any) => handleUpload(d)} />
-                <LoadJsonSource
-                  currentValue={remoteUrl}
-                  setData={(d: any) => handleSetRemoteData(d)}
+                <ChooseLoader
+                  handleUpload={handleUpload}
+                  remoteUrl={remoteUrl}
+                  handleSetRemoteData={handleSetRemoteData}
                 />
               </div>
             )}
@@ -246,6 +247,7 @@ function Home() {
                     data,
                     remoteUrl,
                     isRemote,
+                    preview,
                   }}
                   handleSave={() => handleSaveChart()}
                 />
@@ -253,10 +255,10 @@ function Home() {
             )}
           </div>
         </Panel>
-        {haveData && (
-          <>
-            <PanelResizeHandle className='bg-primary w-1' />
-            <Panel defaultSize={30} minSize={20}>
+        <PanelResizeHandle className='bg-primary w-1' />
+        <Panel defaultSize={60} minSize={40}>
+          {haveData && (
+            <>
               <div className='p-4'>
                 <DataTable
                   data={data}
@@ -268,7 +270,12 @@ function Home() {
                 />
                 {chart && (
                   <>
-                    <RenderChart chart={chart} data={data} config={config} />
+                    <RenderChart
+                      chart={chart}
+                      data={data}
+                      config={config}
+                      getPicture={(pic: string) => setPreview(pic)}
+                    />
                     {config && chart && (
                       <div className='w-full flex justify-end'>
                         <button
@@ -282,9 +289,9 @@ function Home() {
                   </>
                 )}
               </div>
-            </Panel>
-          </>
-        )}
+            </>
+          )}
+        </Panel>
       </PanelGroup>
     </Layout>
   );

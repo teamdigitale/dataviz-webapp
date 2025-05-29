@@ -1,4 +1,4 @@
-import type { ChartConfigType, FieldDataType } from "../sharedTypes";
+import type { ChartConfigType, FieldDataType } from "../types";
 import { generateGradient, hexToHsla } from "./utils";
 
 export const palettes: any = {
@@ -122,7 +122,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     name: "Line Chart",
     type: "label",
     chartType: ["line"],
-    layout: "3",
+    layout: "2",
   },
   {
     label: "Show Zoom",
@@ -170,7 +170,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     name: "Bar Chart",
     type: "label",
     chartType: ["bar"],
-    layout: "3",
+    layout: "2",
   },
   {
     label: "Direction",
@@ -200,7 +200,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     name: "Pie Chart",
     type: "label",
     chartType: ["pie"],
-    layout: "3",
+    layout: "2",
   },
   {
     label: "Total Label",
@@ -243,7 +243,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     name: "Map Chart",
     type: "label",
     chartType: ["map"],
-    layout: "3",
+    layout: "2",
   },
   {
     label: "GeoJson URL",
@@ -344,7 +344,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     name: "General",
     type: "label",
     chartType: ["bar", "line", "pie", "map"],
-    layout: "3",
+    layout: "2",
   },
   {
     label: "Palette",
@@ -409,7 +409,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     name: "Tooltip",
     type: "label",
     chartType: ["bar", "line", "pie", "map"],
-    layout: "3",
+    layout: "2",
   },
   {
     label: "Show Tooltip",
@@ -460,7 +460,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     name: "Grid",
     type: "label",
     chartType: ["bar", "line"],
-    layout: "3",
+    layout: "2",
   },
   {
     label: "Height",
@@ -536,7 +536,7 @@ export const getFields = (availabelPalettes: any, defaultPalette: string) => [
     name: "Axes",
     type: "label",
     chartType: ["bar", "line"],
-    layout: "3",
+    layout: "2",
   },
   {
     label: "X axis Label",

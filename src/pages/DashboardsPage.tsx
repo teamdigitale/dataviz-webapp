@@ -9,7 +9,7 @@ import Loading from "../components/layout/Loading";
 import * as auth from "../lib/auth";
 import * as api from "../lib/dashaboard-api";
 import useDashboardsStoreState from "../lib/dashboardListStore";
-import { FieldDataType } from "../sharedTypes";
+import { FieldDataType } from "../types";
 
 function DashboardsPage() {
   const { list, setList } = useDashboardsStoreState((state) => state);

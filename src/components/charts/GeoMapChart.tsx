@@ -3,7 +3,7 @@ import ReactEcharts from "echarts-for-react";
 import { useEffect, useRef, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { formatTooltip } from "../../lib/utils";
-import { ChartPropsType, FieldDataType } from "../../sharedTypes";
+import { ChartPropsType, FieldDataType } from "../../types";
 
 function GeoMapChart({
   data,
@@ -13,11 +13,12 @@ function GeoMapChart({
   isFullH = false,
   hFactor = 1,
 }: ChartPropsType) {
-  const refCanvas = useRef(null);
+  const refCanvas = useRef<ReactEcharts>(null);
   const [error, setError] = useState("");
   const [geoData, setGeoData] = useState(null);
   const [options, setOptions] = useState(null);
   const [weDoNotHaveInstance, setWeDoNotHaveInstance] = useState(true);
+  const [loaded, setLoaded] = useState(false);
 
   function getOptions(data: FieldDataType, geoData: any) {
     echarts.registerMap(id as string, geoData);
@@ -141,20 +142,39 @@ function GeoMapChart({
     }
   }, [geoData]);
 
+  // useEffect(() => {
+  //   if (refCanvas?.current && weDoNotHaveInstance) {
+  //     const echartInstance = (refCanvas.current as any).getEchartsInstance();
+  //     setEchartInstance(echartInstance);
+  //     setWeDoNotHaveInstance(false);
+  //   }
+  // }, [refCanvas.current, weDoNotHaveInstance]);
+
   useEffect(() => {
-    if (refCanvas?.current && weDoNotHaveInstance) {
-      const echartInstance = (refCanvas.current as any).getEchartsInstance();
-      setEchartInstance(echartInstance);
-      setWeDoNotHaveInstance(false);
+    setTimeout(() => {
+      setLoaded(true);
+    }, 2000);
+  }, []);
+  useEffect(() => {
+    if (loaded && refCanvas.current && weDoNotHaveInstance) {
+      try {
+        const echartInstance = refCanvas.current.getEchartsInstance();
+        if (setEchartInstance) {
+          setEchartInstance(echartInstance);
+          setWeDoNotHaveInstance(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }, [refCanvas.current, weDoNotHaveInstance]);
+  }, [loaded, refCanvas.current, weDoNotHaveInstance]);
 
   const chartHeight = (data.config?.h || 500) * hFactor;
   console.log("chartHeight", chartHeight);
   return (
     <ErrorBoundary fallback={<div>Errore nel rendering della mappa</div>}>
       <div key={id} id={"chart_" + id}>
-        {error && <div className="alert error">{error}</div>}
+        {error && <div className='alert error'>{error}</div>}
         {!geoData && <div>In attesa dei dati geo...</div>}
         {!options ? (
           <div>Loading...</div>

@@ -45,7 +45,7 @@ function ChartOptions({
     setConfig(newConfig);
   };
   if (!chart) {
-    return <div className="my-5">Please choose a chart type</div>;
+    return <div className='my-5'>Please choose a chart type</div>;
   }
 
   let filteredFields = fields.filter((field) =>
@@ -72,14 +72,14 @@ function ChartOptions({
     );
   }
   return (
-    <div className="bg-base-200 p-4 rounded-box">
+    <div className='bg-base-200 p-4 rounded-box'>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="my-5">
-          <button className="btn btn-primary w-full" type="submit">
+        <div className='my-5'>
+          <button className='btn btn-primary w-full' type='submit'>
             Apply Changes
           </button>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className='grid grid-cols-2 gap-4'>
           {filteredFields.map((field) => {
             if (["text", "email", "number", "color"].includes(field.type)) {
               let style = {};
@@ -98,17 +98,17 @@ function ChartOptions({
               }
               return (
                 <div key={field.name} style={style}>
-                  <label className="label">{label}</label>
+                  <label className='label'>{label}</label>
                   <div>
                     <input
-                      className="input"
+                      className='input'
                       type={field.type}
                       {...field.otherProps}
                       {...register(field.name, { required: field.required })}
                     />
                   </div>
                   {errors[field.name] && (
-                    <span className="bg-danger">This field is required</span>
+                    <span className='bg-danger'>This field is required</span>
                   )}
                 </div>
               );
@@ -119,17 +119,17 @@ function ChartOptions({
               }
               return (
                 <div key={field.name} style={style}>
-                  <label className="label">{field.label}</label>
+                  <label className='label'>{field.label}</label>
                   <div>
                     <input
-                      className="checkbox"
-                      type="checkbox"
+                      className='checkbox'
+                      type='checkbox'
                       {...field.otherProps}
                       {...register(field.name, { required: field.required })}
                     />
                   </div>
                   {errors[field.name] && (
-                    <span className="bg-danger">This field is required</span>
+                    <span className='bg-danger'>This field is required</span>
                   )}
                 </div>
               );
@@ -142,7 +142,7 @@ function ChartOptions({
                 <div key={field.name} style={style}>
                   <div>{field.label}</div>
                   <select
-                    className="input select"
+                    className='input select'
                     style={{ width: "80%" }}
                     {...field.otherProps}
                     {...register(field.name, { required: field.required })}
@@ -156,7 +156,7 @@ function ChartOptions({
                     })}
                   </select>
                   {errors[field.name] && (
-                    <span className="bg-danger">This field is required</span>
+                    <span className='bg-danger'>This field is required</span>
                   )}
                   {field.name === "palette" && watchPalette && (
                     <>
@@ -168,14 +168,14 @@ function ChartOptions({
             } else {
               let style = {
                 marginTop: 10,
-                gridColumn: "span 3",
+                gridColumn: "span 2",
                 fontWeight: "bold",
                 fontSize: 16,
               };
               return (
                 <>
                   <div style={style}>
-                    <span className="badge badge-neutral badge-lg">
+                    <span className='badge badge-neutral badge-lg'>
                       {field.name}
                     </span>
                   </div>
@@ -184,8 +184,8 @@ function ChartOptions({
             }
           })}
         </div>
-        <div className="my-5">
-          <button className="btn btn-primary w-full" type="submit">
+        <div className='my-5'>
+          <button className='btn btn-primary w-full' type='submit'>
             Apply Changes
           </button>
         </div>
