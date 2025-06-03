@@ -3,6 +3,38 @@ const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 let headers: HeadersInit | undefined = { "Content-Type": "application/json" };
 
+/** getSuggestions */
+export async function getSuggestions(inputData: (string | number)[][]) {
+  const token = auth.getAuth();
+  if (!token) return null;
+
+  const url = `${SERVER_URL}/hints/`;
+
+  const data = JSON.stringify(inputData.slice(0, 5));
+  console.log(url, data);
+
+  const response = await fetch(url, {
+    method: "post",
+    headers: {
+      ...headers,
+      Authorization: `Bearer ${token}`,
+    },
+    body: data,
+  });
+  console.log("hints", response.status);
+
+  if (response.status === 401) {
+    return auth.logout();
+  }
+
+  if (response.status === 200) {
+    const data = await response.json();
+    return data;
+  }
+
+  return null;
+}
+
 /** Upsert */
 export async function upsertChart(item: any, id?: string) {
   const token = auth.getAuth();

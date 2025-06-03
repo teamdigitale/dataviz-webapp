@@ -1,4 +1,4 @@
-export type MatrixType = [[string | number]];
+export type MatrixType = (string | number)[][];
 
 export type SerieType = {
   name: string;
@@ -8,7 +8,7 @@ export type SerieType = {
 
 export type FieldDataType = {
   config: ChartConfigType;
-  dataSource: any;
+  dataSource?: object[];
   chart: string;
   data: MatrixType | null;
   name?: string;
@@ -78,6 +78,7 @@ export type ChartConfigType = {
 
 export interface StoreStateType {
   data: MatrixType | null;
+  dataSource?: object[];
   chart: string;
   config: any;
   rawData: MatrixType | null;
@@ -95,6 +96,7 @@ export interface StoreStateType {
   setChart: (value: string) => void;
   setRawData: (value: any) => void;
   setData: (value: MatrixType | null) => void;
+  setDataSource: (value: object[] | []) => void;
   loadItem: (value: any) => void;
   resetItem: () => void;
   setRemoteUrl: (value: string | null) => void;
@@ -107,4 +109,69 @@ export interface RemoteStoreStateType {
   removeItem: (id: string) => void;
   updateItem: (item: FieldDataType) => void;
   setList: (items: FieldDataType[]) => void;
+}
+
+// Types for your raw data
+export type DataValue = string | number | Date; // Dates should ideally be Date objects or ISO strings
+export interface RawDataRow {
+  [key: string]: DataValue;
+}
+export type RawDataset = RawDataRow[];
+
+// Structure for an AI Suggestion
+export interface AISuggestion {
+  id: string; // Unique ID for the suggestion
+  description: string; // Human-readable text, e.g., "Show Total Sales by Region as a Bar Chart"
+  transformations: TransformationStep[]; // Array of transformation steps
+  chartType: "bar" | "line" | "map" | "geo" | "pie" | "donut"; // Suggested chart type
+  xAxis: {
+    sourceColumn: string; // Original column name or derived column name after transformation
+    displayName?: string; // Optional: how to display it on the chart
+  };
+  yAxes: {
+    sourceColumn: string; // Original column name or derived column name
+    aggregationFunction?: AggregationType; // If applicable, e.g., SUM, AVG
+    displayName: string; // How to display this series on the chart
+  }[];
+}
+
+// Types for Transformation Steps
+export type AggregationType =
+  | "SUM"
+  | "AVERAGE"
+  | "COUNT"
+  | "MIN"
+  | "MAX"
+  | "COUNT_DISTINCT";
+
+export interface TransformationStep {
+  type:
+    | "GROUP_BY"
+    | "AGGREGATE"
+    | "FILTER"
+    | "EXTRACT_DATE_PART"
+    | "PIVOT" /* etc. */;
+  // Common properties
+  inputColumns?: string[];
+  outputColumnName?: string;
+
+  // Specific to GROUP_BY
+  groupByColumns?: string[];
+
+  // Specific to AGGREGATE
+  aggregationFunction?: AggregationType;
+  columnToAggregate?: string; // The column on which the aggregation is performed
+
+  // Specific to EXTRACT_DATE_PART
+  dateColumn?: string;
+  datePart?: "YEAR" | "MONTH" | "QUARTER" | "DAY_OF_WEEK";
+
+  // ... other properties for other transformation types
+}
+
+export interface ProcessedChartData {
+  chartMatrix: (string | number)[][]; // Your app's expected matrix format
+  chartType: AISuggestion["chartType"];
+  xAxisLabel: string;
+  yAxisLabels: string[];
 }

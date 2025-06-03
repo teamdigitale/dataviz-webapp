@@ -26,8 +26,8 @@ export default function ChartList({
         const updatedAt = (item as any).updatedAt || "";
         // const pic = picList.find((i) => i.id === item.id);
         return (
-          <div className='w-full'>
-            <div key={item.id} className='flex flex-wrap gap-2 border p-2'>
+          <div className='w-full' key={item.id}>
+            <div className='flex flex-wrap gap-2 border p-2'>
               {item.preview && (
                 <img
                   src={item.preview}

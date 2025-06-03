@@ -1,9 +1,10 @@
 import { useState, useTransition } from "react";
 import Papa from "papaparse";
 import DataTable from "../DataTable";
-
+import { getSuggestions } from "../../lib/api";
 import { log, transposeData, moveDataColumn } from "../../lib/utils";
-import { MatrixType } from "../../types";
+import { AISuggestion, MatrixType } from "../../types";
+import ChartsSuggestions from "../ChartSuggestions";
 
 type selectOptionType = {
   value: string;
@@ -122,8 +123,12 @@ function UploadCSV({ setData }: { setData: Function }) {
         />
       </div>
       {rawData && (
-        <div className=''>
+        <>
           <div className=''>
+            <ChartsSuggestions data={rawData} />
+          </div>
+          <div className=''>
+            <h3 className='h3'>Data:</h3>
             <DataTable
               data={rawData}
               transpose={() => transpose()}
@@ -150,6 +155,7 @@ function UploadCSV({ setData }: { setData: Function }) {
                 ))}
               </select>
             </div>
+
             {category && (
               <div>
                 <label className='label'>Seleziona una o più serie:</label>
@@ -190,7 +196,7 @@ function UploadCSV({ setData }: { setData: Function }) {
               )}
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

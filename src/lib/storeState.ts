@@ -8,6 +8,7 @@ const useStoreState = create<StoreStateType>()(
   // persist(
   (set) => ({
     data: null,
+    dataSource: undefined,
     chart: "bar",
     config: defaultConfig,
     rawData: null,
@@ -25,6 +26,7 @@ const useStoreState = create<StoreStateType>()(
     setChart: (value: string) => set(() => ({ chart: value })),
     setRawData: (value: any) => set(() => ({ rawData: value })),
     setData: (value: MatrixType | null) => set(() => ({ data: value })),
+    setDataSource: (value: object[] | []) => set(() => ({ dataSource: value })),
     setRemoteUrl: (value: string | null) => set(() => ({ remoteUrl: value })),
     setIsRemote: (value: boolean) => set(() => ({ isRemote: value })),
     loadItem: (value: any) =>
@@ -33,6 +35,7 @@ const useStoreState = create<StoreStateType>()(
         config: value.config,
         rawData: null,
         data: value.data,
+        dataSource: value.dataSource,
         description: value.description,
         publish: value.publish,
         name: value.name,
@@ -48,6 +51,7 @@ const useStoreState = create<StoreStateType>()(
         description: "",
         chart: "bar",
         data: null,
+        dataSource: undefined,
         config: defaultConfig,
         rawData: null,
         publish: true,

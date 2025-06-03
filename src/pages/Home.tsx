@@ -35,6 +35,7 @@ function Home() {
     isRemote,
     remoteUrl,
     preview,
+    dataSource,
 
     setPreview,
     setConfig,
@@ -92,7 +93,8 @@ function Home() {
     setData(d);
     send({ type: "CONFIG" });
   }
-  const haveData = data && data[0].length > 0 ? true : false;
+  const haveData =
+    data && data[0].length > 0 ? true : dataSource ? true : false;
 
   function handleUpload(d: any) {
     setData(d);
@@ -260,7 +262,7 @@ function Home() {
             <>
               <div className='p-4'>
                 <DataTable
-                  data={data}
+                  data={data as any}
                   reset={reset}
                   transpose={transpose}
                   download={() => {
@@ -273,6 +275,7 @@ function Home() {
                       chart={chart}
                       data={data}
                       config={config}
+                      dataSource={null}
                       getPicture={(pic: string) => setPreview(pic)}
                     />
                     {config && chart && (
