@@ -63,9 +63,6 @@ function Home() {
   }
 
   useEffect(() => {
-    if (!auth.isAuth()) {
-      window.location.href = "/enter";
-    }
     fetchCharts();
   }, []);
 

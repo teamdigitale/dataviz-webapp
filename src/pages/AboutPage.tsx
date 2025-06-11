@@ -1,16 +1,6 @@
-import { useEffect } from "react";
 import Layout from "../components/layout";
-import * as auth from "../lib/auth";
 
 export default function Landing() {
-  useEffect(() => {
-    if (auth.isAuth()) {
-      setTimeout(() => {
-        window.location.href = "/home";
-      }, 3000);
-    }
-  }, []);
-
   const faqs = [
     {
       id: 1,

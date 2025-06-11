@@ -4,16 +4,16 @@ function getItem(name: string) {
   return sessionStorage.getItem(name) || localStorage.getItem(name);
 }
 
-export function isAuth() {
+function isAuth() {
   const token = getItem("token");
   return token ? true : false;
 }
 
-export function getAuth() {
+function getAuth() {
   return getItem("token");
 }
 
-export function saveAuth(token: string, remember: boolean) {
+function saveAuth(token: string, remember: boolean) {
   if (remember) {
     localStorage.setItem("token", token);
   } else {
@@ -21,7 +21,7 @@ export function saveAuth(token: string, remember: boolean) {
   }
 }
 
-export function logout() {
+function logout() {
   localStorage.removeItem("token");
   sessionStorage.removeItem("token");
   try {
@@ -29,7 +29,7 @@ export function logout() {
   } catch (error) {}
 }
 
-export function useAuth() {
+function useAuth() {
   const item = getItem("token");
   const [auth, setAuth] = useState(isAuth());
   useEffect(() => {

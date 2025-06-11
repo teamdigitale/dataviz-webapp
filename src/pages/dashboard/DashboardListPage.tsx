@@ -125,9 +125,9 @@ function DashboardsPage() {
   }
 
   useEffect(() => {
-    if (!auth.isAuth()) {
+    // if (!auth.isAuth()) {
       window.location.href = "/enter";
-    }
+    // }
     fetchDashboards();
   }, []);
 

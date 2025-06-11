@@ -1,17 +1,34 @@
-import * as auth from "../../lib/auth";
+import { useState, useEffect } from "react";
+import * as api from "../../lib/api";
 
 export default function Header() {
-  const logged = auth.useAuth();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [authorized, setAuthorized] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   if (!logged) {
-  //     window.location.href = "/enter";
-  //   }
-  // }, [logged]);
+  // const logged = auth.useAuth();
 
-  function logoutAndRedir() {
-    auth.logout();
-    window.location.href = "/";
+  useEffect(() => {
+    setLoading(true);
+    checkAuthAndRedir();
+  }, []);
+
+  async function checkAuthAndRedir() {
+    try {
+      const response = await api.getUser();
+      console.log("RESPONSE", response);
+      if (response) {
+        setAuthorized(true);
+        // window.location.href = "/home";
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function logoutAndRedir() {
+    // await api.logout();
+    // window.location.href = "/";
   }
 
   const menu = [
@@ -135,7 +152,8 @@ export default function Header() {
         </ul>
       </div>
       <div className='navbar-end px-4'>
-        {!logged ? (
+        {loading && <div className='pulse'>...</div>}
+        {!authorized ? (
           <a className='btn btn-ghost' href='/enter'>
             Sign In / Up
           </a>
