@@ -1,13 +1,13 @@
 import { useState } from "react";
-import SignIn from "../components/auth/SignIn";
-import SignUp from "../components/auth/SignUp";
-import Layout from "../components/layout";
+import SignIn from "../../components/auth/SignIn";
+import SignUp from "../../components/auth/SignUp";
+import Layout from "../../components/layout";
 
 function AuthPage() {
   const [login, setLogin] = useState(true);
   return (
     <Layout>
-      <div className="flex min-h-full flex-1">
+      <div className='flex min-h-full flex-1'>
         <>
           {login ? (
             <SignIn setLogin={setLogin} />
@@ -22,16 +22,16 @@ function AuthPage() {
               : "bg-[url('/images/undraw_Data_re_80ws.png')]"
           } `}
         >
-          <div className="py-20 w-full h-full bg-primary opacity-90 text-primary-content flex flex-col items-center  justify-center ">
+          <div className='py-20 w-full h-full bg-primary opacity-90 text-primary-content flex flex-col items-center  justify-center '>
             {login ? (
               <>
-                <h1 className="text-6xl">Welcome Back.</h1>
-                <p className="py-10 text-3xl">we missed you!</p>
+                <h1 className='text-6xl'>Welcome Back.</h1>
+                <p className='py-10 text-3xl'>we missed you!</p>
               </>
             ) : (
               <>
-                <h1 className="text-6xl">Create an account.</h1>
-                <p className="py-10 text-3xl">Join the community.</p>
+                <h1 className='text-6xl'>Create an account.</h1>
+                <p className='py-10 text-3xl'>Join the community.</p>
               </>
             )}
           </div>

@@ -118,16 +118,19 @@ export async function register({
   email: string;
   password: string;
 }) {
-  const response = await axios.post(`${SERVER_URL}/auth/register`, {
-    email,
-    password,
-  });
-  const data = response.data;
-  if (response.status === 200) {
-    return true;
-  }
-  if (data.message) {
-    throw new Error(data.message);
+  try {
+    const response = await axios.post(`${SERVER_URL}/auth/register`, {
+      email,
+      password,
+    });
+    const data = response.data;
+    console.log("RESPONSE DATA", data);
+    if (response.status === 200) {
+      return true;
+    }
+  } catch (error: any) {
+    console.log("REGISTER ERROR", error.message);
+    throw error;
   }
 }
 
@@ -145,26 +148,44 @@ export async function showChart(id: string) {
   return null;
 }
 
-// type FetcherProps = {
-//   path: string;
-//   method: string;
-//   open?: boolean;
-// };
-// const fetcher = ({ path, method = "GET", open = true }: FetcherProps) => {
-//   let options = {
-//     method,
-//     headers,
-// //     credentials: "include",
-//   };
-//   // if (!open) {
-//   //   const token = auth.getAuth();
-//   //   options.headers = { ...headers, Authorization: `Bearer ${token}` };
-//   // }
-//   fetch(`${SERVER_URL}/${path}`, options).then((res) => res.json());
-// };
+export async function verify({ uid, code }: { uid: string; code: string }) {
+  try {
+    const response = await axios.post(`${SERVER_URL}/auth/verify`, {
+      uid,
+      code,
+    });
+    if (response.status === 200) {
+      return true;
+    }
+  } catch (error: any) {
+    console.log("verify ERROR", error?.message);
+    throw error;
+  }
+  return false;
+}
 
-// function useApi() {
-//   let path = "/charts";
-//   const { data, error, isLoading } = useSWR(path, getCharts);
-//   return { data, error, isLoading };
-// }
+export async function changePasssword({ password }: { password: string }) {
+  try {
+    const response = await axios.post(`${SERVER_URL}/auth/pwd`, {
+      password,
+    });
+    if (response.status === 200) {
+      return true;
+    }
+  } catch (error: any) {
+    console.log("changePasssword ERROR", error?.message);
+    throw error;
+  }
+}
+
+export async function activate() {
+  try {
+    const response = await axios.post(`${SERVER_URL}/auth/init`);
+    if (response.status === 200) {
+      return true;
+    }
+  } catch (error: any) {
+    console.log("changePasssword ERROR", error?.message);
+    throw error;
+  }
+}

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import AboutPage from "./pages/AboutPage";
-import AuthPage from "./pages/AuthPage";
+import AuthPage from "./pages/auth/AuthPage";
 import DashboardCreatePage from "./pages/dashboard/DashboardCreatePage";
 import DashboardEditPage from "./pages/dashboard/DashboardEditPage";
 import DashboardsPage from "./pages/dashboard/DashboardListPage";
@@ -12,6 +12,7 @@ import GeoMapUtilsPage from "./pages/utility/GeoMapUtilsPage";
 import HomePage from "./pages/Home";
 import LoadDataPage from "./pages/utility/LoadRemoteDataPage";
 import ShowChartPage from "./pages/show/ShowChartPage";
+import VerifyPage from "./pages/auth/VerifyPage";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
   {
     path: "/geo",
     element: <GeoMapUtilsPage />,
+  },
+  {
+    path: "/verify/:uid",
+    element: <VerifyPage />,
   },
 ]);
 

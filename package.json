@@ -36,6 +36,7 @@
     "react-markdown": "^9.0.1",
     "react-resizable-panels": "^2.0.22",
     "react-router-dom": "^6.23.1",
+    "react-verification-input": "^4.2.2",
     "remark-gfm": "^4.0.0",
     "swr": "^2.2.5",
     "typeface-lora": "^1.1.13",
