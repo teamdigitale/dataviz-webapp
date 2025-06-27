@@ -27,8 +27,10 @@ export default function Header() {
     }
   }
   async function logoutAndRedir() {
-    // await api.logout();
-    // window.location.href = "/";
+    await api.logout();
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   }
 
   const menu = [

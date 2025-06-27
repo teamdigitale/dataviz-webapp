@@ -17,6 +17,7 @@ function ChartSave({ item, handleSave }: any) {
     defaultValues: {
       id: item?.id || "",
       name: item?.name || defaultName,
+
       description: item?.description || "",
       publish: item?.id ? item?.publish : true,
     },
@@ -30,14 +31,14 @@ function ChartSave({ item, handleSave }: any) {
       name,
       description,
       publish,
-      chart: item.chart,
+      chart: item.chart || "bar",
       config: item.config,
       data: item.data,
       isRemote: item.isRemote,
       remoteUrl: item.remoteUrl,
       preview: item.preview,
     };
-    console.log("Save chart", JSON.stringify(payload, null, 2));
+    console.log("Save chart", payload);
     return api.upsertChart(payload, id);
   }
 

@@ -23,11 +23,10 @@ export async function getSuggestions(inputData: (string | number)[][]) {
 }
 
 /** Upsert */
-export async function upsertChart(item: any, id?: string) {
+export async function upsertChart(payload: any, id?: string) {
   // const token = auth.getAuth();
   // if (!token) return null;
   const url = id ? `${SERVER_URL}/charts/${id}` : `${SERVER_URL}/charts/`;
-  const payload = JSON.stringify(item);
   const method = id ? "PUT" : "POST";
 
   let response = await (method === "PUT"
@@ -35,9 +34,9 @@ export async function upsertChart(item: any, id?: string) {
     : axios.post(url, payload));
   console.log("UPSERT-CHART", response.status);
 
-  if (response.status === 401) {
-    return logout();
-  }
+  // if (response.status === 401) {
+  //   return logout();
+  // }
   if (response.status === 200) {
     return response.data;
   }
